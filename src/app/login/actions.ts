@@ -49,11 +49,12 @@ export async function signup(formData: FormData) {
 
 export async function logOut() {
   const supabase = await createClient()
-
+  
   const { error } = await supabase.auth.signOut()
   if ( error ) {
     console.log(error)
   }
-
   
+  revalidatePath('/', 'layout')
+  redirect('/')
 }

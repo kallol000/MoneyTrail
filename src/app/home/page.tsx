@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
-
+import { Button } from '@/components/ui/button';
 import { createClient } from '../utils/supabase/server'
+import { logOut } from '../login/actions';
 
 export default async function PrivatePage() {
   const supabase = await createClient()
@@ -17,8 +18,11 @@ export default async function PrivatePage() {
     
     console.log(data)
   return (
-    <div>
+    <div className='flex flex-col justify-center items-center'>
       <p> Hello </p>
+      <form>
+        <Button formAction={logOut}>Logout</Button>
+      </form>
     </div>
     
   )
