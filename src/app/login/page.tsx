@@ -43,15 +43,15 @@ export default function LoginPage() {
   return (
     <div className='p-16 '>
       <div className='flex flex-col items-center mb-16'>
-        <div className='text-4xl font-semibold'>Welcome!</div>
-        <div className='text-xl '>Login or SignUp to start tracking your expenses today</div>
+        <div className='text-5xl text-identity font-bold'>MONEYTRAIL</div>
+        <div className='text-xl '>Your own expense tracker</div>
       </div>
     <div className='flex justify-center'>
 
       <form className='w-1/3 flex flex-col gap-4 p-4 items-center '>
           <Input placeholder='email' id="email" name="email" type="email" required />
           <Input placeholder='password' id="password" name="password" type="password" required />
-        <div className = "flex gap-4">
+        <div className = "flex gap-4 mt-8">
             <Button className='min-w-30 rounded-[50px] cursor-pointer' formAction={ handleLogin }>{ isLoginPending ? <Spinner /> : `Log in` }</Button>
             <Button className='min-w-30 rounded-[50px] cursor-pointer' formAction={ handleSignup }>{ isSignupPending ? <Spinner /> : `Sign Up` }</Button>
           </div>

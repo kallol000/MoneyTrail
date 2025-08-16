@@ -1,31 +1,62 @@
-import { redirect } from 'next/navigation'
-import { Button } from '@/components/ui/button';
-import { createClient } from '../utils/supabase/server'
-import { logOut } from '../login/actions';
-import { getIncome } from '../api/income/route';
+"use client";
 
-export default async function Home() {
-  const supabase = await createClient()
+import { Button } from "@/components/ui/button";
+import { logOut } from "../login/actions";
+import { useState, useEffect } from "react";
+import { getUser, getIncome, getUserCategories, getMonthlyExpenses } from "../api/fetch/route";
+import { ChartBarDefault } from "@/components/ui/chartBar";
 
-//   const { data, error } = await supabase.auth.getUser()
-//   if (error || !data?.user) {
-//     redirect('/login')
-//   }
 
-    const res = await getIncome()
+export default function Home() {
+  const [user, setUser] = useState<string>("")
+  const [incomeData, setIncomeData] = useState();
+  const [userCategories, setUserCategories] = useState();
+
+  const fetchUser = async () => {
+    const res = await getUser()
     const data = await res.json()
-    // if ( error ) {  
-    //   redirect('/login')
-    // }
-    
+    setUser(data.user.id)
+  }
+  
+  const fetchIncome = async () => {
+    const res = await getIncome();
+    const data = await res.json();
+    setIncomeData(data);
+  };
+  
+  const fetchUserCategories = async () => {
+    const res = await getUserCategories();
+    const data = await res.json();
+    setUserCategories(data);
+  };
+  
+  const fetchMonthlyExpenses = async () => {
+    const res = await getMonthlyExpenses(user)
+    const data = await res.json()
     console.log(data)
+  }
+  
+  useEffect(() => {
+    fetchIncome();
+    fetchUserCategories();
+    fetchUser()
+  }, []);
+
+  useEffect(() => {
+    // console.log("helloooo")
+    if(user) {
+      fetchMonthlyExpenses()
+    }
+  }, [user])
+
+  console.log(userCategories);
+
   return (
-    <div className='flex flex-col justify-center items-center'>
-      <p> Hello </p>
-      <form>
-        <Button formAction={logOut}>Logout</Button>
-      </form>
+    <div className="p-4 grid grid-cols-4 gap-4">
+      <ChartBarDefault />
+      <ChartBarDefault />
+      <ChartBarDefault />
+      <ChartBarDefault />
     </div>
-    
-  )
+  );
 }
