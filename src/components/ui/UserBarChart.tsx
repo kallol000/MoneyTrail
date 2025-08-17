@@ -11,15 +11,15 @@ import { months } from "@/app/utils/lib/helpers"
 
 export const description = "A bar chart"
 
+const chartConfig = {
+  desktop: {
+    label: "Desktop",
+    color: "var(--chart-2)",
+  },
+} satisfies ChartConfig
 
-export function ChartBarDefault({data, category}:{data: expenseRow[], category: string}) {
+export function UserBarChart({data, category}:{data: expenseRow[], category: string}) {
   
-    const chartConfig = {
-      desktop: {
-        label: "Desktop",
-        color: "var(--chart-2)",
-      },
-    } satisfies ChartConfig
     
     const [chartData, setChartData] = useState<singleBarChartRow[]>([])
 
