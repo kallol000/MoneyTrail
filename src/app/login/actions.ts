@@ -69,7 +69,6 @@ export async function passwordReset(formData: FormData) {
   
   if ( error ) {
     console.log(error)
-    // return {error: error.message}
     redirect('/error')
   }
 

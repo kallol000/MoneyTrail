@@ -1,11 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { logOut } from "../../../login/actions";
+import { logOut } from "../../login/actions";
 import { useState, useEffect } from "react";
-import { getUser, getIncome, getUserCategories, getMonthlyExpenses } from "../../../api/fetch/route";
+import { getUser, getIncome, getUserCategories, getMonthlyExpenses } from "../../api/fetch/route";
 import { UserBarChart } from "@/components/ui/UserBarChart";
-import { expenseRow } from "../../../utils/lib/types";
+import { expenseRow } from "../../utils/lib/types";
 import UserTabs from "@/components/ui/userTabs";
 
 export default function TimeSeries() {
@@ -56,8 +56,12 @@ export default function TimeSeries() {
 
   return (
     <>
-      <div className="p-4 grid grid-cols-4 gap-4">
-        Your monthly expenses are seen here
+      <div className="grid grid-cols-4 gap-4">
+        <UserBarChart data = {monthlyExpenses} category="Food"/>
+        <UserBarChart data = {monthlyExpenses} category="Grocery"/>
+        {/* <UserBarChart />
+        <UserBarChart />
+        <UserBarChart /> */}
       </div>
     </>
   );
