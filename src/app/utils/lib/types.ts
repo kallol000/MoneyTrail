@@ -13,3 +13,16 @@ export type tabLinkRow = {
     name: string;
     link: string;
 }
+
+export type monthYear = {
+    month: string;
+    year: string;
+}
+
+export type monthIndex = {
+    [key: string] : number
+}
+
+export type expenseRecord = {
+    [ key: string ]: string;
+}

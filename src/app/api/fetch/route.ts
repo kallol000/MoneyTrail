@@ -51,7 +51,7 @@ export async function getUserCategories() {
     
     const { data, error } = await supabase
       .from("user_categories")
-      .select(`id, name`)
+      .select( `id, name` )
     
     if(error) {
       return new Response(JSON.stringify(error), {
@@ -79,6 +79,26 @@ export async function getMonthlyExpenses(userId: string) {
       });
     }
 
+    return new Response(JSON.stringify(data), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+  
+  
+  export async function getDateWiseExpenses( userId: string, year: number, month: number ) {
+    
+    const supabase = createClient()
+    
+    const { data, error } = await supabase.rpc("get_date_wise_monthly_expenses", { p_user_id: userId, p_year: year, p_month:month });
+    
+    if(error) {
+      return new Response(JSON.stringify(error), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+  
     return new Response(JSON.stringify(data), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }

@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { logOut } from "../../login/actions";
 import { useState, useEffect } from "react";
-import { getUser, getIncome, getUserCategories, getMonthlyExpenses } from "../../api/fetch/route";
+import { getUser, getIncome, getUserCategories, getMonthlyExpenses, getDateWiseExpenses } from "../../api/fetch/route";
 import { UserBarChart } from "@/components/ui/UserBarChart";
 import { expenseRow } from "../../utils/lib/types";
 import UserTabs from "@/components/ui/userTabs";
@@ -39,10 +39,12 @@ export default function TimeSeries() {
     setMonthlyExpenses(data)
   }
   
+  
   useEffect(() => {
     fetchIncome();
     fetchUserCategories();
     fetchUser()
+
   }, []);
 
   useEffect(() => {

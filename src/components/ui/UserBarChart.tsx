@@ -34,7 +34,7 @@ export function UserBarChart({data, category}:{data: expenseRow[], category: str
           }).filter(item => Object.keys(item)[1] === category)
         })
       }
-    }, [data.length])
+    }, [data])
 
     // useEffect(() => {
       
