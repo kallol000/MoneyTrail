@@ -1,9 +1,9 @@
-import { expenseRecord } from "@/app/utils/lib/types"
+import { expenseRecord, insertExpenseRecord } from "@/app/utils/lib/types"
 import { useState, useEffect, ReactNode } from "react"
 import { UserPopover } from "./UserPopover"
 import { comparator } from "@/app/utils/lib/helpers"
 
-export default function UserTable( { data }: { data: expenseRecord[] } ) {
+export default function UserTable( { data, formData, handleFormdataChange }: { data: expenseRecord[], formData: insertExpenseRecord[], handleFormdataChange: (date:string, category: string, amount: number) => void } ) {
     
     const [ tableHeaders, setTableHeaders ] = useState<ReactNode[]>( [] )
     const [ tableBody, setTableBody ] = useState<ReactNode[]>( [] )
@@ -18,8 +18,6 @@ export default function UserTable( { data }: { data: expenseRecord[] } ) {
 
     useEffect( () => {
         if ( data.length > 0 ) {
-            // const columns = Object.keys( data[ 0 ] )
-            console.log(columns)
             setTableHeaders( columns.map( ( column, index ) => <th className="text-xs p-2" key={ index }>{ column.substring(0,1).toUpperCase() + column.substring(1, column.length) }</th> ) )
         }
     }, [ columns ] )
@@ -34,7 +32,7 @@ export default function UserTable( { data }: { data: expenseRecord[] } ) {
                                 { day[ colName ] === 0 ? "-" : day[colName] }
                             </div>
                             <div>
-                                {colName === "date" ? "" : <UserPopover /> }
+                                {colName === "date" ? "" : <UserPopover date = {day.date} category={colName} handleExpenseDataChange = {handleFormdataChange}  /> }
                             </div>
                         </div>
                     </td> ) }
@@ -43,7 +41,6 @@ export default function UserTable( { data }: { data: expenseRecord[] } ) {
     }, [ columns ] )
     
 
-    console.log(data)
 
     return (
         <div className="

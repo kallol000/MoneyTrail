@@ -24,5 +24,14 @@ export type monthIndex = {
 }
 
 export type expenseRecord = {
-    [ key: string ]: string;
+    date: string;
+    [ key: string ]: string | number;
+}
+
+export type insertExpenseRecord = {
+    [key:number] : {    
+        date: string;
+        category: string;
+        amount: number;
+    }
 }
