@@ -26,8 +26,8 @@ export default function UserTable( { data, formData, handleFormdataChange }: { d
         if ( data.length > 0 ) {
             setTableBody( prev => data.map( ( day, index ) =>
                 <tr key={ index }>{ columns.map( ( colName, idx ) =>
-                    <td className="w-32 border border-collapse" key={ idx }>
-                        <div className="w-32 flex items-center justify-between text-xs  p-2">
+                    <td className="min-w-32 border border-collapse" key={ idx }>
+                        <div className="min-w-32 flex items-center justify-between text-xs  p-2">
                             <div className="flex items-center justify-center w-full">
                                 { day[ colName ] === 0 ? "-" : day[colName] }
                             </div>
@@ -51,7 +51,7 @@ export default function UserTable( { data, formData, handleFormdataChange }: { d
             [&::-webkit-scrollbar-thumb]:bg-gray-300
             dark:[&::-webkit-scrollbar-track]:bg-neutral-700
             dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
-            <table className="">
+            <table className="w-full">
                 <thead>
                     <tr className="bg-secondary " >
                         {tableHeaders}

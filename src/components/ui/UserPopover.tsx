@@ -13,33 +13,37 @@ import { useState, useEffect, ReactNode, ChangeEvent } from "react"
 
 export function UserPopover({date, category, handleExpenseDataChange} : {date:string, category:string, handleExpenseDataChange: (date:string, category: string, amount: number) => void}) {
 
-  const [expenseFormdata, setExpenseFormdata] = useState<insertExpenseRecord[]>([{1: {date:date, category: category, amount: 0}}])
+  const [expenseFormdata, setExpenseFormdata] = useState<insertExpenseRecord>({0: {date:date, category: category, amount: 0}})
   const [expenseElems, setExpenseElems] = useState<ReactNode[]>([])
 
   const addEmptyExpense = () => {
-    setExpenseFormdata(prev => [...prev, {[prev.length] :{date:date, category: category, amount: 0}}])
+    setExpenseFormdata(prev => ({...prev, [Object.keys(prev).length]: {date:date, category: category, amount: 0}}))
   }
 
-  // const handleChange = (e:ChangeEvent<HTMLInputElement>) => {
-  //   const {id, value} = e.target
-  //   console.log(id, value)
+  const handleChange = (e:ChangeEvent<HTMLInputElement>) => {
+    const {id, value} = e.target
+    console.log(id, value, expenseFormdata)
 
-  //   setExpenseFormdata(prev => {
+    setExpenseFormdata(prev => ({
+      ...prev, [id]: {...prev, amount: value}
+    }))
+  }
 
-  //   })
-  // }
+
+  const handleSubmit = () => {
+    console.log(expenseFormdata)
+  }
 
   useEffect(() => {
-    setExpenseElems(prev => expenseFormdata.map((exp, index) => 
+    setExpenseElems(prev => Object.keys(expenseFormdata).map((expSerial, index) => 
       <div key={index} className="grid grid-cols-3 items-center gap-4">
         <Label htmlFor="width">{`Expense ${index + 1}`}</Label>
         <Input
           type="number"
-          // id="width"
           id = {index}
           name = {category}
-          // value={exp[index+1].amount}
-          // onChange={handleChange}
+          value={expenseFormdata[index]?.amount}
+          onChange={handleChange}
           // defaultValue="100%"
           className="col-span-2 h-8"
         />
@@ -64,7 +68,7 @@ export function UserPopover({date, category, handleExpenseDataChange} : {date:st
           </div>
           <div className="mt-8 grid grid-cols-1 items-center gap-4">
             <Button onClick = {addEmptyExpense}>Add another expense</Button>
-            <Button variant={"action"}>Submit</Button>
+            <Button variant={"action"} onClick = {handleSubmit}>Submit</Button>
           </div>
         </div>
       </PopoverContent>
