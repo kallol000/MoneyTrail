@@ -1,3 +1,5 @@
+import { UUID } from "crypto";
+
 export type expenseRow = {
     month: string;
     category: string;
@@ -28,13 +30,27 @@ export type expenseRecord = {
     [ key: string ]: string | number;
 }
 
-export type insertExpenseRecord = {
-    [key:number] : {    
-        date: string;
-        category_id: number;
-        amount: number;
-    }
+export type fetchedExpenseRecord = {
+    id: UUID;
+    amount: number;
+    description: string;
 }
+
+export type expenseFormdataRecord = {
+    id?: UUID;
+    amount: number;
+    description: string;
+    category_id?: number;
+    date?: string;
+}
+
+export type unsavedExpenseRecord = {
+    amount: number;
+    description: string;
+    category_id: number;
+    date: string;
+}
+
 
 export type tab = {
     [key:string]: string

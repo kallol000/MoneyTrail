@@ -1,4 +1,4 @@
-import { expenseRecord, insertExpenseRecord } from "@/app/utils/lib/types";
+import { expenseRecord } from "@/app/utils/lib/types";
 import { useState, useEffect, ReactNode } from "react";
 import { UserPopover } from "./UserPopover";
 import { comparator } from "@/app/utils/lib/helpers";
@@ -7,13 +7,11 @@ export default function UserTable({
   data,
   categoryNamesMap,
   categoryNumbersMap,
-  formData,
   handleFormdataChange,
 }: {
   data: expenseRecord[];
-  categoryNamesMap: Map<string, number>;
-  categoryNumbersMap: Map<number, string>;
-  formData: insertExpenseRecord[];
+  categoryNamesMap: Map<string, number>,
+  categoryNumbersMap: Map<number, string>,
   handleFormdataChange: (
     date: string,
     category: string,
@@ -28,7 +26,9 @@ export default function UserTable({
     if (data.length > 0) {
       setColumns(Object.keys(data[0]).sort(comparator));
     }
-  }, [data]);
+  }, [data])
+
+  console.log(columns, categoryNamesMap)
 
   useEffect(() => {
     if (data.length > 0) {
@@ -43,7 +43,6 @@ export default function UserTable({
     }
   }, [columns]);
 
-  console.log(categoryNamesMap)
 
   useEffect(() => {
     if (data.length > 0 && columns) {
@@ -57,13 +56,13 @@ export default function UserTable({
                     {day[colName] === 0 ? "-" : day[colName]}
                   </div>
                   <div>
-                    {colName === "date" ? (
+                    {colName === "date" ? 
                       ""
-                    ) : (
+                    : (
                       <UserPopover
                         date={day.date}
                         categoryName = {colName}
-                        categoryId={categoryNamesMap.get(colName)! }
+                        categoryId={categoryNamesMap.get(colName)!}
                         handleExpenseDataChange={handleFormdataChange}
                       />
                     )}
@@ -75,7 +74,7 @@ export default function UserTable({
         ))
       );
     }
-  }, [columns]);
+  }, [columns, categoryNamesMap]);
 
   return (
     <div

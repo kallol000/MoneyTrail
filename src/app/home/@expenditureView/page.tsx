@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react"
 import { UserSelect } from "@/components/ui/userSelect"
 import { months, daysInMonth, monthsinNumber, mapUserCategories, mapUserCategoryNumbers } from "@/app/utils/lib/helpers"
-import { monthYear, expenseRecord, insertExpenseRecord, userCategoriesRecord } from "@/app/utils/lib/types"
+import { monthYear, expenseRecord, userCategoriesRecord } from "@/app/utils/lib/types"
 import UserTable from "@/components/ui/userTable"
 import { getUser, getDateWiseExpenses, getUserCategories } from "@/app/api/fetch/route"
 
@@ -11,9 +11,8 @@ export default function UpdateDataPage() {
     const [ selectedMonthYear, setSelectedMonthYear ] = useState<monthYear>( { month: months[new Date().getMonth()], year: new Date().getFullYear().toString() } )
     const [ user, setUser ] = useState<string>( "" )
     const [ expenseData, setExpenseData ] = useState<expenseRecord[]>( [] )
-    const [formData, setFormData] = useState<insertExpenseRecord[]>([])
     const [userCategories, setUserCategories] = useState<userCategoriesRecord[]>([])
-    const [categoryNameasMap, setCategoryNamesMap] = useState<Map<string, number>>(new Map())
+    const [categoryNamesMap, setCategoryNamesMap] = useState<Map<string, number>>(new Map())
     const [categoryNumbersMap, setCategoryNumbersMap] = useState<Map<number, string>>(new Map())
     // const []
     
@@ -33,7 +32,7 @@ export default function UpdateDataPage() {
     
     // to fetch monthly expenses
     const fetchDateWiseExpenses = async () => {
-        const res = await getDateWiseExpenses(user, parseInt(selectedMonthYear.year), monthsinNumber[selectedMonthYear.month])
+        const res = await getDateWiseExpenses(parseInt(selectedMonthYear.year), monthsinNumber[selectedMonthYear.month])
         const data = await res.json()
         setExpenseData(data)
     }
@@ -47,7 +46,6 @@ export default function UpdateDataPage() {
         console.log(date, category, amount)
     }
 
-    console.log(formData)
 
     useEffect( () => {
         fetchUser()
@@ -80,7 +78,7 @@ export default function UpdateDataPage() {
                 <UserSelect name = "month" label="Month" data={ months } value={ selectedMonthYear.month } onChange={ handleMonthYearChange} />
                 <UserSelect name = "year" label="Year" data={ ["2024", "2025", "2026"] } value={selectedMonthYear.year} onChange={handleMonthYearChange}/>
             </div>
-            <UserTable data = {expenseData} categoryNamesMap={categoryNameasMap} categoryNumbersMap = {categoryNumbersMap} formData = {formData} handleFormdataChange = {handleFormDataChange} />
+            <UserTable data = {expenseData} categoryNamesMap={categoryNamesMap} categoryNumbersMap = {categoryNumbersMap} handleFormdataChange = {handleFormDataChange} />
         </div>
     )
 }
