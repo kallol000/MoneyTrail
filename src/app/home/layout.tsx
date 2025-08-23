@@ -6,12 +6,21 @@ import { logOut } from "../login/actions";
 import UserTabs from "@/components/ui/userTabs";
 import Link from "next/link";
 import { useState } from "react";
+import {tab} from "../utils/lib/types"
 
 export default function Layout({children, monthlyAnalytics, timeseriesAnalytics, expenditureView} : {children: ReactNode, monthlyAnalytics: ReactNode, expenditureView:ReactNode, timeseriesAnalytics:ReactNode}) {
     
-    const [ tab1, setTab1 ] = useState<boolean>( false )
-    const [tab2, setTab2] = useState<boolean>( false )
-    const [tab3, setTab3] = useState<boolean>( true )
+    const [tabs, setTabs] = useState<tab>({
+        monthlyAnalytics: "Monthly View",
+        timeseriesAnalytics: "Time Series View",
+        expenditureView: "Expenditure Tracking",
+    })
+
+    const [activeTab, setActiveTab] = useState<string>("expenditureView")
+
+    const handleTabChange = (value:string) => {
+        setActiveTab(value)
+    }
 
     return (
         <div className="flex flex-col gap-4">
@@ -25,10 +34,10 @@ export default function Layout({children, monthlyAnalytics, timeseriesAnalytics,
             {/* <UserTabs /> */}
             <div className="p-4">
                 { children }
-                <UserTabs  />
-                {tab1 && monthlyAnalytics }
-                {tab2 && timeseriesAnalytics }
-                {tab3 && expenditureView }
+                <UserTabs tabs = {tabs} activeTab = {activeTab} handleValueChange={handleTabChange}/>
+                {activeTab === "monthlyAnalytics" && monthlyAnalytics }
+                {activeTab === "timeseriesAnalytics" && timeseriesAnalytics }
+                {activeTab === "expenditureView" && expenditureView }
             </div>
         </div>
     )

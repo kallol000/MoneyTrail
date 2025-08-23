@@ -54,7 +54,7 @@ export default function TimeSeries() {
     }
   }, [user])
 
-  // console.log(userCategories);
+  console.log(userCategories);
 
   return (
     <>

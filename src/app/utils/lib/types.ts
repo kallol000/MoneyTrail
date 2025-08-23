@@ -31,7 +31,16 @@ export type expenseRecord = {
 export type insertExpenseRecord = {
     [key:number] : {    
         date: string;
-        category: string;
+        category_id: number;
         amount: number;
     }
+}
+
+export type tab = {
+    [key:string]: string
+}
+
+export type userCategoriesRecord = {
+    id: number;
+    name: string;
 }

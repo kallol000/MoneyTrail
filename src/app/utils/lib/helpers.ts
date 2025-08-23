@@ -1,4 +1,4 @@
-import { monthIndex } from "./types";
+import { monthIndex, userCategoriesRecord } from "./types";
 
 export const months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]
 
@@ -17,4 +17,23 @@ export function comparator( a: string, b: string ) {
         return -1
     }
     return 1
+}
+
+export function mapUserCategories(data: userCategoriesRecord[]) {
+    let categoriesMap = new Map<string, number>()
+
+    for(let i = 0; i < data.length; i++) {
+        categoriesMap.set(data[i].name, data[i].id)
+    }
+
+    return categoriesMap
+}
+export function mapUserCategoryNumbers(data: userCategoriesRecord[]) {
+    let categoriesMap = new Map<number, string>()
+
+    for(let i = 0; i < data.length; i++) {
+        categoriesMap.set(data[i].id, data[i].name)
+    }
+
+    return categoriesMap
 }

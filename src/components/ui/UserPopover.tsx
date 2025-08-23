@@ -9,30 +9,43 @@ import {
 
 import { insertExpenseRecord } from "@/app/utils/lib/types"
 import { useState, useEffect, ReactNode, ChangeEvent } from "react"
+import { XMarkIcon } from "@heroicons/react/16/solid"
+import { mapUserCategoryNumbers } from "@/app/utils/lib/helpers"
 
 
-export function UserPopover({date, category, handleExpenseDataChange} : {date:string, category:string, handleExpenseDataChange: (date:string, category: string, amount: number) => void}) {
+export function UserPopover({date, categoryName, categoryId, handleExpenseDataChange} : {date:string, categoryName:string, categoryId:number,  handleExpenseDataChange: (date:string, category: string, amount: number) => void}) {
 
-  const [expenseFormdata, setExpenseFormdata] = useState<insertExpenseRecord>({0: {date:date, category: category, amount: 0}})
+  const [expenseFormdata, setExpenseFormdata] = useState<insertExpenseRecord>({0: {date:date, category_id: categoryId, amount: 0}})
   const [expenseElems, setExpenseElems] = useState<ReactNode[]>([])
+  const [popoverOpen, setPopoverOpen] = useState<boolean>(false)
+  
 
   const addEmptyExpense = () => {
-    setExpenseFormdata(prev => ({...prev, [Object.keys(prev).length]: {date:date, category: category, amount: 0}}))
+    setExpenseFormdata(prev => ({...prev, [Object.keys(prev).length]: {date:date, category_id: categoryId, amount: 0}}))
   }
 
   const handleChange = (e:ChangeEvent<HTMLInputElement>) => {
     const {id, value} = e.target
     console.log(id, value, expenseFormdata)
 
-    setExpenseFormdata(prev => ({
-      ...prev, [id]: {...prev, amount: value}
-    }))
+    // setExpenseFormdata(prev => ({
+    //   ...prev, [id]: {...prev, amount: value}
+    // }))
   }
 
 
   const handleSubmit = () => {
     console.log(expenseFormdata)
   }
+
+  const handlePopoverOpen = () => {
+    setPopoverOpen(true)
+  }
+
+  const handleClose = () => {
+    setPopoverOpen(false)
+  }
+
 
   useEffect(() => {
     setExpenseElems(prev => Object.keys(expenseFormdata).map((expSerial, index) => 
@@ -41,7 +54,7 @@ export function UserPopover({date, category, handleExpenseDataChange} : {date:st
         <Input
           type="number"
           id = {index}
-          name = {category}
+          name = {categoryName}
           value={expenseFormdata[index]?.amount}
           onChange={handleChange}
           // defaultValue="100%"
@@ -51,14 +64,15 @@ export function UserPopover({date, category, handleExpenseDataChange} : {date:st
   }, [expenseFormdata])
 
   return (
-    <Popover>
+    <Popover open = {popoverOpen} onOpenChange={handlePopoverOpen} >
       <PopoverTrigger  asChild>
-        <Button onClick = {() => console.log(date, category)} className="p-0 h-6 w-6" variant="outline">+</Button>
+        <Button onClick = {handlePopoverOpen} className="p-0 h-6 w-6" variant="outline">+</Button>
       </PopoverTrigger>
       <PopoverContent className="w-80">
+        <Button onClick={handleClose} variant={"ghost"} className="absolute right-3 top-3"><XMarkIcon className="" /></Button>
         <div className="grid gap-4">
           <div className="space-y-2">
-            <h4 className="leading-none font-medium">{category.toUpperCase()}</h4>
+            <h4 className="leading-none font-medium">{categoryName}</h4>
             <p className="text-muted-foreground text-sm">
               Add expense(s)
             </p>
