@@ -1,18 +1,16 @@
 import { createClient } from '../../utils/supabase/client';
-import { expenseFormdataRecord } from '@/app/utils/lib/types';
 
 
 // upsert expense(s)
-export async function upsertExpense(expensesPayload : expenseFormdataRecord[]) {
+export async function deleteExpense(id:string) {
 
     const supabase = createClient()
 
-    expensesPayload = expensesPayload.filter(expense => expense.amount !== 0)
 
     const { data, error } = await supabase
         .from("expenses")
-        .upsert(expensesPayload, { onConflict: "id" })
-        .select()
+        .delete()
+        .eq("id", id)
     
     if(error) {
       return new Response(JSON.stringify({message:error.message}), {

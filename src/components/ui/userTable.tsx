@@ -2,21 +2,18 @@ import { expenseRecord } from "@/app/utils/lib/types";
 import { useState, useEffect, ReactNode } from "react";
 import { UserPopover } from "./UserPopover";
 import { comparator } from "@/app/utils/lib/helpers";
+import { Dispatch, SetStateAction } from "react";
 
 export default function UserTable({
   data,
   categoryNamesMap,
   categoryNumbersMap,
-  handleFormdataChange,
+  setRefresh
 }: {
   data: expenseRecord[];
   categoryNamesMap: Map<string, number>,
   categoryNumbersMap: Map<number, string>,
-  handleFormdataChange: (
-    date: string,
-    category: string,
-    amount: number
-  ) => void;
+  setRefresh: Dispatch<SetStateAction<boolean>>
 }) {
   const [tableHeaders, setTableHeaders] = useState<ReactNode[]>([]);
   const [tableBody, setTableBody] = useState<ReactNode[]>([]);
@@ -28,7 +25,6 @@ export default function UserTable({
     }
   }, [data])
 
-  console.log(columns, categoryNamesMap)
 
   useEffect(() => {
     if (data.length > 0) {
@@ -60,10 +56,11 @@ export default function UserTable({
                       ""
                     : (
                       <UserPopover
+                        icon={day[colName] === 0 ? "add" : "view"}
                         date={day.date}
                         categoryName = {colName}
                         categoryId={categoryNamesMap.get(colName)!}
-                        handleExpenseDataChange={handleFormdataChange}
+                        setRefresh = {setRefresh}
                       />
                     )}
                   </div>
@@ -79,7 +76,7 @@ export default function UserTable({
   return (
     <div
       className="
-            max-w-screen max-h-[600px] overflow-scroll 
+            max-w-screen max-h-full overflow-scroll 
             [&::-webkit-scrollbar]:w-2
             [&::-webkit-scrollbar]:h-2
             [&::-webkit-scrollbar-track]:bg-gray-100

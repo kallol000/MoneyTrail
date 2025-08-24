@@ -23,7 +23,7 @@ export default function Layout({children, monthlyAnalytics, timeseriesAnalytics,
     }
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 min-h-screen">
             <Navbar>
                 <h1 className="text-identity font-bold text-2xl">MONEYTRAIL</h1>
                 <form>

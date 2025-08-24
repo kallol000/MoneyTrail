@@ -30,27 +30,13 @@ export type expenseRecord = {
     [ key: string ]: string | number;
 }
 
-export type fetchedExpenseRecord = {
-    id: UUID;
-    amount: number;
-    description: string;
-}
-
 export type expenseFormdataRecord = {
-    id?: UUID;
+    id: string;
     amount: number;
     description: string;
     category_id?: number;
     date?: string;
 }
-
-export type unsavedExpenseRecord = {
-    amount: number;
-    description: string;
-    category_id: number;
-    date: string;
-}
-
 
 export type tab = {
     [key:string]: string

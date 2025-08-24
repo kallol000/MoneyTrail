@@ -1,10 +1,12 @@
 "use client"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useTransition } from "react"
 import { UserSelect } from "@/components/ui/userSelect"
 import { months, daysInMonth, monthsinNumber, mapUserCategories, mapUserCategoryNumbers } from "@/app/utils/lib/helpers"
 import { monthYear, expenseRecord, userCategoriesRecord } from "@/app/utils/lib/types"
 import UserTable from "@/components/ui/userTable"
 import { getUser, getDateWiseExpenses, getUserCategories } from "@/app/api/fetch/route"
+import { Toaster } from "@/components/ui/sonner"
+import Spinner from "@/components/ui/spinner"
 
 export default function UpdateDataPage() {
     
@@ -14,6 +16,8 @@ export default function UpdateDataPage() {
     const [userCategories, setUserCategories] = useState<userCategoriesRecord[]>([])
     const [categoryNamesMap, setCategoryNamesMap] = useState<Map<string, number>>(new Map())
     const [categoryNumbersMap, setCategoryNumbersMap] = useState<Map<number, string>>(new Map())
+    const [isFetchPending, startFetchTransition] = useTransition()
+    const [refresh, setRefresh] = useState<boolean>(false)
     // const []
     
     // to fetch user details
@@ -42,11 +46,6 @@ export default function UpdateDataPage() {
         setSelectedMonthYear(prev => ({...prev, [name]: value}))
     }
 
-    const handleFormDataChange = (date:string, category: string, amount: number) => {
-        console.log(date, category, amount)
-    }
-
-
     useEffect( () => {
         fetchUser()
     }, [] )
@@ -54,9 +53,16 @@ export default function UpdateDataPage() {
     useEffect( () => {
         if ( user ) {
             fetchUserCategories()
-            fetchDateWiseExpenses()
         }
     }, [user, selectedMonthYear])
+    
+    useEffect(() => {
+        startFetchTransition(async () => {
+            if(user) {
+                fetchDateWiseExpenses()
+            }
+        })
+    }, [user, selectedMonthYear, refresh])
 
     useEffect(() => {
         
@@ -73,12 +79,16 @@ export default function UpdateDataPage() {
     }, [selectedMonthYear])
     
     return (
-        <div className="mt-4 flex flex-col gap-4">
+        <div className="mt-4 flex flex-col gap-4 h-full">
             <div className="flex gap-4">
                 <UserSelect name = "month" label="Month" data={ months } value={ selectedMonthYear.month } onChange={ handleMonthYearChange} />
                 <UserSelect name = "year" label="Year" data={ ["2024", "2025", "2026"] } value={selectedMonthYear.year} onChange={handleMonthYearChange}/>
+                {isFetchPending ? <Spinner /> : undefined}
             </div>
-            <UserTable data = {expenseData} categoryNamesMap={categoryNamesMap} categoryNumbersMap = {categoryNumbersMap} handleFormdataChange = {handleFormDataChange} />
+            <div className="flex-1 overflow-hidden">
+                <UserTable data = {expenseData} categoryNamesMap={categoryNamesMap} categoryNumbersMap = {categoryNumbersMap} setRefresh = {setRefresh} />
+            </div>
+            <Toaster richColors/>
         </div>
     )
 }
