@@ -4,9 +4,11 @@ import { UserSelect } from "@/components/ui/userSelect"
 import { months, daysInMonth, monthsinNumber, mapUserCategories, mapUserCategoryNumbers } from "@/app/utils/lib/helpers"
 import { monthYear, expenseRecord, userCategoriesRecord } from "@/app/utils/lib/types"
 import UserTable from "@/components/ui/userTable"
-import { getUser, getDateWiseExpenses, getUserCategories } from "@/app/api/fetch/route"
+import { getUser, getDateWiseExpenses, getUserCategories, getMonthlyIncome, getMonthlyExpense } from "@/app/api/fetch/route"
 import { Toaster } from "@/components/ui/sonner"
 import Spinner from "@/components/ui/spinner"
+import { Button } from "@/components/ui/button"
+import { UserIncomePopover } from "@/components/ui/UserIncomePopover"
 
 export default function UpdateDataPage() {
     
@@ -18,6 +20,9 @@ export default function UpdateDataPage() {
     const [categoryNumbersMap, setCategoryNumbersMap] = useState<Map<number, string>>(new Map())
     const [isFetchPending, startFetchTransition] = useTransition()
     const [refresh, setRefresh] = useState<boolean>(false)
+    const [totalIncome, setTotalIncome] = useState<number>()
+    const [totalExpenditure, setTotalExpenditure] = useState<number>()
+    const [balance, setBalance] = useState<number>()
     // const []
     
     // to fetch user details
@@ -40,6 +45,26 @@ export default function UpdateDataPage() {
         const data = await res.json()
         setExpenseData(data)
     }
+
+    const fetchMonthlyIncome = async () => {
+        try {
+            const res = await getMonthlyIncome(parseInt(selectedMonthYear.year), monthsinNumber[selectedMonthYear.month]) 
+            const data = await res.json()
+            setTotalIncome(data)
+        }catch(err) {
+            console.log(err)
+        }
+    }
+    
+    const fetchMonthlyExpenditure = async () => {
+        try {
+            const res = await getMonthlyExpense(parseInt(selectedMonthYear.year), monthsinNumber[selectedMonthYear.month]) 
+            const data = await res.json()
+            setTotalExpenditure(data)
+        }catch(err) {
+            console.log(err)
+        }
+    }
     
 
     const handleMonthYearChange = (value: string, name: string ) => {
@@ -60,9 +85,19 @@ export default function UpdateDataPage() {
         startFetchTransition(async () => {
             if(user) {
                 fetchDateWiseExpenses()
+                fetchMonthlyIncome()
+                fetchMonthlyExpenditure()
             }
         })
     }, [user, selectedMonthYear, refresh])
+
+    useEffect(() => {
+        setBalance(prev => {
+            if(totalIncome && totalExpenditure) {
+                return totalIncome - totalExpenditure
+            }
+        })
+    }, [totalIncome, totalExpenditure])
 
     useEffect(() => {
         
@@ -70,20 +105,28 @@ export default function UpdateDataPage() {
         const numbersMap = mapUserCategoryNumbers(userCategories)
         setCategoryNamesMap(namesMap)
         setCategoryNumbersMap(numbersMap)
+        
 
     }, [userCategories])
     
+    console.log(totalExpenditure)
 
-    useEffect( () => {
 
-    }, [selectedMonthYear])
+
     
     return (
         <div className="mt-4 flex flex-col gap-4 h-full">
-            <div className="flex gap-4">
-                <UserSelect name = "month" label="Month" data={ months } value={ selectedMonthYear.month } onChange={ handleMonthYearChange} />
-                <UserSelect name = "year" label="Year" data={ ["2024", "2025", "2026"] } value={selectedMonthYear.year} onChange={handleMonthYearChange}/>
-                {isFetchPending ? <Spinner /> : undefined}
+            <div className="w-full flex gap-4 items-center justify-between">
+                <div className="flex gap-4">
+                    <UserSelect name = "month" label="Month" data={ months } value={ selectedMonthYear.month } onChange={ handleMonthYearChange} />
+                    <UserSelect name = "year" label="Year" data={ ["2024", "2025", "2026"] } value={selectedMonthYear.year} onChange={handleMonthYearChange}/>
+                    {isFetchPending ? <Spinner /> : undefined}
+                </div>
+                <div className="flex items-center gap-4">
+                    <UserIncomePopover income = {totalIncome}/>
+                    <span><div className="p-2 bg-secondary rounded-md font-semibold text-sm border-1">Total Expenditure: &#8377;{totalExpenditure}</div></span>
+                    <span><div className="p-2 bg-identity rounded-md text-background font-bold text-sm border-1">Balance: &#8377;{balance}</div></span>
+                </div>
             </div>
             <div className="flex-1 overflow-hidden">
                 <UserTable data = {expenseData} categoryNamesMap={categoryNamesMap} categoryNumbersMap = {categoryNumbersMap} setRefresh = {setRefresh} />

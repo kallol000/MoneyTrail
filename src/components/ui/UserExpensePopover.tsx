@@ -19,7 +19,7 @@ import { deleteExpense } from "@/app/api/delete/route"
 import { InfoIcon, PlusIcon } from "./icons"
 
 
-export function UserPopover({icon, date, categoryName, categoryId, setRefresh} : {icon: string, date:string, categoryName:string, categoryId:number, setRefresh: Dispatch<SetStateAction<boolean>>}) {
+export function UserExpensePopover({icon, date, categoryName, categoryId, setRefresh} : {icon: string, date:string, categoryName:string, categoryId:number, setRefresh: Dispatch<SetStateAction<boolean>>}) {
 
   const [formdata, setFormdata] = useState<expenseFormdataRecord[]>([])
   const [initialFormdata, setInitialFormdata] = useState<expenseFormdataRecord[]>([])
@@ -66,7 +66,6 @@ export function UserPopover({icon, date, categoryName, categoryId, setRefresh} :
           return updatedData
         })
     }
-
   }
 
 
@@ -142,7 +141,6 @@ export function UserPopover({icon, date, categoryName, categoryId, setRefresh} :
             {/* <Label htmlFor="width" className="col-span-3">{`Expense ${index + 1}`}</Label> */}
             <Input
               type="text"
-              
               id = {index}
               name = {"fetched"}
               value = {exp.description ? exp.description : ""}
@@ -150,16 +148,18 @@ export function UserPopover({icon, date, categoryName, categoryId, setRefresh} :
               placeholder="expense description"
               className="col-span-4 h-8"
             />
-            <Input
-              type="number"
-              min={0}
-              id = {index}
-              name = {"fetched"}
-              value = {exp.amount}
-              onChange={handleChange}
-              className="col-span-5 h-8"
-              
-            />
+            <div className="flex items-center relative col-span-5">
+              <label className="absolute left-2 text-primary/50">&#8377;</label>
+              <Input
+                type="number"
+                min={0}
+                id = {index}
+                name = {"fetched"}
+                value = {exp.amount}
+                onChange={handleChange}
+                className=" h-8 text-right"
+              />
+            </div>
               <Button className="col-span-1" variant={"ghost"} onClick={() => handleDelete(exp.id)}><TrashIcon /></Button>
             </div>
           )
@@ -170,7 +170,7 @@ export function UserPopover({icon, date, categoryName, categoryId, setRefresh} :
   
 
   return (
-    <Popover open = {popoverOpen} onOpenChange={handlePopoverOpen} >
+    <Popover open = {popoverOpen} onOpenChange={handlePopoverOpen} modal = {true} >
       <PopoverTrigger  asChild>
         <Button onClick = {handlePopoverOpen} className="p-0 h-6 w-6" variant="outline">{icon === "add" ? <PlusIcon /> : <InfoIcon />  }</Button>
       </PopoverTrigger>

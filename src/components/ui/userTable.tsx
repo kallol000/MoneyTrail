@@ -1,6 +1,6 @@
 import { expenseRecord } from "@/app/utils/lib/types";
 import { useState, useEffect, ReactNode } from "react";
-import { UserPopover } from "./UserPopover";
+import { UserExpensePopover } from "./UserExpensePopover";
 import { comparator } from "@/app/utils/lib/helpers";
 import { Dispatch, SetStateAction } from "react";
 
@@ -55,7 +55,7 @@ export default function UserTable({
                     {colName === "date" ? 
                       ""
                     : (
-                      <UserPopover
+                      <UserExpensePopover
                         icon={day[colName] === 0 ? "add" : "view"}
                         date={day.date}
                         categoryName = {colName}
@@ -76,7 +76,7 @@ export default function UserTable({
   return (
     <div
       className="
-            max-w-screen max-h-full overflow-scroll 
+            max-w-screen max-h-[600px] overflow-scroll 
             [&::-webkit-scrollbar]:w-2
             [&::-webkit-scrollbar]:h-2
             [&::-webkit-scrollbar-track]:bg-gray-100
