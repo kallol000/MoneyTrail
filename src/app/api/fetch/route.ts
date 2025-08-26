@@ -172,3 +172,23 @@ export async function getMonthlyIncome( year: number, month: number ) {
   });
 }
 
+// get an user's all monthly income
+export async function getAllMonthlyIncome( year: number, month: number ) {
+  
+  const supabase = createClient()
+  
+  const { data, error } = await supabase.rpc("get_incomes_for_month", { p_year: year, p_month:month });
+  
+  if(error) {
+    return new Response(JSON.stringify(error), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
+  return new Response(JSON.stringify(data), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+

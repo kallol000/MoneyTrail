@@ -9,7 +9,7 @@ import {
 
 import { expenseFormdataRecord } from "@/app/utils/lib/types"
 import { useState, useEffect, ReactNode, ChangeEvent, useTransition, Dispatch, SetStateAction } from "react"
-import { XMarkIcon, TrashIcon,  } from "@heroicons/react/16/solid"
+import { XMarkIcon, TrashIcon  } from "@heroicons/react/16/solid"
 import { getOneDayExpense } from "@/app/api/fetch/route"
 import { upsertExpense } from "@/app/api/upsert/route"
 import { v4 as uuidv4 } from "uuid"

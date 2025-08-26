@@ -20,9 +20,9 @@ export default function UpdateDataPage() {
     const [categoryNumbersMap, setCategoryNumbersMap] = useState<Map<number, string>>(new Map())
     const [isFetchPending, startFetchTransition] = useTransition()
     const [refresh, setRefresh] = useState<boolean>(false)
-    const [totalIncome, setTotalIncome] = useState<number>()
-    const [totalExpenditure, setTotalExpenditure] = useState<number>()
-    const [balance, setBalance] = useState<number>()
+    const [totalIncome, setTotalIncome] = useState<number>(0)
+    const [totalExpenditure, setTotalExpenditure] = useState<number>(0)
+    const [balance, setBalance] = useState<number>(0)
     // const []
     
     // to fetch user details
@@ -94,8 +94,9 @@ export default function UpdateDataPage() {
     useEffect(() => {
         setBalance(prev => {
             if(totalIncome && totalExpenditure) {
-                return totalIncome - totalExpenditure
+                prev = totalIncome - totalExpenditure
             }
+            return prev
         })
     }, [totalIncome, totalExpenditure])
 
@@ -109,8 +110,6 @@ export default function UpdateDataPage() {
 
     }, [userCategories])
     
-    console.log(totalExpenditure)
-
 
 
     
@@ -123,7 +122,7 @@ export default function UpdateDataPage() {
                     {isFetchPending ? <Spinner /> : undefined}
                 </div>
                 <div className="flex items-center gap-4">
-                    <UserIncomePopover income = {totalIncome}/>
+                    <UserIncomePopover income = {totalIncome} month = {monthsinNumber[selectedMonthYear.month]} year = {parseInt(selectedMonthYear.year)} setRefresh={setRefresh} />
                     <span><div className="p-2 bg-secondary rounded-md font-semibold text-sm border-1">Total Expenditure: &#8377;{totalExpenditure}</div></span>
                     <span><div className="p-2 bg-identity rounded-md text-background font-bold text-sm border-1">Balance: &#8377;{balance}</div></span>
                 </div>

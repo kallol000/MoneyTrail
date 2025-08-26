@@ -38,6 +38,13 @@ export type expenseFormdataRecord = {
     date?: string;
 }
 
+export type incomeFormdataRecord = {
+    id: string;
+    amount: number;
+    description: string;
+    date: string;
+}
+
 export type tab = {
     [key:string]: string
 }
