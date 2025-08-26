@@ -20,28 +20,27 @@ export async function login(formData: FormData) {
   if (error) {
     return {error: error.message}
   }
-
+  
   revalidatePath('/', 'layout')
   redirect('/home')
 }
 
 export async function signup(formData: FormData) {
   const supabase = await createClient()
-
+  
   // type-casting here for convenience
   // in practice, you should validate your inputs
   const data = {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
   }
-
+  
   const { error } = await supabase.auth.signUp(data)
-
+  
   if ( error ) {
-    console.log(error)
-    redirect('/error')
+    return {error: error.message}
   }
-
+  
   revalidatePath('/', 'layout')
   redirect('/')
 }
@@ -57,4 +56,22 @@ export async function logOut() {
   
   revalidatePath('/', 'layout')
   redirect('/')
+}
+
+export async function passwordReset(formData: FormData) {
+  
+  const supabase = await createClient()
+  const email = formData.get('email') as string
+  
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: 'http://localhost:3000/password-reset',     
+  })
+  
+  if ( error ) {
+    console.log(error)
+    redirect('/error')
+  }
+
+  // redirect('/password-reset-notification')
+
 }
