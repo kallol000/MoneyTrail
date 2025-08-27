@@ -38,7 +38,7 @@ import {
 import { DragEvent } from "react"
 
 
-export function UserCategoriesPopover({} : {}) {
+export function UserCategoriesPopover() {
 
     const [initialCategories, setInitialCategories] = useState<userCategoriesRecord[]>([])
     const [userCategories, setUserCategories] = useState<userCategoriesRecord[]>([])
