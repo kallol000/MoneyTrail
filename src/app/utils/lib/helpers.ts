@@ -38,11 +38,3 @@ export function mapUserCategoryNumbers(data: userCategoriesRecord[]) {
     return categoriesMap
 }
 
-export function findIndexInArray(arr: any[], id: number) {
-    for(let i = 0; i < arr.length; i++) {
-        if(arr[i].id === id) {
-            return i
-        }
-    }
-    return -1
-}

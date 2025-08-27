@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/popover"
 import { PlusIcon } from "./icons"
 import { userCategoriesRecord } from "@/app/utils/lib/types"
-import { useState, useEffect } from "react"
+import { useState, useEffect, ChangeEvent } from "react"
 import { getUserCategories } from "@/app/api/fetch/route"
 import {
   DndContext, 
@@ -17,7 +17,8 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  DragOverlay
+  DragOverlay,
+  DragEndEvent
 } from '@dnd-kit/core';
 import {
   arrayMove,
@@ -29,12 +30,13 @@ import Draggable from "./Draggable"
 import Droppable from "./Droppable"
 import { XMarkIcon } from "@heroicons/react/16/solid"
 import { JSX } from "react"
-import { findIndexInArray } from "@/app/utils/lib/helpers"
 import SortableItem from "./sortableItem"
 import {
   restrictToVerticalAxis,
   restrictToWindowEdges,
 } from '@dnd-kit/modifiers';
+import { DragEvent } from "react"
+
 
 export function UserCategoriesPopover({} : {}) {
 
@@ -58,12 +60,12 @@ export function UserCategoriesPopover({} : {}) {
         setInitialCategories(data);
     }
 
-    function handleDragEnd(event: any) {
+    function handleDragEnd(event: DragEndEvent) {
     const {active, over} = event;
 
     // console.log(active, over)
     
-    if (active.id !== over.id) {
+    if (over && active.id !== over.id) {
         setUserCategories(prev => {
 
             const oldIndex = userCategories.findIndex((category) => category.id === active.id)
