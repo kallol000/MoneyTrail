@@ -52,4 +52,5 @@ export type tab = {
 export type userCategoriesRecord = {
     id: number;
     name: string;
+    order: number;
 }
