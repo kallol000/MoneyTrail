@@ -51,7 +51,8 @@ export async function getUserCategories() {
     
     const { data, error } = await supabase
       .from("user_categories")
-      .select( `id, name` )
+      .select( `id, name, order` )
+      .order('order', { ascending: true })
     
     if(error) {
       return new Response(JSON.stringify(error), {

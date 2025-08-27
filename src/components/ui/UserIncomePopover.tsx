@@ -98,7 +98,7 @@ export function UserIncomePopover({income, month, year, setRefresh}:{income:numb
         const updatedValue = parseInt(value)
         
         setFormdata(prev => {
-          let updatedData = [...prev]
+          const updatedData = [...prev]
           updatedData[index] = {...updatedData[index], amount: updatedValue}
           return updatedData
         })
@@ -106,7 +106,7 @@ export function UserIncomePopover({income, month, year, setRefresh}:{income:numb
       }else if (type === "text"){
         const updatedValue = value
           setFormdata(prev => {
-            let updatedData = [...prev]
+            const updatedData = [...prev]
             updatedData[index] = {...updatedData[index], description: updatedValue}
             return updatedData
           })
@@ -174,7 +174,7 @@ export function UserIncomePopover({income, month, year, setRefresh}:{income:numb
   return (
     <Popover open={popoverOpen} onOpenChange={handlePopoverOpen}>
       <PopoverTrigger asChild>
-        <Button  variant="outline" className="text-sm flex items-center">Total Income : {income}</Button>
+        <Button  variant="outline" className="text-sm flex items-center">Income</Button>
       </PopoverTrigger>
       <PopoverContent className="w-120">
         <Button onClick={handleClose} variant={"ghost"} className="absolute right-3 top-3"><XMarkIcon className="" /></Button>

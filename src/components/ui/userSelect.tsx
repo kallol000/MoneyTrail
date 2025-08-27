@@ -19,7 +19,7 @@ export function UserSelect( {name, label, data, value, onChange } : {name: strin
 
     return (
             <Select name={name} value={value} onValueChange={(value) => onChange(value, name)}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[120px]">
                 <SelectValue placeholder={label} />
             </SelectTrigger>
             <SelectContent>

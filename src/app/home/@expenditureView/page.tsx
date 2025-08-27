@@ -9,6 +9,10 @@ import { Toaster } from "@/components/ui/sonner"
 import Spinner from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { UserIncomePopover } from "@/components/ui/UserIncomePopover"
+import { UserCategoriesPopover } from "@/components/ui/UserCategoriesPopover"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { InformationCircleIcon } from "@heroicons/react/16/solid"
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 
 export default function UpdateDataPage() {
     
@@ -38,6 +42,7 @@ export default function UpdateDataPage() {
         const data = await res.json();
         setUserCategories(data);
     };
+
     
     // to fetch monthly expenses
     const fetchDateWiseExpenses = async () => {
@@ -115,20 +120,38 @@ export default function UpdateDataPage() {
     
     return (
         <div className="mt-4 flex flex-col gap-4 h-full">
-            <div className="w-full flex gap-4 items-center justify-between">
-                <div className="flex gap-4">
+            <div className="flex flex-row gap-4 items-top justify-between">
+                <div className="basis-1/6">
+                    <Card className="bg-identity/85 border-none text-secondary">
+                        <CardHeader className=" items-end font-semibold">
+                            <div className="flex items-center gap-4">
+                                <span className="text-xl ">Available Balance</span>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <InformationCircleIcon className="size-5 text-secondary/75 hover:text-secondary cursor-pointer " />
+                                    </TooltipTrigger>
+                                    <TooltipContent side="right" className="text-sm bg-secondary text-primary shadow-xl">
+                                        <p>Total Income: {totalIncome}</p>
+                                        <p>Total Expenditure: {totalExpenditure}</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </div>
+                            <span className="text-3xl font-bold">&#8377;{balance}</span>
+                            </CardHeader>
+                    </Card>
+                </div>
+                {/* <div className="flex items-center gap-4">
+                    </div> */}
+                <div className="basis-2/3 flex gap-4 justify-end">
+                    <UserIncomePopover income = {totalIncome} month = {monthsinNumber[selectedMonthYear.month]} year = {parseInt(selectedMonthYear.year)} setRefresh={setRefresh} />
+                    <UserCategoriesPopover />
                     <UserSelect name = "month" label="Month" data={ months } value={ selectedMonthYear.month } onChange={ handleMonthYearChange} />
                     <UserSelect name = "year" label="Year" data={ ["2024", "2025", "2026"] } value={selectedMonthYear.year} onChange={handleMonthYearChange}/>
                     {isFetchPending ? <Spinner /> : undefined}
                 </div>
-                <div className="flex items-center gap-4">
-                    <UserIncomePopover income = {totalIncome} month = {monthsinNumber[selectedMonthYear.month]} year = {parseInt(selectedMonthYear.year)} setRefresh={setRefresh} />
-                    <span><div className="p-2 bg-secondary rounded-md font-semibold text-sm border-1">Total Expenditure: &#8377;{totalExpenditure}</div></span>
-                    <span><div className="p-2 bg-identity rounded-md text-background font-bold text-sm border-1">Balance: &#8377;{balance}</div></span>
-                </div>
             </div>
             <div className="flex-1 overflow-hidden">
-                <UserTable data = {expenseData} categoryNamesMap={categoryNamesMap} categoryNumbersMap = {categoryNumbersMap} setRefresh = {setRefresh} />
+                <UserTable data = {expenseData} categoryNamesMap={categoryNamesMap} categoryNumbersMap = {categoryNumbersMap} setRefresh = {setRefresh} userCategories={userCategories}/>
             </div>
             <Toaster richColors/>
         </div>

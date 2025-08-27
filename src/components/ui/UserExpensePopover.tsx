@@ -53,7 +53,7 @@ export function UserExpensePopover({icon, date, categoryName, categoryId, setRef
       const updatedValue = parseInt(value)
       
       setFormdata(prev => {
-        let updatedData = [...prev]
+        const updatedData = [...prev]
         updatedData[index] = {...updatedData[index], amount: updatedValue}
         return updatedData
       })
@@ -61,7 +61,7 @@ export function UserExpensePopover({icon, date, categoryName, categoryId, setRef
     }else if (type === "text"){
       const updatedValue = value
         setFormdata(prev => {
-          let updatedData = [...prev]
+          const updatedData = [...prev]
           updatedData[index] = {...updatedData[index], description: updatedValue}
           return updatedData
         })

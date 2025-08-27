@@ -20,7 +20,7 @@ export function comparator( a: string, b: string ) {
 }
 
 export function mapUserCategories(data: userCategoriesRecord[]) {
-    let categoriesMap = new Map<string, number>()
+    const categoriesMap = new Map<string, number>()
 
     for(let i = 0; i < data.length; i++) {
         categoriesMap.set(data[i].name, data[i].id)
@@ -29,11 +29,20 @@ export function mapUserCategories(data: userCategoriesRecord[]) {
     return categoriesMap
 }
 export function mapUserCategoryNumbers(data: userCategoriesRecord[]) {
-    let categoriesMap = new Map<number, string>()
+    const categoriesMap = new Map<number, string>()
 
     for(let i = 0; i < data.length; i++) {
         categoriesMap.set(data[i].id, data[i].name)
     }
 
     return categoriesMap
+}
+
+export function findIndexInArray(arr: any[], id: number) {
+    for(let i = 0; i < arr.length; i++) {
+        if(arr[i].id === id) {
+            return i
+        }
+    }
+    return -1
 }

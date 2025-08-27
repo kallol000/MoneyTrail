@@ -1,4 +1,4 @@
-import { expenseRecord } from "@/app/utils/lib/types";
+import { expenseRecord, userCategoriesRecord } from "@/app/utils/lib/types";
 import { useState, useEffect, ReactNode } from "react";
 import { UserExpensePopover } from "./UserExpensePopover";
 import { comparator } from "@/app/utils/lib/helpers";
@@ -8,11 +8,13 @@ export default function UserTable({
   data,
   categoryNamesMap,
   categoryNumbersMap,
+  userCategories,
   setRefresh
 }: {
   data: expenseRecord[];
   categoryNamesMap: Map<string, number>,
   categoryNumbersMap: Map<number, string>,
+  userCategories:userCategoriesRecord[],
   setRefresh: Dispatch<SetStateAction<boolean>>
 }) {
   const [tableHeaders, setTableHeaders] = useState<ReactNode[]>([]);
@@ -20,10 +22,13 @@ export default function UserTable({
   const [columns, setColumns] = useState<string[]>([]);
 
   useEffect(() => {
-    if (data.length > 0) {
-      setColumns(Object.keys(data[0]).sort(comparator));
-    }
-  }, [data])
+    // if (data.length > 0) {
+      setColumns(prev => {
+        const categories = userCategories.map(category => category.name)
+        return ["date", ...categories]
+    })
+  }, [data, userCategories])
+
 
 
   useEffect(() => {

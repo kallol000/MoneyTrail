@@ -18,14 +18,10 @@ export default function UserTabs({tabs, activeTab, handleValueChange}:{tabs:tab,
     return(
         <Tabs value={activeTab} onValueChange={handleValueChange} className="w-[400px]">
         <TabsList className="gap-1">
-            {/* {links.map((link, index) => <TabsTrigger key = {index} value="account"><Link href={link.link}>{link.name}</Link></TabsTrigger>)} */}
+            
             {tabElems}
             
-            {/* <TabsTrigger value="account">Account</TabsTrigger>
-            <TabsTrigger value="password">Password</TabsTrigger> */}
         </TabsList>
-        {/* <TabsContent value="account">Make changes to your account here.</TabsContent>
-        <TabsContent value="password">Change your password here.</TabsContent> */}
         </Tabs>
     )
 }
