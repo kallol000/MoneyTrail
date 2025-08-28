@@ -84,7 +84,7 @@ export default function UpdateDataPage() {
         if ( user ) {
             fetchUserCategories()
         }
-    }, [user, selectedMonthYear])
+    }, [user, selectedMonthYear, refresh])
     
     useEffect(() => {
         startFetchTransition(async () => {
@@ -121,11 +121,11 @@ export default function UpdateDataPage() {
     return (
         <div className="mt-4 flex flex-col gap-4 h-full">
             <div className="flex flex-row gap-4 items-top justify-between">
-                <div className="basis-1/6">
-                    <Card className="bg-identity/85 border-none text-secondary">
+                <div className="basis-2/6">
+                    <Card className="bg-identity/85 border-none text-secondary ">
                         <CardHeader className=" items-end font-semibold">
                             <div className="flex items-center gap-4">
-                                <span className="text-xl ">Available Balance</span>
+                                <span className="text-md ">Available Balance</span>
                                 <Tooltip>
                                     <TooltipTrigger asChild>
                                         <InformationCircleIcon className="size-5 text-secondary/75 hover:text-secondary cursor-pointer " />
@@ -136,7 +136,7 @@ export default function UpdateDataPage() {
                                     </TooltipContent>
                                 </Tooltip>
                             </div>
-                            <span className="text-3xl font-bold">&#8377;{balance}</span>
+                            <span className="text-2xl font-bold">&#8377;{balance}</span>
                             </CardHeader>
                     </Card>
                 </div>
@@ -144,7 +144,7 @@ export default function UpdateDataPage() {
                     </div> */}
                 <div className="basis-2/3 flex gap-4 justify-end">
                     <UserIncomePopover income = {totalIncome} month = {monthsinNumber[selectedMonthYear.month]} year = {parseInt(selectedMonthYear.year)} setRefresh={setRefresh} />
-                    <UserCategoriesPopover />
+                    <UserCategoriesPopover setRefresh = {setRefresh} />
                     <UserSelect name = "month" label="Month" data={ months } value={ selectedMonthYear.month } onChange={ handleMonthYearChange} />
                     <UserSelect name = "year" label="Year" data={ ["2024", "2025", "2026"] } value={selectedMonthYear.year} onChange={handleMonthYearChange}/>
                     {isFetchPending ? <Spinner /> : undefined}

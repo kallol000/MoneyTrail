@@ -26,8 +26,6 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import Draggable from "./Draggable"
-import Droppable from "./Droppable"
 import { XMarkIcon } from "@heroicons/react/16/solid"
 import { JSX } from "react"
 import SortableItem from "./sortableItem"
@@ -35,23 +33,27 @@ import {
   restrictToVerticalAxis,
   restrictToWindowEdges,
 } from '@dnd-kit/modifiers';
-import { DragEvent } from "react"
+import { upsertCategories } from "@/app/api/upsert/route"
+import { toast } from "sonner"
+import { Dispatch, SetStateAction } from "react"
+import { AddUserCategoryPopover } from "./AddUserCategoryPopover"
 
 
-export function UserCategoriesPopover() {
+export function UserCategoriesPopover({setRefresh}: {setRefresh: Dispatch<SetStateAction<boolean>>}) {
 
     const [initialCategories, setInitialCategories] = useState<userCategoriesRecord[]>([])
     const [userCategories, setUserCategories] = useState<userCategoriesRecord[]>([])
     const [popoverOpen, setPopoverOpen] = useState<boolean>(false)
     const [changeMade, setChangeMade] = useState<boolean>(false)
     const [categoryElems, setCategoryElems] = useState<JSX.Element[]>([])
+    const [localRefresh, setLocalRefresh] = useState<boolean>(false)
 
     const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+        coordinateGetter: sortableKeyboardCoordinates,
+        })
+    );
 
     const fetchUserCategories = async () => {
         const res = await getUserCategories();
@@ -63,7 +65,6 @@ export function UserCategoriesPopover() {
     function handleDragEnd(event: DragEndEvent) {
     const {active, over} = event;
 
-    // console.log(active, over)
     
     if (over && active.id !== over.id) {
         setUserCategories(prev => {
@@ -71,7 +72,11 @@ export function UserCategoriesPopover() {
             const oldIndex = userCategories.findIndex((category) => category.id === active.id)
             const newIndex = userCategories.findIndex((category) => category.id === over.id)
 
-            return arrayMove(prev, oldIndex, newIndex)
+            const newArray = arrayMove(prev, oldIndex, newIndex)
+            for(let i = 0; i < newArray.length; i++) {
+                newArray[i].order = i + 1
+            }
+            return newArray
         });
         }
     }
@@ -85,7 +90,12 @@ export function UserCategoriesPopover() {
 
     useEffect(() => {
         fetchUserCategories()
-    }, [popoverOpen])
+    }, [popoverOpen, localRefresh])
+
+
+    useEffect(() => {
+        setChangeMade(JSON.stringify(initialCategories) !== JSON.stringify(userCategories))
+    }, [initialCategories, userCategories])
 
     const handlePopoverOpen = () => {
         setPopoverOpen(true)
@@ -95,6 +105,23 @@ export function UserCategoriesPopover() {
         setPopoverOpen(false)
     }
 
+    const handleSave = async () => {
+
+        try {
+            const res = await upsertCategories(userCategories)
+            if(res.status === 200) {
+                toast.success("Categories updated successfully")
+                setRefresh(prev => !prev)
+                setLocalRefresh(prev => !prev)
+            }
+
+        } catch (error) {
+            toast.error("There was an error")
+        }
+
+        // handleClose()
+    }
+    
 
 
 
@@ -125,6 +152,14 @@ export function UserCategoriesPopover() {
                     </SortableContext>
                 </DndContext>
                 
+            </div>
+            <div className="mt-8 grid grid-cols-10 justify-items-center items-center gap-4 ">
+                <div className="col-span-1"></div>
+                <div className="col-span-4 w-full">
+                    <AddUserCategoryPopover setRefresh={setRefresh} />
+                </div>
+                <Button className="col-span-4 w-full text-xs" variant={"action"} onClick = {handleSave} disabled = {!changeMade}>Save Changes</Button>
+                <div className="col-span-1"></div>
             </div>
             </div>
         </PopoverContent>

@@ -1,5 +1,5 @@
 import { createClient } from '../../utils/supabase/client';
-import { expenseFormdataRecord, incomeFormdataRecord } from '@/app/utils/lib/types';
+import { expenseFormdataRecord, incomeFormdataRecord, insertCategoryRow, userCategoriesRecord } from '@/app/utils/lib/types';
 
 
 
@@ -40,6 +40,29 @@ export async function upsertIncome(incomePayload : incomeFormdataRecord[]) {
         .upsert(incomePayload, { onConflict: "id" })
         .select()
     
+    if(error) {
+      return new Response(JSON.stringify({message:error.message}), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    return new Response(JSON.stringify(data), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
+}
+
+// upsert categories
+export async function upsertCategories(categoriesPayload : insertCategoryRow[]) {
+
+    const supabase = createClient()
+
+    const { data, error } = await supabase
+        .from("user_categories")
+        .insert(categoriesPayload)
+        .select()
+
     if(error) {
       return new Response(JSON.stringify({message:error.message}), {
         status: 400,

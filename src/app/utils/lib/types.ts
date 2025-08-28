@@ -54,3 +54,7 @@ export type userCategoriesRecord = {
     name: string;
     order: number;
 }
+
+export type insertCategoryRow = {
+    name: string;
+}

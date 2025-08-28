@@ -174,7 +174,7 @@ export function UserIncomePopover({income, month, year, setRefresh}:{income:numb
   return (
     <Popover open={popoverOpen} onOpenChange={handlePopoverOpen}>
       <PopoverTrigger asChild>
-        <Button  variant="outline" className="text-sm flex items-center">Income</Button>
+        <Button  variant="outline" className="text-sm flex items-center">Income <PlusIcon /></Button>
       </PopoverTrigger>
       <PopoverContent className="w-120">
         <Button onClick={handleClose} variant={"ghost"} className="absolute right-3 top-3"><XMarkIcon className="" /></Button>
