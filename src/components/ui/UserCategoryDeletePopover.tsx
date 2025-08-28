@@ -17,7 +17,7 @@ import { insertCategoryRow } from "@/app/utils/lib/types"
 import {TrashIcon} from "@heroicons/react/16/solid"
 
 
-export function AddUserCategoryPopover({setRefresh}: {setRefresh: Dispatch<SetStateAction<boolean>>}) {
+export function UserCategoryDeletePopover() {
 
     const [popoverOpen, setPopoverOpen] = useState<boolean>(false)
     const [initialFormdata, setInitialFormdata] = useState<insertCategoryRow[]>([{name:""}])
@@ -53,7 +53,7 @@ export function AddUserCategoryPopover({setRefresh}: {setRefresh: Dispatch<SetSt
 
             if(res.status === 200) {
                 toast.success("Category added successfully")
-                setRefresh(prev => !prev)
+                // setRefresh(prev => !prev)
                 // setLocalRefresh(prev => !prev)
             }
 
@@ -97,25 +97,25 @@ export function AddUserCategoryPopover({setRefresh}: {setRefresh: Dispatch<SetSt
     return (
         <Popover open={popoverOpen} onOpenChange={handlePopoverOpen} modal={true}>
         <PopoverTrigger asChild>
-            <Button className="col-span-4 w-full text-xs">Add a Category</Button>
+            <Button variant={"ghost"} className=" text-xs"><TrashIcon/></Button>
         </PopoverTrigger>
         <PopoverContent className="w-80">
             <Button onClick={handleClose} variant={"ghost"} className="absolute right-3 top-3"><XMarkIcon className="" /></Button>
             <div className="grid gap-4">
             <div className="space-y-2">
-                <h4 className="leading-none font-medium">Add a new Category</h4>
+                <h4 className="leading-none font-medium">Are you sure?</h4>
                 <p className="text-muted-foreground text-sm">
-                Add a new expenditure category here
+                You are about to delete this category. This action cannot be undone.
                 </p>
             </div>
             <div className="grid gap-2">
-                {categoryElems}
                 
             </div>
             <div className=" grid grid-cols-10 justify-items-center items-center gap-4 ">
-                <div className="col-span-3"></div>
-                <Button className="col-span-4 w-full text-xs" variant={"action"} onClick = {handleSave} disabled = {!changeMade}>Add</Button>
-                <div className="col-span-3"></div>
+                <div className="col-span-1"></div>
+                <Button className="col-span-4 w-full text-xs" variant="outline" onClick = {handleClose} >cancel</Button>
+                <Button className="col-span-4 w-full text-xs" variant="destructive" onClick = {handleSave} >Delete</Button>
+                <div className="col-span-1"></div>
             </div>
             </div>
         </PopoverContent>

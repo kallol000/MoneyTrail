@@ -118,8 +118,6 @@ export function UserCategoriesPopover({setRefresh}: {setRefresh: Dispatch<SetSta
         } catch (error) {
             toast.error("There was an error")
         }
-
-        // handleClose()
     }
     
 
