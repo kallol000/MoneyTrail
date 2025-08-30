@@ -47,3 +47,26 @@ export async function deleteIncome(id:string) {
       headers: { 'Content-Type': 'application/json' }
     });
 }
+// delete a User category
+export async function deleteCategory(id:number) {
+
+    const supabase = createClient()
+
+
+    const { data, error } = await supabase
+        .from("user_categories")
+        .delete()
+        .eq("id", id)
+    
+    if(error) {
+      return new Response(JSON.stringify({message:error.message}), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    return new Response(JSON.stringify(data), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
+}

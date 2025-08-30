@@ -54,7 +54,30 @@ export async function upsertIncome(incomePayload : incomeFormdataRecord[]) {
 }
 
 // upsert categories
-export async function upsertCategories(categoriesPayload : insertCategoryRow[]) {
+export async function upsertCategories(categoriesPayload : userCategoriesRecord[]) {
+
+    const supabase = createClient()
+
+    const { data, error } = await supabase
+        .from("user_categories")
+        .upsert(categoriesPayload)
+        .select()
+
+    if(error) {
+      return new Response(JSON.stringify({message:error.message}), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    return new Response(JSON.stringify(data), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
+}
+
+// insert a new category
+export async function insertCategory(categoriesPayload : insertCategoryRow[]) {
 
     const supabase = createClient()
 
