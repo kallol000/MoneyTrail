@@ -58,3 +58,12 @@ export type userCategoriesRecord = {
 export type insertCategoryRow = {
     name: string;
 }
+
+
+export type cardProps = {
+    variant: "identity" | "secondary";
+    title?: string;
+    description?: string;
+    children?: React.ReactNode;
+    data?: string | number;
+}
