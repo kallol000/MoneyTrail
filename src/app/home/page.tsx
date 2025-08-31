@@ -3,7 +3,7 @@ import { redirect } from "next/navigation"
 import { useState, useEffect, useTransition } from "react"
 import {tab} from "../utils/lib/types"
 import UserTabs from "@/components/ui/userTabs"
-import AnalyticsView from "./@monthlyAnalytics/page"
+import AnalyticsView from "./@analyticsView/page"
 import ExpenditureView from "./@expenditureView/page"
 import { getUser } from "../api/fetch/route"
 import { UserSelect } from "@/components/ui/userSelect"
@@ -24,7 +24,7 @@ export default function HomePage() {
         expenditureView: "Expenditure Tracking",
         // timeseriesAnalytics: "Time Series View",
     })
-    const [activeTab, setActiveTab] = useState<string>("expenditureView")
+    const [activeTab, setActiveTab] = useState<string>("analytics");
     const [selectedMonthYear, setSelectedMonthYear] = useState<monthYear>({
         month: months[new Date().getMonth()],
         year: new Date().getFullYear().toString(),

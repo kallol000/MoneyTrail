@@ -173,7 +173,7 @@ export async function getMonthlyIncome( year: number, month: number ) {
   });
 }
 
-// get an user's all monthly income
+// get an user's all monthly incomes
 export async function getAllMonthlyIncome( year: number, month: number ) {
   
   const supabase = createClient()
@@ -193,3 +193,44 @@ export async function getAllMonthlyIncome( year: number, month: number ) {
   });
 }
 
+
+
+// Get category wise monthly expenditures
+export async function getCategoryWiseMonthlyExpenses( year: number, month: number ) {
+  
+  const supabase = createClient()
+
+  const { data, error } = await supabase.rpc("get_category_wise_monthly_expenditure", { p_year: year, p_month:month });
+  
+  if(error) {
+    return new Response(JSON.stringify(error), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
+  return new Response(JSON.stringify(data), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+
+// Get category wise monthly expenditures for the last 6 months
+export async function getCategoryWiseSixMonthsExpenses( year: number, month: number ) {
+  
+  const supabase = createClient()
+
+  const { data, error } = await supabase.rpc("get_last_6_months_expenses", { p_year: year, p_month:month });
+  
+  if(error) {
+    return new Response(JSON.stringify(error), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
+  return new Response(JSON.stringify(data), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' }
+  });
+}

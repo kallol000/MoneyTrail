@@ -56,7 +56,7 @@ export default function ExpenditureView({user, userCategories, year, month, tota
     <div className="mt-4 flex flex-col gap-4 h-full">
       <div className="flex flex-row gap-4 items-top justify-between">
         <div className="basis-2/6">
-          <Card className="bg-identity/85 border-none text-secondary ">
+          <Card className="bg-identity border-none text-secondary ">
             <CardHeader className=" items-end font-semibold">
               <div className="flex items-center gap-4">
                 <span className="text-md ">Available Balance</span>

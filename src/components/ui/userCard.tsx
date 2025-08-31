@@ -12,18 +12,18 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cardProps } from "@/app/utils/lib/types"
 
+const rupeesymbol = "\u20B9";
+
 export  default function UserCard({variant, title, description, data}: cardProps) {
   return (
     <Card className={`w-full h-full ${variant === "identity" ? "bg-identity text-white": ""} `}>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
-      <CardContent className={variant === "identity" ? "text-4xl font-bold": "text-xl font-semibold"}>
-        {data}
+      {/* <CardContent className={variant === "identity" ? "text-4xl font-bold": "text-xl font-semibold"}> */}
+      <CardContent className="text-4xl font-bold">
+          {data ? rupeesymbol : ""} {data}
       </CardContent>
-      <CardFooter className="flex-col gap-2">
-        
-      </CardFooter>
     </Card>
   )
 }

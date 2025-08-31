@@ -1,9 +1,20 @@
 import { UUID } from "crypto";
 
 export type expenseRow = {
+    category_id: number;
+    category_name: string;
+    total_spent: number;
+}
+
+export type timeSeriesExpenseRow = {
     month: string;
-    category: string;
-    total_spent: string;
+    categories: {
+        [key: string]: number;
+    }
+}
+
+export type multiBarChartRow = {
+    [key:string]: string | number;
 }
 
 export type singleBarChartRow = {
