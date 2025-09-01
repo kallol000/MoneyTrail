@@ -26,7 +26,7 @@ export default function HomePage() {
     })
     const [activeTab, setActiveTab] = useState<string>("analytics");
     const [selectedMonthYear, setSelectedMonthYear] = useState<monthYear>({
-        month: months[new Date().getMonth()],
+        month: months[new Date().getMonth() +1 ],
         year: new Date().getFullYear().toString(),
       });
 
@@ -95,6 +95,8 @@ export default function HomePage() {
         }
     }, [user, selectedMonthYear, homeRefresh]);
 
+    // console.log(selectedMonthYear)
+
     useEffect(() => {
         startFetchTransition(async () => {
         if (user) {
@@ -132,7 +134,7 @@ export default function HomePage() {
                  <UserSelect
                     name="month"
                     label="Month"
-                    data={months}
+                    data={months.filter(m => m !== "")}
                     value={selectedMonthYear.month}
                     onChange={handleMonthYearChange}
                     />

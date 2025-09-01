@@ -16,7 +16,7 @@ import { Label } from "./label"
 import {XMarkIcon} from "@heroicons/react/16/solid"
 import { CheckIcon } from "lucide-react"
 
-type userCategorySelectDropdownProps = {selectedCategories: string[], handleSelectedCategoryChange:(checked: boolean, name: string) => void,  userCategories: userCategoriesRecord[]};
+type userCategorySelectDropdownProps = {selectedCategories: string[], handleSelectedCategoryChange:(checked: boolean, name: string) => void,  userCategories?: userCategoriesRecord[]};
 
 export function UserCategorySelectDropdown( {selectedCategories, handleSelectedCategoryChange, userCategories}:userCategorySelectDropdownProps ) {
   

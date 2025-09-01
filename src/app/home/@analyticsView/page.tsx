@@ -40,21 +40,28 @@ export default function AnalyticsView({user, userCategories, year, month, totalI
     fetchCategoryWiseMonthlyExpenses()
     fetchCategoryWiseLastSixMonthsExpenses()
   }, [year, month, homeRefresh])
-  
 
+  // console.log(categoryWiseExpenses)
+  
   return (
     <>
-      <div className="py-4 grid grid-cols-8 gap-4">
+      <div className="py-4 grid grid-cols-7 gap-4">
         <UserCard variant="identity" title="Available Balance" data={balance} />
         <UserCard variant="secondary" title="Total Income" data={totalIncome} />
-        <div className="col-span-2 row-span-3">
+        <div className="col-span-2 row-span-2">
           <UserRadarChart data = {categoryWiseExpenses} month={months[month] } year={year} userCategories={userCategories}/>
         </div>
-        <div className="col-span-2 row-span-3">
-          <UserLineChart data = {lastSixMonthsExpenses} month={months[month] } year={year} />
+        <div className="col-span-3 row-span-2">
+          <UserLineChart data = {lastSixMonthsExpenses} month={months[month] } year={year} userCategories={userCategories} />
         </div>
         <UserCard variant="secondary" title="Total Expenditure" data={totalExpenditure} />
         <UserCard variant="secondary" title="Total Investments" />
+        <div className="col-span-4 row-span-2">
+          <UserCard variant="secondary" title="Daily Expenditure" />
+        </div>
+        <div className="col-span-3 row-span-2">
+          <UserCard variant="secondary" title="Income Trend" />
+        </div>
       </div>
     </>
   );

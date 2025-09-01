@@ -1,8 +1,8 @@
 import { UUID } from "crypto";
 
 export type expenseRow = {
-    category_id: number;
-    category_name: string;
+    id: number;
+    name: string;
     total_spent: number;
 }
 

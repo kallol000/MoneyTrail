@@ -43,47 +43,49 @@ export function UserRadarChart({data, month, year, userCategories}: radarChartPr
         if (checked === true) {
             setSelectedCategories(prev => [...prev, name]);
             setChartData(prev => {
-                const newData = data.filter(item => item.category_name === name);
+                const newData = data.filter(item => item.name === name);
                 return [...prev, ...newData];
             })
 
         }else {
             setSelectedCategories(prev => prev.filter(category => category !== name));
-            setChartData(prev => prev.filter(item => item.category_name !== name));
+            setChartData(prev => prev.filter(item => item.name !== name));
         }
     }
 
     useEffect(() => {
         if(data) {
             const top6Data = data.sort((a, b) => b.total_spent - a.total_spent).slice(0, 6);
-            setSelectedCategories(top6Data.map(item => item.category_name));
+            setSelectedCategories(top6Data.map(item => item.name));
             setChartData(top6Data);
         }
     }, [data]);
 
+    console.log(data, userCategories)
+
     
 
-
+    // console.log(userCategories, data)
 
     return (
     <Card className="relative">
         <div className="absolute right-6 top-6"> 
-            <UserCategorySelectDropdown selectedCategories = {selectedCategories} userCategories = {userCategories} handleSelectedCategoryChange={handleSelectedCategoryChange} />
+            <UserCategorySelectDropdown selectedCategories = {selectedCategories} userCategories = {userCategories.filter(category => data.map(row => row.name).includes(category.name)) } handleSelectedCategoryChange={handleSelectedCategoryChange} />
         </div>
         <CardHeader className="items-center">
             <CardTitle>Expenditure Ditribution</CardTitle>
             <CardDescription>
-            Top 6 expenditure categories
+            Where am I spending the most?
             </CardDescription>
         </CardHeader>
         <CardContent className="pb-0 ">
             <ChartContainer
             config={chartConfig}
-            className="mx-auto aspect-square min-w-[500px] max-h-[250px]"
+            className="mx-auto aspect-square w-full h-[250px]"
             >
             <RadarChart data={chartData}>
                 <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-                <PolarAngleAxis dataKey="category_name" />
+                <PolarAngleAxis dataKey="name" />
                 <PolarGrid />
                 <Radar
                 dataKey="total_spent"
@@ -98,10 +100,7 @@ export function UserRadarChart({data, month, year, userCategories}: radarChartPr
             </ChartContainer>
         </CardContent>
         <CardFooter className="flex-col gap-2 text-sm">
-            <div className="flex items-center gap-2 leading-none font-medium">
-            {/* Trending up by 5.2% this month <TrendingUp className="h-4 w-4" /> */}
-            </div>
-            <div className="text-muted-foreground flex items-center gap-2 leading-none">
+            <div className="text-muted-foreground font-semibold flex items-center gap-2 leading-none">
             {month} {year} 
             </div>
         </CardFooter>
