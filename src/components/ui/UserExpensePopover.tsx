@@ -226,7 +226,13 @@ export function UserExpensePopover({
             <h4 className="leading-none font-medium">{categoryName}</h4>
             <p className="text-muted-foreground text-sm">Add expense(s)</p>
           </div>
-          <div className="grid gap-2">
+          <div className="grid gap-2 px-2 max-h-100 overflow-y-auto
+          [&::-webkit-scrollbar]:w-2
+            [&::-webkit-scrollbar]:h-2
+            [&::-webkit-scrollbar-track]:bg-gray-100
+            [&::-webkit-scrollbar-thumb]:bg-gray-300
+            dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+            dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
             {isDataFetchPending ? <Spinner /> : expenseElems}
           </div>
           <div className="mt-8 grid grid-cols-10 justify-items-center items-center gap-4">

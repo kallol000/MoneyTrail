@@ -13,6 +13,12 @@ export type timeSeriesExpenseRow = {
     }
 }
 
+export type incomeRow = {
+    year: number;
+    month: string;
+    dtotal_income: number;
+}
+
 export type multiBarChartRow = {
     [key:string]: string | number;
 }

@@ -61,7 +61,6 @@ export function UserRadarChart({data, month, year, userCategories}: radarChartPr
         }
     }, [data]);
 
-    console.log(data, userCategories)
 
     
 

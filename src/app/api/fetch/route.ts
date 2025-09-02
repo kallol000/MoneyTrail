@@ -234,3 +234,25 @@ export async function getCategoryWiseSixMonthsExpenses( year: number, month: num
     headers: { 'Content-Type': 'application/json' }
   });
 }
+
+
+// Get last 6 months'  income
+
+export async function getlastSixMonthsIncome( year: number, month: number ) {
+  
+  const supabase = createClient()
+
+  const { data, error } = await supabase.rpc("get_last_6_months_income", { p_year: year, p_month:month });
+  
+  if(error) {
+    return new Response(JSON.stringify(error), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
+  return new Response(JSON.stringify(data), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
