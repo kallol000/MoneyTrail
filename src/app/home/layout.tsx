@@ -32,12 +32,8 @@ export default function Layout({children, monthlyAnalytics, timeseriesAnalytics,
             </Navbar>
             {/* <Link href={'/timeSeries'}>6 months</Link> */}
             {/* <UserTabs /> */}
-            <div className="px-4 ">
-                <UserTabs tabs = {tabs} activeTab = {activeTab} handleValueChange={handleTabChange}/>
-                {activeTab === "monthlyAnalytics" && monthlyAnalytics }
-                {activeTab === "timeseriesAnalytics" && timeseriesAnalytics }
-                {activeTab === "expenditureView" && expenditureView }
-            </div>
+            
+            {children}
         </div>
     )
 }

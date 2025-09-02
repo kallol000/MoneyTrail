@@ -1,9 +1,20 @@
 import { UUID } from "crypto";
 
 export type expenseRow = {
+    id: number;
+    name: string;
+    total_spent: number;
+}
+
+export type timeSeriesExpenseRow = {
     month: string;
-    category: string;
-    total_spent: string;
+    categories: {
+        [key: string]: number;
+    }
+}
+
+export type multiBarChartRow = {
+    [key:string]: string | number;
 }
 
 export type singleBarChartRow = {
@@ -57,4 +68,13 @@ export type userCategoriesRecord = {
 
 export type insertCategoryRow = {
     name: string;
+}
+
+
+export type cardProps = {
+    variant: "identity" | "secondary";
+    title?: string;
+    description?: string;
+    children?: React.ReactNode;
+    data?: string | number;
 }

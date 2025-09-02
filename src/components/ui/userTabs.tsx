@@ -16,7 +16,7 @@ export default function UserTabs({tabs, activeTab, handleValueChange}:{tabs:tab,
     }, [tabs])
 
     return(
-        <Tabs value={activeTab} onValueChange={handleValueChange} className="w-[400px]">
+        <Tabs value={activeTab} onValueChange={handleValueChange} className="mr-4">
         <TabsList className="gap-1">
             
             {tabElems}

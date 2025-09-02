@@ -9,13 +9,13 @@ export default function UserTable({
   categoryNamesMap,
   categoryNumbersMap,
   userCategories,
-  setRefresh
+  setHomeRefresh,
 }: {
   data: expenseRecord[];
-  categoryNamesMap: Map<string, number>,
-  categoryNumbersMap: Map<number, string>,
-  userCategories:userCategoriesRecord[],
-  setRefresh: Dispatch<SetStateAction<boolean>>
+  categoryNamesMap: Map<string, number>;
+  categoryNumbersMap: Map<number, string>;
+  userCategories: userCategoriesRecord[];
+  setHomeRefresh: Dispatch<SetStateAction<boolean>>;
 }) {
   const [tableHeaders, setTableHeaders] = useState<ReactNode[]>([]);
   const [tableBody, setTableBody] = useState<ReactNode[]>([]);
@@ -23,13 +23,11 @@ export default function UserTable({
 
   useEffect(() => {
     // if (data.length > 0) {
-      setColumns(prev => {
-        const categories = userCategories.map(category => category.name)
-        return ["date", ...categories]
-    })
-  }, [data, userCategories])
-
-
+    setColumns((prev) => {
+      const categories = userCategories.map((category) => category.name);
+      return ["date", ...categories];
+    });
+  }, [data, userCategories]);
 
   useEffect(() => {
     if (data.length > 0) {
@@ -44,8 +42,6 @@ export default function UserTable({
     }
   }, [columns]);
 
-
-
   useEffect(() => {
     if (data.length > 0 && columns) {
       setTableBody((prev) =>
@@ -58,15 +54,15 @@ export default function UserTable({
                     {day[colName] === 0 ? "-" : day[colName]}
                   </div>
                   <div>
-                    {colName === "date" ? 
+                    {colName === "date" ? (
                       ""
-                    : (
+                    ) : (
                       <UserExpensePopover
                         icon={day[colName] === 0 ? "add" : "view"}
                         date={day.date}
-                        categoryName = {colName}
+                        categoryName={colName}
                         categoryId={categoryNamesMap.get(colName)!}
-                        setRefresh = {setRefresh}
+                        setHomeRefresh={setHomeRefresh}
                       />
                     )}
                   </div>

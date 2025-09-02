@@ -47,13 +47,13 @@ export async function deleteIncome(id:string) {
       headers: { 'Content-Type': 'application/json' }
     });
 }
-
-
-export async function deleteUserCategory(id:string) {
+// delete a User category
+export async function deleteCategory(id:number) {
 
     const supabase = createClient()
 
-    const { data, error } = await supabase 
+
+    const { data, error } = await supabase
         .from("user_categories")
         .delete()
         .eq("id", id)
