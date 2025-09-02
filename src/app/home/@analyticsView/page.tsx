@@ -14,6 +14,7 @@ import { getCategoryWiseMonthlyExpenses, getCategoryWiseSixMonthsExpenses } from
 import { months } from "@/app/utils/lib/helpers";
 import { UserExpenseLineChart } from "@/components/ui/userExpenseLineChart";
 import { UserIncomeLineChart } from "@/components/ui/userIncomeLineChart";
+import UserContributionChart from "@/components/ui/userContributionChart";
 
 type analyticsPageProps = {user:string, userCategories:userCategoriesRecord[], year:number, month:number, totalIncome:number, totalExpenditure:number, balance:number, homeRefresh: boolean, setHomeRefresh: Dispatch<SetStateAction<boolean>>};
 
@@ -67,7 +68,7 @@ export default function AnalyticsView({user, userCategories, year, month, totalI
         <UserCard variant="secondary" title="Total Expenditure" data={totalExpenditure} />
         <UserCard variant="secondary" title="Total Investments" />
         <div className="col-span-4 row-span-2">
-          <UserCard variant="secondary" title="Daily Expenditure" />
+          <UserContributionChart variant="secondary" title="Daily Expenditure" />
         </div>
         <div className="col-span-3 row-span-2">
           <UserIncomeLineChart data={lastSixMonthsIncomeData} month={months[month] } year={year} />
