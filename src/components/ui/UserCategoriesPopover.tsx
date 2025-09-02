@@ -56,6 +56,7 @@ export function UserCategoriesPopover({setRefresh}: {setRefresh: Dispatch<SetSta
     );
 
     const fetchUserCategories = async () => {
+        
         const res = await getUserCategories();
         const data = await res.json();
         setUserCategories(data);
@@ -114,7 +115,6 @@ export function UserCategoriesPopover({setRefresh}: {setRefresh: Dispatch<SetSta
                 setRefresh(prev => !prev)
                 setLocalRefresh(prev => !prev)
             }
-
         } catch (error) {
             toast.error("There was an error")
         }
@@ -138,7 +138,13 @@ export function UserCategoriesPopover({setRefresh}: {setRefresh: Dispatch<SetSta
                 Manage your expenditure categories here
                 </p>
             </div>
-            <div className="grid gap-2">
+            <div className="grid gap-2 max-h-100 overflow-y-scroll px-2
+                [&::-webkit-scrollbar]:w-2
+                [&::-webkit-scrollbar]:h-2
+                [&::-webkit-scrollbar-track]:bg-gray-100
+                [&::-webkit-scrollbar-thumb]:bg-gray-300
+                dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+                dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
                 <DndContext
                     modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
                     sensors={sensors}
