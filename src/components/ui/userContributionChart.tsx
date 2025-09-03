@@ -10,23 +10,63 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { cardProps } from "@/app/utils/lib/types"
+import { expenseRecord } from "@/app/utils/lib/types"
+import { JSX, useState, useEffect } from "react"
+import { Tooltip, TooltipContent } from "./tooltip"
+import { TooltipTrigger } from "@radix-ui/react-tooltip"
+// import {
+//   ChartConfig,
+//   ChartContainer,
+//   ChartTooltip,
+//   ChartTooltipContent,
+// } from "@/components/ui/chart"
+
 
 const rupeesymbol = "\u20B9";
 
-export  default function UserContributionChart({variant, title, description, data}: cardProps) {
+type contributionChartProps = {data: expenseRecord[]}
+
+export  default function UserContributionChart({ data }: contributionChartProps) {
+  
+  console.log(data)
+
+  const [dailyBoxes, setDailyBoxes] = useState<JSX.Element[]>([])
+
+
+  useEffect(() => {
+    if(data) {
+      setDailyBoxes(prev => data.map((day, index) => 
+          <div key={index}>
+            <Tooltip >
+            <TooltipTrigger>
+              <div className = "w-5 h-5 bg-secondary"></div>
+            </TooltipTrigger>
+              <TooltipContent>
+                <div className="flex flex-col items-center">
+                  {Object.keys(day).map((category, index) => {
+                    if(typeof day[category] === "number" && day[category] > 0) {
+                      return <div key={index} className="flex justify-start">
+                        {category}: {day[category]}
+                      </div>
+                    }
+                    })}
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        ))
+    }
+  }, [data])
+  
   return (
-    <Card className={`w-full h-full ${variant === "identity" ? "bg-identity text-white": ""} `}>
+    <Card className={`w-full h-full`}>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle>Contribution Chart</CardTitle>
       </CardHeader>
       {/* <CardContent className={variant === "identity" ? "text-4xl font-bold": "text-xl font-semibold"}> */}
       <CardContent className="text-4xl font-bold">
           <div className="grid grid-cols-42 gap-2">
-            {new Array(180).fill("") .map((_, index) => (
-                <div key={index} className={`w-5 h-5 ${Math.random() > 0.5 ? "bg-green-500": "bg-gray-300"} rounded-sm`}></div>
-            ))}
-
+            {dailyBoxes}
           </div>
       </CardContent>
     </Card>
