@@ -14,6 +14,8 @@ import { expenseRecord } from "@/app/utils/lib/types"
 import { JSX, useState, useEffect } from "react"
 import { Tooltip, TooltipContent } from "./tooltip"
 import { TooltipTrigger } from "@radix-ui/react-tooltip"
+import { range } from "@/app/utils/lib/types"
+import { months } from "@/app/utils/lib/helpers"
 // import {
 //   ChartConfig,
 //   ChartContainer,
@@ -24,39 +26,111 @@ import { TooltipTrigger } from "@radix-ui/react-tooltip"
 
 const rupeesymbol = "\u20B9";
 
-type contributionChartProps = {data: expenseRecord[]}
+type contributionChartProps = {data: expenseRecord[], month: string}
 
-export  default function UserContributionChart({ data }: contributionChartProps) {
+export  default function UserContributionChart({ data, month }: contributionChartProps) {
   
-  console.log(data)
+  // console.log(data)
 
+  // const [data]
   const [dailyBoxes, setDailyBoxes] = useState<JSX.Element[]>([])
+  const [range, setRange] = useState<range>({lowerLim:0, higherLim:0})
+  const [chartData, setChartData] = useState<any>([])
 
+  useEffect(() => {
+    if(data){
+      let tempMonths = [...months]
+      const ind = tempMonths.findIndex(key => key === month)
+      tempMonths = tempMonths.slice(ind+1-7, ind+1)
+      setChartData(tempMonths.map(month => {
+        console.log(month)
+        const monthDetails = data.filter(row => months[new Date(row.date).getMonth()] === month )
+        return [...monthDetails]
+      }))
+    }
+  }, [data])
+
+  console.log(chartData)
 
   useEffect(() => {
     if(data) {
-      setDailyBoxes(prev => data.map((day, index) => 
-          <div key={index}>
-            <Tooltip >
-            <TooltipTrigger>
-              <div className = "w-5 h-5 bg-secondary"></div>
-            </TooltipTrigger>
-              <TooltipContent>
-                <div className="flex flex-col items-center">
-                  {Object.keys(day).map((category, index) => {
-                    if(typeof day[category] === "number" && day[category] > 0) {
-                      return <div key={index} className="flex justify-start">
-                        {category}: {day[category]}
-                      </div>
-                    }
-                    })}
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        ))
+      let tempLowerLim = 0
+      let tempHigherLim = 0
+      for(let i = 0; i < data.length; i++) {
+        tempLowerLim = Math.min(tempLowerLim, data[i].total)
+        tempHigherLim = Math.max(tempHigherLim, data[i].total)
+      }
+
+      setRange(prev => ({lowerLim: tempLowerLim, higherLim: tempHigherLim}))
     }
   }, [data])
+
+  console.log(month)
+
+
+  useEffect(() => {
+    if(chartData) {
+      setDailyBoxes(
+
+      chartData.map((month, idx) => <div key={idx} className="grid grid-cols-7">
+        {month.map((day, index) => 
+        {
+          const opacity = (day["total"] - range.lowerLim) <= 0 ? 0.1 : (range.higherLim - day["total"]) === 0 ? 1 : (day["total"] - range.lowerLim)/(range.higherLim - day["total"])
+          return  <div key={index}>
+              <Tooltip >
+              <TooltipTrigger>
+                <div style={{opacity: opacity}} className = {`w-5 h-5 bg-identity`}></div>
+              </TooltipTrigger>
+                <TooltipContent className="min-w-[6rem] min-h-[3rem] bg-secondary text-primary shadow-xl">
+                  <div className={"flex flex-col items-start"}>
+                    <div className="mb-2 font-semibold m-auto">{`${months[new Date(day["date"]).getMonth() + 1]} ${new Date(day["date"]).getDate()}`}</div>
+                    {Object.keys(day).map((category, index) => {
+                      if(typeof day[category] === "number" && day[category] > 0 && category !== "total")  {
+                        return <div key={index} className="flex justify-start">
+                          {category} : {day[category]}
+                        </div>
+                      }
+                      })}
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          }
+        )}
+      </div>)
+      )
+    }
+  }, [chartData, range])
+
+  
+  // useEffect(() => {
+  //   if(data) {
+  //     setDailyBoxes(prev => data.map((day, index) => 
+  //       {
+  //         const opacity = (day["total"] - range.lowerLim) <= 0 ? 0.1 : (range.higherLim - day["total"]) === 0 ? 1 : (day["total"] - range.lowerLim)/(range.higherLim - day["total"])
+  //         return  <div key={index}>
+  //             <Tooltip >
+  //             <TooltipTrigger>
+  //               <div style={{opacity: opacity}} className = {`w-5 h-5 bg-identity`}></div>
+  //             </TooltipTrigger>
+  //               <TooltipContent className="min-w-[6rem] min-h-[3rem] bg-secondary text-primary shadow-xl">
+  //                 <div className={"flex flex-col items-start"}>
+  //                   <div className="mb-2 font-semibold m-auto">{`${months[new Date(day["date"]).getMonth() + 1]} ${new Date(day["date"]).getDate()}`}</div>
+  //                   {Object.keys(day).map((category, index) => {
+  //                     if(typeof day[category] === "number" && day[category] > 0 && category !== "total")  {
+  //                       return <div key={index} className="flex justify-start">
+  //                         {category} : {day[category]}
+  //                       </div>
+  //                     }
+  //                     })}
+  //                 </div>
+  //               </TooltipContent>
+  //             </Tooltip>
+  //           </div>
+  //         }
+  //       ))
+  //   }
+  // }, [data, range])
   
   return (
     <Card className={`w-full h-full`}>
@@ -65,7 +139,7 @@ export  default function UserContributionChart({ data }: contributionChartProps)
       </CardHeader>
       {/* <CardContent className={variant === "identity" ? "text-4xl font-bold": "text-xl font-semibold"}> */}
       <CardContent className="text-4xl font-bold">
-          <div className="grid grid-cols-42 gap-2">
+          <div className="grid grid-cols-6 gap-x-2 p-0">
             {dailyBoxes}
           </div>
       </CardContent>

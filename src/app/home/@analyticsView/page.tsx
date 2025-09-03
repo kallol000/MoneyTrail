@@ -78,7 +78,7 @@ export default function AnalyticsView({user, userCategories, year, month, totalI
         <UserCard variant="secondary" title="Total Expenditure" data={totalExpenditure} />
         <UserCard variant="secondary" title="Total Investments" />
         <div className="col-span-4 row-span-2">
-          <UserContributionChart data={lastSixMonthsDailyExpenses} />
+          <UserContributionChart data = {lastSixMonthsDailyExpenses} month = {months[month]}/>
         </div>
         <div className="col-span-3 row-span-2">
           <UserIncomeLineChart data={lastSixMonthsIncomeData} month={months[month] } year={year} />

@@ -45,6 +45,12 @@ export type monthIndex = {
 export type expenseRecord = {
     date: string;
     [ key: string ]: string | number;
+    total: number;
+}
+
+export type range = {
+    lowerLim: number;
+    higherLim: number;
 }
 
 export type expenseFormdataRecord = {
