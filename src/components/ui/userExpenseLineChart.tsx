@@ -45,7 +45,7 @@ const chartConfig = {
     }
 } satisfies ChartConfig
 
-export function UserLineChart({ data, month, year, userCategories }: userLineChartProps) {
+export function UserExpenseLineChart({ data, month, year, userCategories }: userLineChartProps) {
     
     const [chartData, setChartdata] = useState<multiBarChartRow[]>([]);
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -53,11 +53,7 @@ export function UserLineChart({ data, month, year, userCategories }: userLineCha
 
     useEffect(() => {
         if(chartData.length > 0 && month && year) {
-            // const monthIndex = months.indexOf(month)
-            // console.log(month)
             const currentMonthData = chartData.filter(row => row.month === month)
-            console.log(currentMonthData)
-            // console.log(currentMonthData, chartData)
             if(currentMonthData.length > 0) {
                 let dataArray = Object.entries(currentMonthData[0])
                 dataArray.shift()

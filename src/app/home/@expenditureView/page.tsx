@@ -52,6 +52,7 @@ export default function ExpenditureView({user, userCategories, year, month, tota
     setCategoryNumbersMap(numbersMap);
   }, [userCategories]);
 
+
   return (
     <div className="mt-4 flex flex-col gap-4 h-full">
       <div className="flex flex-row gap-4 items-top justify-between">

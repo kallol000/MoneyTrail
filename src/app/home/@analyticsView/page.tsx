@@ -3,16 +3,19 @@
 import { Button } from "@/components/ui/button";
 import { logOut } from "../../login/actions";
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
-import { getUser, getIncome, getUserCategories, getMonthlyExpenses } from "../../api/fetch/route";
+import { getUser, getIncome, getUserCategories, getMonthlyExpenses, getlastSixMonthsIncome } from "../../api/fetch/route";
 import { UserBarChart } from "@/components/ui/UserBarChart";
-import { expenseRow, timeSeriesExpenseRow } from "../../utils/lib/types";
+import { expenseRecord, expenseRow, incomeRow, timeSeriesExpenseRow } from "../../utils/lib/types";
 import UserTabs from "@/components/ui/userTabs";
 import UserCard from "@/components/ui/userCard";
 import { userCategoriesRecord } from "../../utils/lib/types";
 import { UserRadarChart } from "@/components/ui/UserRadarChart";
 import { getCategoryWiseMonthlyExpenses, getCategoryWiseSixMonthsExpenses } from "../../api/fetch/route";
 import { months } from "@/app/utils/lib/helpers";
-import { UserLineChart } from "@/components/ui/userLineChart";
+import { UserExpenseLineChart } from "@/components/ui/userExpenseLineChart";
+import { UserIncomeLineChart } from "@/components/ui/userIncomeLineChart";
+import UserContributionChart from "@/components/ui/userContributionChart";
+import { getLastSixMOnthsDateWiseExpenses } from "../../api/fetch/route";
 
 type analyticsPageProps = {user:string, userCategories:userCategoriesRecord[], year:number, month:number, totalIncome:number, totalExpenditure:number, balance:number, homeRefresh: boolean, setHomeRefresh: Dispatch<SetStateAction<boolean>>};
 
@@ -22,6 +25,8 @@ export default function AnalyticsView({user, userCategories, year, month, totalI
 
   const [categoryWiseExpenses, setCategoryWiseExpenses] = useState<expenseRow[]>([]);
   const [lastSixMonthsExpenses, setLastSixMonthsExpenses] = useState<timeSeriesExpenseRow[]>([]);
+  const [lastSixMonthsIncomeData, setLastSixMonthsIncomeData] = useState<incomeRow[]>([]);
+  const [lastSixMonthsDailyExpenses, setLastSixMonthsDailyExpenses] = useState<expenseRecord[]>([])
 
 
   const fetchCategoryWiseMonthlyExpenses = async () => {
@@ -36,9 +41,25 @@ export default function AnalyticsView({user, userCategories, year, month, totalI
     setLastSixMonthsExpenses(data);
   }
 
+  const fetchLastSixMonthsDailyExpenses = async () => {
+    const res = await getLastSixMOnthsDateWiseExpenses(year,month)
+    const data = await res.json()
+    setLastSixMonthsDailyExpenses(data)
+  }
+
+  const fetchLastSixMonthsIncome = async () => {
+    const res = await getlastSixMonthsIncome(year, month);
+    const data = await res.json();
+    setLastSixMonthsIncomeData(data);
+  }
+
+
+
   useEffect(() => {
     fetchCategoryWiseMonthlyExpenses()
     fetchCategoryWiseLastSixMonthsExpenses()
+    fetchLastSixMonthsIncome()
+    fetchLastSixMonthsDailyExpenses()
   }, [year, month, homeRefresh])
 
   // console.log(categoryWiseExpenses)
@@ -52,15 +73,15 @@ export default function AnalyticsView({user, userCategories, year, month, totalI
           <UserRadarChart data = {categoryWiseExpenses} month={months[month] } year={year} userCategories={userCategories}/>
         </div>
         <div className="col-span-3 row-span-2">
-          <UserLineChart data = {lastSixMonthsExpenses} month={months[month] } year={year} userCategories={userCategories} />
+          <UserExpenseLineChart data = {lastSixMonthsExpenses} month={months[month] } year={year} userCategories={userCategories} />
         </div>
         <UserCard variant="secondary" title="Total Expenditure" data={totalExpenditure} />
         <UserCard variant="secondary" title="Total Investments" />
         <div className="col-span-4 row-span-2">
-          <UserCard variant="secondary" title="Daily Expenditure" />
+          <UserContributionChart data={lastSixMonthsDailyExpenses} />
         </div>
         <div className="col-span-3 row-span-2">
-          <UserCard variant="secondary" title="Income Trend" />
+          <UserIncomeLineChart data={lastSixMonthsIncomeData} month={months[month] } year={year} />
         </div>
       </div>
     </>
