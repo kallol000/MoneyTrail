@@ -1,6 +1,5 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
 
 import {
@@ -26,16 +25,6 @@ import { userCategoriesRecord } from "@/app/utils/lib/types"
 
 
 export const description = "A multiple line chart"
-
-// const chartData = [
-//   { month: "January", desktop: 186, mobile: 80, tablet: 70 },
-//   { month: "February", desktop: 305, mobile: 200, tablet: 170 },
-//   { month: "March", desktop: 237, mobile: 120, tablet: 90 },
-//   { month: "April", desktop: 73, mobile: 190, tablet: 110 },
-//   { month: "May", desktop: 209, mobile: 130, tablet: 702 },
-//   { month: "June", desktop: 214, mobile: 140, tablet: 70 },
-// ]
-
 
 type userLineChartProps = {data: timeSeriesExpenseRow[], month: string, year: number, userCategories: userCategoriesRecord[]};
 
@@ -100,7 +89,7 @@ export function UserExpenseLineChart({ data, month, year, userCategories }: user
                 <CardDescription>Last 6 months' trend</CardDescription>
             </CardHeader>
             <CardContent>
-                <ChartContainer config={chartConfig} className="w-full h-[250px]">
+                <ChartContainer config={chartConfig} className="w-full h-[200px]">
                 <LineChart
                     accessibilityLayer
                     data={chartData}

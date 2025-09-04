@@ -19,6 +19,11 @@ export type incomeRow = {
     dtotal_income: number;
 }
 
+export type globalCategoriesRecord = {
+    id: number;
+    name: string;
+}
+
 export type multiBarChartRow = {
     [key:string]: string | number;
 }

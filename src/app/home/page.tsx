@@ -14,11 +14,15 @@ import { getUserCategories } from "../api/fetch/route"
 import { getMonthlyIncome } from "../api/fetch/route"
 import { getMonthlyExpense } from "../api/fetch/route"
 import Spinner from "@/components/ui/spinner"
+import { Card, CardTitle } from "@/components/ui/card"
+import { NewUserSetupPopover } from "@/components/ui/newUserSetupPopover"
 
 
 export default function HomePage() {
 
     const [user, setUser] = useState<string>("");
+    const [isNewUser, setIsNewUser] = useState<boolean>(true)
+
     const [tabs, setTabs] = useState<tab>({
         analytics: "Analytics View",
         expenditureView: "Expenditure Tracking",
@@ -115,16 +119,16 @@ export default function HomePage() {
         });
     }, [totalIncome, totalExpenditure]);
 
-//     useEffect(() => {
-//     startFetchTransition(async () => {
-//       if (user) {
-//         fetchDateWiseExpenses();
-//         fetchMonthlyIncome();
-//         fetchMonthlyExpenditure();
-//       }
-//     });
-//   }, [user, year, month, homeRefresh]);
-
+    if(isNewUser) {
+        return (
+            <div className="px-4 h-full">
+                <Card className="text-xl h-full flex items-center justify-center p-4">
+                    <CardTitle>Let's set up your profile</CardTitle>
+                    <NewUserSetupPopover />
+                </Card>
+            </div>
+        )
+    }
 
     return (
         <div className="px-4 ">

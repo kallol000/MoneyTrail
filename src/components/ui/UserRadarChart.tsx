@@ -80,7 +80,7 @@ export function UserRadarChart({data, month, year, userCategories}: radarChartPr
         <CardContent className="pb-0 ">
             <ChartContainer
             config={chartConfig}
-            className="mx-auto aspect-square w-full h-[250px]"
+            className="mx-auto aspect-square w-full h-[200px]"
             >
             <RadarChart data={chartData}>
                 <ChartTooltip cursor={false} content={<ChartTooltipContent />} />

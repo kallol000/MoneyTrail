@@ -1,13 +1,4 @@
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader,CardTitle } from "@/components/ui/card"
 import { expenseRecord } from "@/app/utils/lib/types"
 import { JSX, useState, useEffect } from "react"
 import { Tooltip, TooltipContent } from "./tooltip"
@@ -15,16 +6,10 @@ import { TooltipTrigger } from "@radix-ui/react-tooltip"
 import { range } from "@/app/utils/lib/types"
 import { months } from "@/app/utils/lib/helpers"
 
-
-const rupeesymbol = "\u20B9";
-
 type contributionChartProps = {data: expenseRecord[], month: string}
 
 export  default function UserContributionChart({ data, month }: contributionChartProps) {
   
-  // console.log(data)
-
-  // const [data]
   const [dailyBoxes, setDailyBoxes] = useState<JSX.Element[]>([])
   const [range, setRange] = useState<range>({lowerLim:0, higherLim:0})
   const [chartData, setChartData] = useState<expenseRecord[][]>([])
@@ -62,19 +47,19 @@ export  default function UserContributionChart({ data, month }: contributionChar
   useEffect(() => {
     if(chartData) {
       setDailyBoxes(
-      chartData.map((month, idx) => <div key={idx} className="grid grid-cols-7">
-        <div className="col-span-7 m-auto text-sm">{months[new Date(month[0]?.date).getMonth() + 1]}</div>
+      chartData.map((month, idx) => <div key={idx} className="grid grid-cols-7 gap-1">
+        <div className="col-span-7 m-auto  text-sm">{months[new Date(month[0]?.date).getMonth() + 1]}</div>
         {month.map((day, index) => 
         {
           const opacity = (day["total"] - range.lowerLim) <= 0 ? 0.001 : (range.higherLim - day["total"]) === 0 ? 1 : (day["total"] - range.lowerLim)/(range.higherLim - day["total"])
-          return  <div key={index}>
-              <Tooltip >
+          return  <Tooltip key={index}>
+          {/* // <div key={index}> */}
               <TooltipTrigger>
-                <div className = "w-5 h-5 relative bg-black/10 rounded-md overflow-hidden">
-                  <div  style = {{opacity}} className="absolute inset-0 bg-identity pointer-events-none"></div>
+                <div className = "min-w-4 min-h-4 relative bg-black/10 rounded-md overflow-hidden cursor-pointer">
+                  <div  style = {{opacity}} className="absolute inset-0 bg-identity cursor-pointer"></div>
                 </div>
               </TooltipTrigger>
-                <TooltipContent className="min-w-[6rem] min-h-[3rem] bg-secondary text-primary shadow-xl">
+                <TooltipContent className="m-0 min-w-[6rem] min-h-[3rem] bg-secondary text-primary shadow-xl">
                   <div className={"flex flex-col items-start"}>
                     <div className="mb-2 font-semibold m-auto">{`${months[new Date(day["date"]).getMonth() + 1]} ${new Date(day["date"]).getDate()}`}</div>
                     <div>{day["total"] === 0 ? "No expenditure logged for this date" : null}</div>
@@ -88,7 +73,7 @@ export  default function UserContributionChart({ data, month }: contributionChar
                   </div>
                 </TooltipContent>
               </Tooltip>
-            </div>
+            {/* </div> */}
           }
         )}
       </div>)

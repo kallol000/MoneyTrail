@@ -48,8 +48,8 @@ export default function UserTable({
         data.map((day, index) => (
           <tr key={index}>
             {columns.map((colName, idx) => (
-              <td className="min-w-32 border border-collapse" key={idx}>
-                <div className="min-w-32 flex items-center justify-between text-xs  p-2">
+              <td className="min-w-32 max-w-32 border border-collapse" key={idx}>
+                <div className="min-w-32 max-w-32 flex items-center justify-between text-xs  p-2">
                   <div className="flex items-center justify-center w-full">
                     {day[colName] === 0 ? "-" : day[colName]}
                   </div>
@@ -86,7 +86,7 @@ export default function UserTable({
             dark:[&::-webkit-scrollbar-track]:bg-neutral-700
             dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
     >
-      <table className="w-full">
+      <table className="max-w-full">
         <thead>
           <tr className="bg-secondary ">{tableHeaders}</tr>
         </thead>
