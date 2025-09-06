@@ -104,7 +104,7 @@ export function NewUserSetupPopover() {
       return <div key={index} className="grid grid-cols-6 items-center gap-4 ">
         <Input 
           type="text"
-          id={index} 
+          id={index.toString()} 
           value={category.name}
           onChange={handleChange}
           className="col-span-5 h-8"
