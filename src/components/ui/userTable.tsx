@@ -9,13 +9,13 @@ export default function UserTable({
   categoryNamesMap,
   categoryNumbersMap,
   userCategories,
-  setRefresh
+  setHomeRefresh,
 }: {
   data: expenseRecord[];
-  categoryNamesMap: Map<string, number>,
-  categoryNumbersMap: Map<number, string>,
-  userCategories:userCategoriesRecord[],
-  setRefresh: Dispatch<SetStateAction<boolean>>
+  categoryNamesMap: Map<string, number>;
+  categoryNumbersMap: Map<number, string>;
+  userCategories: userCategoriesRecord[];
+  setHomeRefresh: Dispatch<SetStateAction<boolean>>;
 }) {
   const [tableHeaders, setTableHeaders] = useState<ReactNode[]>([]);
   const [tableBody, setTableBody] = useState<ReactNode[]>([]);
@@ -23,13 +23,11 @@ export default function UserTable({
 
   useEffect(() => {
     // if (data.length > 0) {
-      setColumns(prev => {
-        const categories = userCategories.map(category => category.name)
-        return ["date", ...categories]
-    })
-  }, [data, userCategories])
-
-
+    setColumns((prev) => {
+      const categories = userCategories.map((category) => category.name);
+      return ["date", ...categories];
+    });
+  }, [data, userCategories]);
 
   useEffect(() => {
     if (data.length > 0) {
@@ -44,28 +42,27 @@ export default function UserTable({
     }
   }, [columns]);
 
-
   useEffect(() => {
     if (data.length > 0 && columns) {
       setTableBody((prev) =>
         data.map((day, index) => (
           <tr key={index}>
             {columns.map((colName, idx) => (
-              <td className="min-w-32 border border-collapse" key={idx}>
-                <div className="min-w-32 flex items-center justify-between text-xs  p-2">
+              <td className="min-w-32 max-w-32 border border-collapse" key={idx}>
+                <div className="min-w-32 max-w-32 flex items-center justify-between text-xs  p-2">
                   <div className="flex items-center justify-center w-full">
                     {day[colName] === 0 ? "-" : day[colName]}
                   </div>
                   <div>
-                    {colName === "date" ? 
+                    {colName === "date" ? (
                       ""
-                    : (
+                    ) : (
                       <UserExpensePopover
                         icon={day[colName] === 0 ? "add" : "view"}
                         date={day.date}
-                        categoryName = {colName}
+                        categoryName={colName}
                         categoryId={categoryNamesMap.get(colName)!}
-                        setRefresh = {setRefresh}
+                        setHomeRefresh={setHomeRefresh}
                       />
                     )}
                   </div>
@@ -89,7 +86,7 @@ export default function UserTable({
             dark:[&::-webkit-scrollbar-track]:bg-neutral-700
             dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
     >
-      <table className="w-full">
+      <table className="max-w-full">
         <thead>
           <tr className="bg-secondary ">{tableHeaders}</tr>
         </thead>

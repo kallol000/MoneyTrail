@@ -3,8 +3,6 @@ import Navbar from "@/components/ui/navbar";
 import { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { logOut } from "../login/actions";
-import UserTabs from "@/components/ui/userTabs";
-import Link from "next/link";
 import { useState } from "react";
 import {tab} from "../utils/lib/types"
 
@@ -32,12 +30,8 @@ export default function Layout({children, monthlyAnalytics, timeseriesAnalytics,
             </Navbar>
             {/* <Link href={'/timeSeries'}>6 months</Link> */}
             {/* <UserTabs /> */}
-            <div className="px-4 ">
-                <UserTabs tabs = {tabs} activeTab = {activeTab} handleValueChange={handleTabChange}/>
-                {activeTab === "monthlyAnalytics" && monthlyAnalytics }
-                {activeTab === "timeseriesAnalytics" && timeseriesAnalytics }
-                {activeTab === "expenditureView" && expenditureView }
-            </div>
+            
+            {children}
         </div>
     )
 }
