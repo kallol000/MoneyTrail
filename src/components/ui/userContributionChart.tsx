@@ -20,14 +20,12 @@ export  default function UserContributionChart({ data, month }: contributionChar
       const ind = tempMonths.findIndex(key => key === month)
       tempMonths = tempMonths.slice(ind+1-6, ind+1)
       setChartData(tempMonths.map(month => {
-        console.log(month)
         const monthDetails = data.filter(row => months[new Date(row.date).getMonth()+1] === month )
         return [...monthDetails]
       }))
     }
   }, [data])
 
-  console.log(chartData)
 
   useEffect(() => {
     if(data) {

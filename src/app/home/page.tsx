@@ -1,18 +1,13 @@
 'use client'
-import { redirect } from "next/navigation"
 import { useState, useEffect, useTransition } from "react"
 import {tab} from "../utils/lib/types"
 import UserTabs from "@/components/ui/userTabs"
 import AnalyticsView from "./@analyticsView/page"
 import ExpenditureView from "./@expenditureView/page"
-import { getUser } from "../api/fetch/route"
 import { UserSelect } from "@/components/ui/userSelect"
 import { months, monthsinNumber } from "../utils/lib/helpers"
 import { monthYear } from "../utils/lib/types"
 import { userCategoriesRecord } from "../utils/lib/types"
-import { getUserCategories } from "../api/fetch/route"
-import { getMonthlyIncome } from "../api/fetch/route"
-import { getMonthlyExpense } from "../api/fetch/route"
 import Spinner from "@/components/ui/spinner"
 import { Card, CardTitle } from "@/components/ui/card"
 import { NewUserSetupPopover } from "@/components/ui/newUserSetupPopover"
@@ -44,50 +39,45 @@ export default function HomePage() {
 
     // to fetch user details
         const fetchUser = async () => {
-        const res = await getUser();
+        // const res = await getUser();
+        const res = await fetch(`/api/user`)
         const data = await res.json();
         setUser(data.user.id);
     };
 
      // to fetch user categories
       const fetchUserCategories = async () => {
-        const res = await getUserCategories();
+        // const res = await getUserCategories();
+        const res = await fetch(`/api/categories/user-all`)
         const data = await res.json();
         setUserCategories(data);
       };
 
     const fetchMonthlyIncome = async () => {
-    try {
-      const res = await getMonthlyIncome(parseInt(selectedMonthYear.year), monthsinNumber[selectedMonthYear.month]);
-      const data = await res.json();
-      setTotalIncome(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+        const res = await fetch(`/api/income/month-total?year=${parseInt(selectedMonthYear.year)}&month=${monthsinNumber[selectedMonthYear.month]}`)  
+        const data = await res.json();
+        setTotalIncome(data);
+    };
 
-  const fetchMonthlyExpenditure = async () => {
-    try {
-      const res = await getMonthlyExpense(parseInt(selectedMonthYear.year), monthsinNumber[selectedMonthYear.month]);
-      const data = await res.json();
-      setTotalExpenditure(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+    console.log(userCategories)
+
+    const fetchMonthlyExpenditure = async () => {
+        
+            const year = parseInt(selectedMonthYear.year)
+            const month = monthsinNumber[selectedMonthYear.month]
+        //   const res = await getMonthlyExpense(parseInt(selectedMonthYear.year), monthsinNumber[selectedMonthYear.month]);
+        const res = await fetch(`/api/expenditure/month-total?year=${year}&month=${month}`)
+        const data = await res.json();
+        setTotalExpenditure(data);
+    };
 
     const handleMonthYearChange = (value: string, name: string) => {
         setSelectedMonthYear((prev) => ({ ...prev, [name]: value }));
     };
     
-
-
-    
     const handleTabChange = (value:string) => {
         setActiveTab(value)
     }
-
-
 
     useEffect(() => {
         fetchUser();
@@ -103,7 +93,7 @@ export default function HomePage() {
 
     useEffect(() => {
         startFetchTransition(async () => {
-        if (user) {
+        if (user && selectedMonthYear.year && selectedMonthYear.month) {
             fetchMonthlyIncome();
             fetchMonthlyExpenditure();
         }
@@ -119,16 +109,16 @@ export default function HomePage() {
         });
     }, [totalIncome, totalExpenditure]);
 
-    if(isNewUser) {
-        return (
-            <div className="px-4 h-full">
-                <Card className="text-xl h-full flex items-center justify-center p-4">
-                    <CardTitle>Let's set up your profile</CardTitle>
-                    <NewUserSetupPopover />
-                </Card>
-            </div>
-        )
-    }
+    // if(isNewUser) {
+    //     return (
+    //         <div className="px-4 h-full">
+    //             <Card className="text-xl h-full flex items-center justify-center p-4">
+    //                 <CardTitle>Let's set up your profile</CardTitle>
+    //                 <NewUserSetupPopover />
+    //             </Card>
+    //         </div>
+    //     )
+    // }
 
     return (
         <div className="px-4 ">

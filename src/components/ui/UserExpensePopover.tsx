@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import axios from "axios";
 import {
   Popover,
   PopoverContent,
@@ -18,12 +18,9 @@ import {
   SetStateAction,
 } from "react";
 import { XMarkIcon, TrashIcon } from "@heroicons/react/16/solid";
-import { getOneDayExpense } from "@/app/api/fetch/route";
-import { upsertExpense } from "@/app/api/upsert/route";
 import { v4 as uuidv4 } from "uuid";
 import Spinner from "@/components/ui/spinner";
 import { toast } from "sonner";
-import { deleteExpense } from "@/app/api/delete/route";
 import { InfoIcon, PlusIcon } from "./icons";
 
 export function UserExpensePopover({
@@ -53,7 +50,8 @@ export function UserExpensePopover({
   const [expenseListRefresh, setExpenseListRefresh] = useState<boolean>(false);
 
   const fetchExpenditure = async (date: string, categoryId: number) => {
-    const res = await getOneDayExpense(date, categoryId);
+    // const res = await getOneDayExpense(date, categoryId);
+    const res = await fetch(`/api/expenditure/day?date=${date}&categoryId=${categoryId}`)
     const data = await res.json();
     // console.log(data)
     setFormdata((prev) => data);
@@ -101,7 +99,8 @@ export function UserExpensePopover({
   };
 
   const handleSubmit = async () => {
-    const res = await upsertExpense(formdata);
+    // const res = await upsertExpense(formdata);
+    const res = await axios.post(`/api/expenditure/day`, formdata);
 
     if (res.status === 400) {
       toast.error("There was an error");
@@ -121,7 +120,8 @@ export function UserExpensePopover({
       toast("the expense was deleted");
     } else {
       try {
-        const res = await deleteExpense(id);
+        // const res = await deleteExpense(id);
+        const res = await axios.delete(`/api/expenditure/day?id=${id}`)
         if (res.status === 200) {
           toast("the expense was deleted");
           setExpenseListRefresh((prev) => !prev);

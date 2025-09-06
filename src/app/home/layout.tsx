@@ -3,8 +3,6 @@ import Navbar from "@/components/ui/navbar";
 import { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { logOut } from "../login/actions";
-import UserTabs from "@/components/ui/userTabs";
-import Link from "next/link";
 import { useState } from "react";
 import {tab} from "../utils/lib/types"
 

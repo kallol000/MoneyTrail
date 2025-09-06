@@ -9,7 +9,6 @@ import {
 import { PlusIcon } from "./icons";
 import { globalCategoriesRecord, insertCategoryRow, userCategoriesRecord } from "@/app/utils/lib/types";
 import { useState, useEffect, ChangeEvent } from "react";
-import { getGlobalCategories, getUserCategories } from "@/app/api/fetch/route";
 import { XMarkIcon } from "@heroicons/react/16/solid";
 import { JSX } from "react";
 import { upsertCategories } from "@/app/api/upsert/route";
@@ -39,7 +38,8 @@ export function NewUserSetupPopover() {
   const [categoryListRefresh, setCategoryListRefresh] = useState<boolean>(false);
 
   const fetchRecommendedCategories = async () => {
-    const res = await getGlobalCategories()
+    // const res = await getGlobalCategories()
+    const res = await fetch(`/api/categories/global`)
     const data = await res.json();
     setRecommendedCategories(data)
   };

@@ -6,18 +6,15 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
+import axios from "axios";
 import { InfoIcon, PlusIcon } from "./icons";
 import { useState, useEffect, ReactNode } from "react";
-import { getAllMonthlyIncome } from "@/app/api/fetch/route";
 import { incomeFormdataRecord } from "@/app/utils/lib/types";
 import { ChangeEvent } from "react";
 import { XMarkIcon, TrashIcon } from "@heroicons/react/16/solid";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "sonner";
 import { Dispatch, SetStateAction } from "react";
-import { deleteIncome } from "@/app/api/delete/route";
-import { upsertIncome } from "@/app/api/upsert/route";
 
 export function UserIncomePopover({
   income,
@@ -44,7 +41,8 @@ export function UserIncomePopover({
 
   const fetchAllncome = async (year: number, month: number) => {
     try {
-      const res = await getAllMonthlyIncome(year, month);
+      // const res = await getAllMonthlyIncome(year, month);
+      const res = await fetch(`/api/income/month-all?year=${year}&month=${month}`)
       const data = await res.json();
       setFormdata(data);
       setInitialFormdata(data);
@@ -68,7 +66,8 @@ export function UserIncomePopover({
       toast("the income was deleted");
     } else {
       try {
-        const res = await deleteIncome(id);
+        // const res = await deleteIncome(id);
+        const res = await axios.delete(`/api/income/month-all?id=${id}`)
         if (res.status === 200) {
           toast("the expense was deleted");
           setIncomeListRefresh((prev) => !prev);
@@ -95,9 +94,10 @@ export function UserIncomePopover({
   };
 
   const handleSubmit = async () => {
-    const res = await upsertIncome(formdata);
-    const data = await res.json();
-    console.log(data);
+    // const res = await upsertIncome(formdata);
+    const res = await axios.post(`/api/income/month-all`, formdata)
+    // const data = await res.json();
+    // console.log(data);
     if (res.status === 400) {
       toast.error("There was an error");
     } else if (res.status === 200) {
