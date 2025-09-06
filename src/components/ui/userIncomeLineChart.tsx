@@ -53,7 +53,7 @@ export function UserIncomeLineChart({ data, month, year }: userLineChartProps) {
         <Card className="relative">
             <CardHeader>
                 <CardTitle>Income - Over Time</CardTitle>
-                <CardDescription>Last 6 months' trend</CardDescription>
+                <CardDescription>{"Last 6 months' trend"}</CardDescription>
             </CardHeader>
             <CardContent>
                 <ChartContainer config={chartConfig} className="w-full h-[200px]">
