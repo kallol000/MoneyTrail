@@ -11,7 +11,6 @@ import { globalCategoriesRecord, insertCategoryRow, userCategoriesRecord } from 
 import { useState, useEffect, ChangeEvent } from "react";
 import { XMarkIcon } from "@heroicons/react/16/solid";
 import { JSX } from "react";
-import { upsertCategories } from "@/app/api/upsert/route";
 import { toast } from "sonner";
 import { Dispatch, SetStateAction } from "react";
 import { AddUserCategoryPopover } from "./AddUserCategoryPopover";
@@ -135,15 +134,15 @@ export function NewUserSetupPopover() {
   
 
   const handleSave = async () => {
-    const res = await upsertCategories(userCategories);
-    if (res.status === 200) {
-      toast.success("Categories updated successfully");
-      // setHomeRefresh((prev) => !prev);
-      setCategoryListRefresh((prev) => !prev);
-    } else if (res.status === 400) {
-      const data = await res.json();
-      toast.error("There was an error", data.message);
-    }
+    // const res = await upsertCategories(userCategories);
+    // if (res.status === 200) {
+    //   toast.success("Categories updated successfully");
+    //   // setHomeRefresh((prev) => !prev);
+    //   setCategoryListRefresh((prev) => !prev);
+    // } else if (res.status === 400) {
+    //   const data = await res.json();
+    //   toast.error("There was an error", data.message);
+    // }
   };
 
   return (
@@ -166,7 +165,7 @@ export function NewUserSetupPopover() {
             <h4 className="font-semibold">What should we call you?</h4>
             <Input />
             <div className="flex flex-col gap-2">
-              <h4 className="font-semibold">Add or select the categories you'd like to track expenses for</h4>
+              <h4 className="font-semibold">{"Add or select the categories you'd like to track expenses for"}</h4>
               <div>{categoryElems}</div>
               <div className="bg-secondary border-1 p-2 flex flex-col gap-4 text-xs">
                 <p >Common categories</p>
