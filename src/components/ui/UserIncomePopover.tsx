@@ -156,7 +156,7 @@ export function UserIncomePopover({
               {/* <Label htmlFor="width" className="col-span-3">{`Expense ${index + 1}`}</Label> */}
               <Input
                 type="text"
-                id={index}
+                id={index.toString()}
                 name={"fetched"}
                 value={income.description ? income.description : ""}
                 onChange={handleChange}
@@ -170,7 +170,7 @@ export function UserIncomePopover({
                 <Input
                   type="number"
                   min={0}
-                  id={index}
+                  id={index.toString()}
                   name={"fetched"}
                   value={income.amount}
                   onChange={handleChange}
