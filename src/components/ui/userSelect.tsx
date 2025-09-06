@@ -2,7 +2,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { ReactNode } from "react"
 import { useState, useEffect } from "react"
 
-export function UserSelect( {name, label, data, value, onChange } : {name: string, label:string, data: string[] | number [], value: string , onChange: (value:string, name: string ) => void}  ) {
+export function UserSelect( {name, label, data, value, onChange } : {name: string, label:string, data: string[] , value: string , onChange: (value:string, name: string ) => void}  ) {
   
     const [selectItems, setSelectItems] = useState<ReactNode[]>([])
     
