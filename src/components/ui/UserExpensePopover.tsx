@@ -167,7 +167,7 @@ export function UserExpensePopover({
               {/* <Label htmlFor="width" className="col-span-3">{`Expense ${index + 1}`}</Label> */}
               <Input
                 type="text"
-                id={index}
+                id={index.toString()}
                 name={"fetched"}
                 value={exp.description ? exp.description : ""}
                 onChange={handleChange}
@@ -181,7 +181,7 @@ export function UserExpensePopover({
                 <Input
                   type="number"
                   min={0}
-                  id={index}
+                  id={index.toString()}
                   name={"fetched"}
                   value={exp.amount}
                   onChange={handleChange}
