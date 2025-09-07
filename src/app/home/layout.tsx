@@ -3,35 +3,25 @@ import Navbar from "@/components/ui/navbar";
 import { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { logOut } from "../login/actions";
-import { useState } from "react";
-import {tab} from "../utils/lib/types"
+import { useUser } from "../utils/lib/userContext";
 
-export default function Layout({children, monthlyAnalytics, timeseriesAnalytics, expenditureView} : {children: ReactNode, monthlyAnalytics: ReactNode, expenditureView:ReactNode, timeseriesAnalytics:ReactNode}) {
+export default function Layout({children} : {children: ReactNode}) {
+    const {name} = useUser()
     
-    const [tabs, setTabs] = useState<tab>({
-        monthlyAnalytics: "Monthly View",
-        timeseriesAnalytics: "Time Series View",
-        expenditureView: "Expenditure Tracking",
-    })
-
-    const [activeTab, setActiveTab] = useState<string>("expenditureView")
-
-    const handleTabChange = (value:string) => {
-        setActiveTab(value)
-    }
-
     return (
         <div className="flex flex-col gap-4 min-h-screen">
             <Navbar>
                 <h1 className="text-identity font-bold text-2xl">MONEYTRAIL</h1>
-                <form>
-                    <Button formAction={logOut}>Logout</Button>
-                </form>
+                <div className="flex items-center gap-4">
+                    <p className="font-semibold">Hi {name}</p>
+                    <form>
+                        <Button formAction={logOut}>Logout</Button>
+                    </form>
+                </div>
             </Navbar>
             {/* <Link href={'/timeSeries'}>6 months</Link> */}
             {/* <UserTabs /> */}
-            
-            {children}
+                {children}
         </div>
     )
 }

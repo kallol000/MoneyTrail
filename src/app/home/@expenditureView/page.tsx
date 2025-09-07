@@ -24,7 +24,7 @@ export default function ExpenditureView({user, userCategories, year, month, tota
   const [isFetchPending, startFetchTransition] = useTransition();
   
   
-  console.log("user",user)
+  // console.log("user",user)
 
   // to fetch monthly expenses
   const fetchDateWiseExpenses = async () => {

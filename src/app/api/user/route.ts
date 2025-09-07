@@ -2,9 +2,6 @@
 import { createClient } from "@/app/utils/supabase/server";
 
 export async function GET() {
-  // const { searchParams } = new URL(req.url);
-  // const year = parseInt(searchParams.get("year")!);
-  // const month = parseInt(searchParams.get("month")!);
 
   const supabase = await createClient()
 

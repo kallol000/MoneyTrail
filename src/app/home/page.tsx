@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect, useTransition } from "react"
-import {tab} from "../utils/lib/types"
+import {tab, UserDetails} from "../utils/lib/types"
 import UserTabs from "@/components/ui/userTabs"
 import AnalyticsView from "./@analyticsView/page"
 import ExpenditureView from "./@expenditureView/page"
@@ -11,11 +11,16 @@ import { userCategoriesRecord } from "../utils/lib/types"
 import Spinner from "@/components/ui/spinner"
 import { Card, CardTitle } from "@/components/ui/card"
 import { NewUserSetupPopover } from "@/components/ui/newUserSetupPopover"
+import { useUser } from "../utils/lib/userContext"
 
 
 export default function HomePage() {
 
-    const [user, setUser] = useState<string>("");
+    const {userDetails, refreshUserDetails} = useUser()
+
+    // console.log(user)
+
+
     const [isNewUser, setIsNewUser] = useState<boolean>(true)
 
     const [tabs, setTabs] = useState<tab>({
@@ -35,23 +40,14 @@ export default function HomePage() {
     const [totalIncome, setTotalIncome] = useState<number>(0);
     const [totalExpenditure, setTotalExpenditure] = useState<number>(0);
     const [balance, setBalance] = useState<number>(0);
-
-
-    // to fetch user details
-        const fetchUser = async () => {
-        // const res = await getUser();
-        const res = await fetch(`/api/user`)
-        const data = await res.json();
-        setUser(data.user.id);
-    };
-
-     // to fetch user categories
-      const fetchUserCategories = async () => {
+    
+    // to fetch user categories
+    const fetchUserCategories = async () => {
         // const res = await getUserCategories();
         const res = await fetch(`/api/categories/user-all`)
         const data = await res.json();
         setUserCategories(data);
-      };
+    };
 
     const fetchMonthlyIncome = async () => {
         const res = await fetch(`/api/income/month-total?year=${parseInt(selectedMonthYear.year)}&month=${monthsinNumber[selectedMonthYear.month]}`)  
@@ -59,7 +55,6 @@ export default function HomePage() {
         setTotalIncome(data);
     };
 
-    console.log(userCategories)
 
     const fetchMonthlyExpenditure = async () => {
         
@@ -80,25 +75,37 @@ export default function HomePage() {
     }
 
     useEffect(() => {
-        fetchUser();
-    }, []);
+        setHomeRefresh(prev => !prev)
+    },[])
+
 
     useEffect(() => {
-        if (user) {
+        if(userDetails.name){
+            setIsNewUser(false)
+        }else{
+            setIsNewUser(true)
+        }
+    }, [userDetails])
+    // useEffect(() => {
+    //     fetchUser();
+    // }, []);
+
+    useEffect(() => {
+        if (userDetails.name) {
         fetchUserCategories();
         }
-    }, [user, selectedMonthYear, homeRefresh]);
+    }, [userDetails, selectedMonthYear, homeRefresh]);
 
     // console.log(selectedMonthYear)
 
     useEffect(() => {
         startFetchTransition(async () => {
-        if (user && selectedMonthYear.year && selectedMonthYear.month) {
+        if (userDetails && selectedMonthYear.year && selectedMonthYear.month) {
             fetchMonthlyIncome();
             fetchMonthlyExpenditure();
         }
         });
-    }, [user, selectedMonthYear, homeRefresh]);
+    }, [userDetails, selectedMonthYear, homeRefresh]);
 
     useEffect(() => {
         setBalance((prev) => {
@@ -109,16 +116,21 @@ export default function HomePage() {
         });
     }, [totalIncome, totalExpenditure]);
 
-    // if(isNewUser) {
-    //     return (
-    //         <div className="px-4 h-full">
-    //             <Card className="text-xl h-full flex items-center justify-center p-4">
-    //                 <CardTitle>Let's set up your profile</CardTitle>
-    //                 <NewUserSetupPopover />
-    //             </Card>
-    //         </div>
-    //     )
-    // }
+    if(userDetails.loading) {
+        return <div className="text-5xl">loading...</div>
+    }
+
+
+    if(isNewUser) {
+        return (
+            <div className="px-4 h-full">
+                <Card className="text-xl h-full flex items-center justify-center p-4">
+                    <CardTitle>Let's set up your profile</CardTitle>
+                    <NewUserSetupPopover setHomeRefresh = {setHomeRefresh} />
+                </Card>
+            </div>
+        )
+    }
 
     return (
         <div className="px-4 ">
@@ -142,7 +154,7 @@ export default function HomePage() {
                 {isFetchPending ? <Spinner /> : undefined}
             </div>
                 {activeTab === "analytics" && <AnalyticsView 
-                    user={user}
+                    user={userDetails.name}
                     userCategories={userCategories} 
                     year={parseInt(selectedMonthYear.year)} 
                     month={monthsinNumber[selectedMonthYear.month]} 
@@ -152,7 +164,8 @@ export default function HomePage() {
                     homeRefresh={homeRefresh}
                     setHomeRefresh={setHomeRefresh}
                     /> }
-                {activeTab === "expenditureView" && <ExpenditureView user={user} 
+                {activeTab === "expenditureView" && <ExpenditureView 
+                    user={userDetails.name} 
                     userCategories={userCategories} 
                     year={parseInt(selectedMonthYear.year)} 
                     month={monthsinNumber[selectedMonthYear.month]} 

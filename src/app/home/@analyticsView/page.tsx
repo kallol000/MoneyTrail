@@ -35,7 +35,7 @@ export default function AnalyticsView({user, userCategories, year, month, totalI
     setLastSixMonthsExpenses(data);
   }
   
-  console.log(lastSixMonthsExpenses)
+  // console.log(lastSixMonthsExpenses)
   
   const fetchLastSixMonthsDailyExpenses = async () => {
     // const res = await getLastSixMOnthsDateWiseExpenses(year,month)
@@ -51,7 +51,7 @@ export default function AnalyticsView({user, userCategories, year, month, totalI
     setLastSixMonthsIncomeData(data);
   }
 
-
+  // console.log(categoryWiseExpenses)
 
   useEffect(() => {
     fetchCategoryWiseMonthlyExpenses()
