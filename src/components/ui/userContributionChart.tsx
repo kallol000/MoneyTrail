@@ -5,6 +5,7 @@ import { Tooltip, TooltipContent } from "./tooltip"
 import { TooltipTrigger } from "@radix-ui/react-tooltip"
 import { range } from "@/app/utils/lib/types"
 import { months } from "@/app/utils/lib/helpers"
+import { ChartTooltip } from "./chart"
 
 type contributionChartProps = {data: expenseRecord[], month: string}
 

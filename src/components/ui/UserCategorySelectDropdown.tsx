@@ -15,6 +15,7 @@ import { useState, useEffect, JSX } from "react"
 import { Label } from "./label"
 import {XMarkIcon} from "@heroicons/react/16/solid"
 import { CheckIcon } from "lucide-react"
+import { InfoCircleIcon } from "./icons"
 
 type userCategorySelectDropdownProps = {selectedCategories: string[], handleSelectedCategoryChange:(checked: boolean, name: string) => void,  userCategories?: userCategoriesRecord[]};
 
@@ -51,11 +52,15 @@ export function UserCategorySelectDropdown( {selectedCategories, handleSelectedC
             <DropdownMenuTrigger asChild>
                 <Button variant="outline">Categories <ChevronDownIcon /></Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 " align="start">
+            <DropdownMenuContent className="w-70 " align="start">
                 <div>
                     <Button variant="ghost" size="icon" className="absolute right-2 top-2 z-10" onClick={() => setDropdownOpen(false)}><XMarkIcon /></Button>
                 </div>    
                 <DropdownMenuLabel>Categories</DropdownMenuLabel>
+                <span className="flex text-xs gap-2 p-2 text-[#808080]">
+                    <InfoCircleIcon />
+                    <span>You can select upto 5 categories at a time</span>
+                </span>
                 <DropdownMenuGroup  >
                     {categoryElems}
                     {/* <DropdownMenuCheckboxItem checked={false}>
