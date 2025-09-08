@@ -64,19 +64,24 @@ export default function AnalyticsView({user, userCategories, year, month, totalI
   
   return (
     <>
-      <div className="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
-
-        <UserCard  variant="identity" title="Available Balance" data={balance} />
-        <UserCard variant="secondary" title="Total Income" data={totalIncome} />
-        <UserCard variant="secondary" title="Total Expenditure" data={totalExpenditure} />
-        <div className="col-span-1 row-span-2">
+      <div className="py-4 flex flex-col gap-4 md:grid md:grid-cols-2 xl:grid-cols-3 md:gap-4">
+        <div className="col-span-1 row-span-1">
+          <UserCard  variant="identity" title="Available Balance" data={balance} />
+        </div>
+        <div className="col-span-1">
+          <UserCard variant="secondary" title="Total Income" data={totalIncome} />
+        </div>
+        <div className="col-span-1">
+          <UserCard variant="secondary" title="Total Expenditure" data={totalExpenditure} />
+        </div>
+        <div className="col-span-1 row-span-3">
           <UserRadarChart data = {categoryWiseExpenses} month={months[month] } year={year} userCategories={userCategories}/>
         </div>
-        <div className="col-span-1 row-span-2">
+        <div className="col-span-1 row-span-3">
           <UserExpenseLineChart data = {lastSixMonthsExpenses} month={months[month] } year={year} userCategories={userCategories} />
         </div>
         {/* <UserCard variant="secondary" title="Total Investments" /> */}
-        <div className="col-span-1 row-span-2">
+        <div className="col-span-1 row-span-3">
           <UserIncomeLineChart data={lastSixMonthsIncomeData} month={months[month] } year={year} />
         </div>
         <div className="col-span-2 row-span-2">
