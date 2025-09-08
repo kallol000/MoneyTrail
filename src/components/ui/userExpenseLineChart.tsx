@@ -40,13 +40,25 @@ export function UserExpenseLineChart({ data, month, year, userCategories }: user
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [lines, setLines] = useState<JSX.Element[]>([]);
 
+
+    const handleSelectedCategoryChange = (checked: boolean, name: string) => {
+
+        if (checked === true && selectedCategories.length < 5) {
+            setSelectedCategories(prev => [...prev, name]);
+        }else if(checked === false && selectedCategories.length > 1) {
+            setSelectedCategories(prev => prev.filter(category => category !== name));
+        }
+    }
+
+    console.log(chartData)
+
     useEffect(() => {
         if(chartData.length > 0 && month && year) {
             const currentMonthData = chartData.filter(row => row.month === month)
             if(currentMonthData.length > 0) {
                 let dataArray = Object.entries(currentMonthData[0])
                 dataArray.shift()
-                dataArray = dataArray.sort((a, b) => b[1] as number - (a[1] as number)).slice(0, 6)
+                dataArray = dataArray.sort((a, b) => b[1] as number - (a[1] as number)).slice(0, 4)
                 setSelectedCategories(prev => {
                     return dataArray.map(item => item[0])
                 })
@@ -54,7 +66,7 @@ export function UserExpenseLineChart({ data, month, year, userCategories }: user
         }
     }, [data, chartData, month, year])
 
-    
+    // console.log(selectedCategories)
 
     useEffect(() => {
         if(data) {
@@ -82,10 +94,10 @@ export function UserExpenseLineChart({ data, month, year, userCategories }: user
     return (
         <Card className="relative">
             <div className="absolute right-6 top-6"> 
-                <UserCategorySelectDropdown selectedCategories = {selectedCategories} userCategories={userCategories} handleSelectedCategoryChange={() => console.log("hello")} />
+                <UserCategorySelectDropdown selectedCategories = {selectedCategories} userCategories={userCategories} handleSelectedCategoryChange={handleSelectedCategoryChange} />
             </div>
             <CardHeader>
-                <CardTitle>Expednitures - Over Time</CardTitle>
+                <CardTitle>Expenditures - Over Time</CardTitle>
                 <CardDescription>{"Last 6 months' trend"}</CardDescription>
             </CardHeader>
             <CardContent>

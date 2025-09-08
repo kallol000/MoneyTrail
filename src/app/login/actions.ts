@@ -2,11 +2,13 @@
 
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { cookies } from "next/headers";
 
 import { createClient } from '../utils/supabase/server'
 
 export async function login(formData: FormData) {
   const supabase = await createClient()
+  
 
   // type-casting here for convenience
   // in practice, you should validate your inputs
@@ -20,9 +22,12 @@ export async function login(formData: FormData) {
   if (error) {
     return {error: error.message}
   }
+  // if(!error) {
+  //   await supabase.auth.getSession();
+    revalidatePath('/', 'layout')
+    redirect('/home')
+  // }
   
-  revalidatePath('/', 'layout')
-  redirect('/home')
 }
 
 export async function signup(formData: FormData) {

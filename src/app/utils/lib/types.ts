@@ -95,3 +95,9 @@ export type cardProps = {
     children?: React.ReactNode;
     data?: string | number;
 }
+
+export type UserDetails = {
+    name: string;
+    loading: boolean;
+}
+

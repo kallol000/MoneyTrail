@@ -48,6 +48,7 @@ export function UserExpensePopover({
   );
   const [isDataFetchPending, startDataFetchTransition] = useTransition();
   const [expenseListRefresh, setExpenseListRefresh] = useState<boolean>(false);
+  const [trigger, setTrigger] = useState<boolean>(false)
 
   const fetchExpenditure = async (date: string, categoryId: number) => {
     // const res = await getOneDayExpense(date, categoryId);
@@ -134,8 +135,15 @@ export function UserExpensePopover({
   };
 
   const handlePopoverOpen = () => {
-    setPopoverOpen(true);
+    startDataFetchTransition(() => {
+      fetchExpenditure(date, categoryId);
+    })
+    if(!isDataFetchPending) {
+      setPopoverOpen(true);
+    }
   };
+  
+  console.log(isDataFetchPending)
 
   const handleClose = () => {
     setPopoverOpen(false);
@@ -150,13 +158,13 @@ export function UserExpensePopover({
     }
   }, [formdata]);
 
-  useEffect(() => {
-    if (popoverOpen) {
-      startDataFetchTransition(async () => {
-        fetchExpenditure(date, categoryId);
-      });
-    }
-  }, [popoverOpen, expenseListRefresh]);
+  // useEffect(() => {
+  //   if (popoverOpen) {
+  //     startDataFetchTransition(async () => {
+  //       fetchExpenditure(date, categoryId);
+  //     });
+  //   }
+  // }, [popoverOpen, expenseListRefresh]);
 
   useEffect(() => {
     if (popoverOpen) {
@@ -203,7 +211,7 @@ export function UserExpensePopover({
   }, [popoverOpen, formdata]);
 
   return (
-    <Popover open={popoverOpen} onOpenChange={handlePopoverOpen} modal={true}>
+    <Popover open={popoverOpen} onOpenChange={handlePopoverOpen} modal={true} >
       <PopoverTrigger asChild>
         <Button
           onClick={handlePopoverOpen}

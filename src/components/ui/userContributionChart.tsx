@@ -5,6 +5,7 @@ import { Tooltip, TooltipContent } from "./tooltip"
 import { TooltipTrigger } from "@radix-ui/react-tooltip"
 import { range } from "@/app/utils/lib/types"
 import { months } from "@/app/utils/lib/helpers"
+import { ChartTooltip } from "./chart"
 
 type contributionChartProps = {data: expenseRecord[], month: string}
 
@@ -45,7 +46,7 @@ export  default function UserContributionChart({ data, month }: contributionChar
   useEffect(() => {
     if(chartData) {
       setDailyBoxes(
-      chartData.map((month, idx) => <div key={idx} className="grid grid-cols-7 gap-1">
+      chartData.map((month, idx) => <div key={idx} className="grid grid-cols-7 gap-2">
         <div className="col-span-7 m-auto  text-sm">{months[new Date(month[0]?.date).getMonth() + 1]}</div>
         {month.map((day, index) => 
         {
@@ -53,7 +54,7 @@ export  default function UserContributionChart({ data, month }: contributionChar
           return  <Tooltip key={index}>
           {/* // <div key={index}> */}
               <TooltipTrigger>
-                <div className = "min-w-4 min-h-4 relative bg-black/10 rounded-md overflow-hidden cursor-pointer">
+                <div className = "min-w-4 max-w-6 min-h-4 max-h-6 aspect-square relative bg-black/10 rounded-md overflow-hidden cursor-pointer">
                   <div  style = {{opacity}} className="absolute inset-0 bg-identity cursor-pointer"></div>
                 </div>
               </TooltipTrigger>
