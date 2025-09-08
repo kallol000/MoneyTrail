@@ -119,7 +119,7 @@ export function NewUserSetupPopover({setHomeRefresh}:{setHomeRefresh:Dispatch<Se
       setUsername(value)
     } else {
       setFormdata(prev => {
-        let temp = [...prev]
+        const temp = [...prev]
         temp[parseInt(id)] = {name: value}
         return temp
       })
