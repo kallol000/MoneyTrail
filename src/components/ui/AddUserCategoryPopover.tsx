@@ -10,11 +10,11 @@ import { PlusIcon } from "./icons";
 import { useState, useEffect, ChangeEvent } from "react";
 import { XMarkIcon } from "@heroicons/react/16/solid";
 import { JSX } from "react";
-import { insertCategory, upsertCategories } from "@/app/api/upsert/route";
 import { toast } from "sonner";
 import { Dispatch, SetStateAction } from "react";
 import { insertCategoryRow } from "@/app/utils/lib/types";
 import { TrashIcon } from "@heroicons/react/16/solid";
+import axios from "axios";
 
 export function AddUserCategoryPopover({
   setHomeRefresh,
@@ -51,15 +51,16 @@ export function AddUserCategoryPopover({
   };
 
   const handleSave = async () => {
-    const res = await insertCategory(formdata);
-    const data = await res.json();
+    // const res = await insertCategory(formdata);
+    const res = await axios.post(`/api/categories/user-all/new`, formdata)
+    // const data = await res.json();
 
     if (res.status === 200) {
       toast.success("Category added successfully");
       setHomeRefresh((prev) => !prev);
       setCategoryListRefresh((prev) => !prev);
     } if (res.status === 400) {
-      toast.error("There was an error", data.message);
+      toast.error("There was an error");
     }
 
     handleClose();

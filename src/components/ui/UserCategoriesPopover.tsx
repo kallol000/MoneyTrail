@@ -1,42 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger,} from "@/components/ui/popover";
 import { PlusIcon } from "./icons";
 import { userCategoriesRecord } from "@/app/utils/lib/types";
 import { useState, useEffect, ChangeEvent } from "react";
-import { getUserCategories } from "@/app/api/fetch/route";
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragOverlay,
-  DragEndEvent,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor,  useSensor, useSensors,  DragOverlay,  DragEndEvent,} from "@dnd-kit/core";
+import { arrayMove,  SortableContext,  sortableKeyboardCoordinates,  verticalListSortingStrategy,} from "@dnd-kit/sortable";
 import { XMarkIcon } from "@heroicons/react/16/solid";
 import { JSX } from "react";
 import SortableItem from "./sortableItem";
-import {
-  restrictToVerticalAxis,
-  restrictToWindowEdges,
-} from "@dnd-kit/modifiers";
-import { upsertCategories } from "@/app/api/upsert/route";
+import { restrictToVerticalAxis, restrictToWindowEdges,} from "@dnd-kit/modifiers";
 import { toast } from "sonner";
 import { Dispatch, SetStateAction } from "react";
 import { AddUserCategoryPopover } from "./AddUserCategoryPopover";
+
+import axios from "axios";
 
 export function UserCategoriesPopover({
   setHomeRefresh,
@@ -62,7 +41,8 @@ export function UserCategoriesPopover({
   );
 
   const fetchUserCategories = async () => {
-    const res = await getUserCategories();
+    // const res = await getUserCategories();
+    const res = await fetch(`/api/categories/user-all`)
     const data = await res.json();
     setUserCategories(data);
     setInitialCategories(data);
@@ -118,14 +98,16 @@ export function UserCategoriesPopover({
   };
 
   const handleSave = async () => {
-    const res = await upsertCategories(userCategories);
+    // const res = await upsertCategories(userCategories);
+
+    const res = await axios.post(`/api/categories/user-all`, userCategories)
     if (res.status === 200) {
       toast.success("Categories updated successfully");
       setHomeRefresh((prev) => !prev);
       setCategoryListRefresh((prev) => !prev);
     } else if (res.status === 400) {
-      const data = await res.json();
-      toast.error("There was an error", data.message);
+      // const data = await res.json();
+      toast.error("There was an error");
     }
   };
 

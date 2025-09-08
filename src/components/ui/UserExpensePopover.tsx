@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import axios from "axios";
 import {
   Popover,
   PopoverContent,
@@ -18,12 +18,9 @@ import {
   SetStateAction,
 } from "react";
 import { XMarkIcon, TrashIcon } from "@heroicons/react/16/solid";
-import { getOneDayExpense } from "@/app/api/fetch/route";
-import { upsertExpense } from "@/app/api/upsert/route";
 import { v4 as uuidv4 } from "uuid";
 import Spinner from "@/components/ui/spinner";
 import { toast } from "sonner";
-import { deleteExpense } from "@/app/api/delete/route";
 import { InfoIcon, PlusIcon } from "./icons";
 
 export function UserExpensePopover({
@@ -51,9 +48,11 @@ export function UserExpensePopover({
   );
   const [isDataFetchPending, startDataFetchTransition] = useTransition();
   const [expenseListRefresh, setExpenseListRefresh] = useState<boolean>(false);
+  const [trigger, setTrigger] = useState<boolean>(false)
 
   const fetchExpenditure = async (date: string, categoryId: number) => {
-    const res = await getOneDayExpense(date, categoryId);
+    // const res = await getOneDayExpense(date, categoryId);
+    const res = await fetch(`/api/expenditure/day?date=${date}&categoryId=${categoryId}`)
     const data = await res.json();
     // console.log(data)
     setFormdata((prev) => data);
@@ -101,7 +100,8 @@ export function UserExpensePopover({
   };
 
   const handleSubmit = async () => {
-    const res = await upsertExpense(formdata);
+    // const res = await upsertExpense(formdata);
+    const res = await axios.post(`/api/expenditure/day`, formdata);
 
     if (res.status === 400) {
       toast.error("There was an error");
@@ -121,7 +121,8 @@ export function UserExpensePopover({
       toast("the expense was deleted");
     } else {
       try {
-        const res = await deleteExpense(id);
+        // const res = await deleteExpense(id);
+        const res = await axios.delete(`/api/expenditure/day?id=${id}`)
         if (res.status === 200) {
           toast("the expense was deleted");
           setExpenseListRefresh((prev) => !prev);
@@ -134,8 +135,15 @@ export function UserExpensePopover({
   };
 
   const handlePopoverOpen = () => {
-    setPopoverOpen(true);
+    startDataFetchTransition(() => {
+      fetchExpenditure(date, categoryId);
+    })
+    if(!isDataFetchPending) {
+      setPopoverOpen(true);
+    }
   };
+  
+  console.log(isDataFetchPending)
 
   const handleClose = () => {
     setPopoverOpen(false);
@@ -150,13 +158,13 @@ export function UserExpensePopover({
     }
   }, [formdata]);
 
-  useEffect(() => {
-    if (popoverOpen) {
-      startDataFetchTransition(async () => {
-        fetchExpenditure(date, categoryId);
-      });
-    }
-  }, [popoverOpen, expenseListRefresh]);
+  // useEffect(() => {
+  //   if (popoverOpen) {
+  //     startDataFetchTransition(async () => {
+  //       fetchExpenditure(date, categoryId);
+  //     });
+  //   }
+  // }, [popoverOpen, expenseListRefresh]);
 
   useEffect(() => {
     if (popoverOpen) {
@@ -167,7 +175,7 @@ export function UserExpensePopover({
               {/* <Label htmlFor="width" className="col-span-3">{`Expense ${index + 1}`}</Label> */}
               <Input
                 type="text"
-                id={index}
+                id={index.toString()}
                 name={"fetched"}
                 value={exp.description ? exp.description : ""}
                 onChange={handleChange}
@@ -181,7 +189,7 @@ export function UserExpensePopover({
                 <Input
                   type="number"
                   min={0}
-                  id={index}
+                  id={index.toString()}
                   name={"fetched"}
                   value={exp.amount}
                   onChange={handleChange}
@@ -203,7 +211,7 @@ export function UserExpensePopover({
   }, [popoverOpen, formdata]);
 
   return (
-    <Popover open={popoverOpen} onOpenChange={handlePopoverOpen} modal={true}>
+    <Popover open={popoverOpen} onOpenChange={handlePopoverOpen} modal={true} >
       <PopoverTrigger asChild>
         <Button
           onClick={handlePopoverOpen}

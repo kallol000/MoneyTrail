@@ -1,21 +1,14 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { logOut } from "../../login/actions";
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
-import { getUser, getIncome, getUserCategories, getMonthlyExpenses, getlastSixMonthsIncome } from "../../api/fetch/route";
-import { UserBarChart } from "@/components/ui/UserBarChart";
 import { expenseRecord, expenseRow, incomeRow, timeSeriesExpenseRow } from "../../utils/lib/types";
-import UserTabs from "@/components/ui/userTabs";
 import UserCard from "@/components/ui/userCard";
 import { userCategoriesRecord } from "../../utils/lib/types";
 import { UserRadarChart } from "@/components/ui/UserRadarChart";
-import { getCategoryWiseMonthlyExpenses, getCategoryWiseSixMonthsExpenses } from "../../api/fetch/route";
 import { months } from "@/app/utils/lib/helpers";
 import { UserExpenseLineChart } from "@/components/ui/userExpenseLineChart";
 import { UserIncomeLineChart } from "@/components/ui/userIncomeLineChart";
 import UserContributionChart from "@/components/ui/userContributionChart";
-import { getLastSixMOnthsDateWiseExpenses } from "../../api/fetch/route";
 
 type analyticsPageProps = {user:string, userCategories:userCategoriesRecord[], year:number, month:number, totalIncome:number, totalExpenditure:number, balance:number, homeRefresh: boolean, setHomeRefresh: Dispatch<SetStateAction<boolean>>};
 
@@ -30,30 +23,35 @@ export default function AnalyticsView({user, userCategories, year, month, totalI
 
 
   const fetchCategoryWiseMonthlyExpenses = async () => {
-    const res = await getCategoryWiseMonthlyExpenses(year, month);
+    // const res = await getCategoryWiseMonthlyExpenses(year, month);
+    const res = await fetch(`/api/expenditure/month-categorywise?year=${year}&month=${month}`)
     const data = await res.json();
     setCategoryWiseExpenses(data);
   }
 
   const fetchCategoryWiseLastSixMonthsExpenses = async () => {
-    const res = await getCategoryWiseSixMonthsExpenses(year, month);
+    const res = await fetch(`/api/expenditure/last-six-months-categorywise?year=${year}&month=${month}`)
     const data = await res.json();
     setLastSixMonthsExpenses(data);
   }
-
+  
+  // console.log(lastSixMonthsExpenses)
+  
   const fetchLastSixMonthsDailyExpenses = async () => {
-    const res = await getLastSixMOnthsDateWiseExpenses(year,month)
+    // const res = await getLastSixMOnthsDateWiseExpenses(year,month)
+    const res = await fetch(`/api/expenditure/last-six-months-datewise?year=${year}&month=${month}`)
     const data = await res.json()
     setLastSixMonthsDailyExpenses(data)
   }
 
   const fetchLastSixMonthsIncome = async () => {
-    const res = await getlastSixMonthsIncome(year, month);
+    // const res = await getlastSixMonthsIncome(year, month);
+    const res = await fetch(`/api/income/last-six-months?year=${year}&month=${month}`)
     const data = await res.json();
     setLastSixMonthsIncomeData(data);
   }
 
-
+  // console.log(categoryWiseExpenses)
 
   useEffect(() => {
     fetchCategoryWiseMonthlyExpenses()

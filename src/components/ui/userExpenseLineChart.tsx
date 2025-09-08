@@ -86,7 +86,7 @@ export function UserExpenseLineChart({ data, month, year, userCategories }: user
             </div>
             <CardHeader>
                 <CardTitle>Expednitures - Over Time</CardTitle>
-                <CardDescription>Last 6 months' trend</CardDescription>
+                <CardDescription>{"Last 6 months' trend"}</CardDescription>
             </CardHeader>
             <CardContent>
                 <ChartContainer config={chartConfig} className="w-full h-[200px]">

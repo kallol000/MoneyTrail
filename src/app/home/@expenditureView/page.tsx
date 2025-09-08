@@ -3,7 +3,6 @@ import { useState, useEffect, useTransition, Dispatch, SetStateAction } from "re
 import { mapUserCategories, mapUserCategoryNumbers} from "@/app/utils/lib/helpers";
 import { expenseRecord, userCategoriesRecord} from "@/app/utils/lib/types";
 import UserTable from "@/components/ui/userTable";
-import { getDateWiseExpenses} from "@/app/api/fetch/route";
 import { Toaster } from "@/components/ui/sonner";
 import { UserIncomePopover } from "@/components/ui/UserIncomePopover";
 import { UserCategoriesPopover } from "@/components/ui/UserCategoriesPopover";
@@ -25,11 +24,12 @@ export default function ExpenditureView({user, userCategories, year, month, tota
   const [isFetchPending, startFetchTransition] = useTransition();
   
   
-  console.log("user",user)
+  // console.log("user",user)
 
   // to fetch monthly expenses
   const fetchDateWiseExpenses = async () => {
-    const res = await getDateWiseExpenses(year,month);
+    // const res = await getDateWiseExpenses(year,month);
+    const res = await fetch(`/api/expenditure/month-datewise?year=${year}&month=${month}`)
     const data = await res.json();
     setExpenseData(data);
   };

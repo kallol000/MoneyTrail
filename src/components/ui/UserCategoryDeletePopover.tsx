@@ -14,14 +14,12 @@ import { toast } from "sonner"
 import { Dispatch, SetStateAction } from "react"
 import { insertCategoryRow } from "@/app/utils/lib/types"
 import {TrashIcon} from "@heroicons/react/16/solid"
-import { deleteCategory } from "@/app/api/delete/route"
+import axios from "axios"
 
 export function UserCategoryDeletePopover({id, setHomeRefresh, setCategoryListRefresh}: {id: number, setHomeRefresh:Dispatch<SetStateAction<boolean>>, setCategoryListRefresh:Dispatch<SetStateAction<boolean>>}) {
 
     const [popoverOpen, setPopoverOpen] = useState<boolean>(false)
     const [localRefresh, setLocalRefresh] = useState<boolean>(false)
-
-
 
     const handlePopoverOpen = () => {
         setPopoverOpen(true)
@@ -33,15 +31,16 @@ export function UserCategoryDeletePopover({id, setHomeRefresh, setCategoryListRe
 
     const handleDelete = async () => {
 
-        const res = await deleteCategory(id)
-        const data = await res.json()
+        // const res = await deleteCategory(id)
+        const res = await axios.delete(`/api/categories/user-all?id=${id}`)
+        // const data = await res.json()
 
         if(res.status === 200) {
             toast("Category deleted")
             setHomeRefresh(prev => !prev)
             setCategoryListRefresh(prev => !prev)
         }else if(res.status === 400) {
-            toast.error("Error deleting category", data.message)
+            toast.error("Error deleting category")
         }
 
         handleClose()

@@ -1,26 +1,26 @@
 'use client'
-import { redirect } from "next/navigation"
 import { useState, useEffect, useTransition } from "react"
-import {tab} from "../utils/lib/types"
+import {tab, UserDetails} from "../utils/lib/types"
 import UserTabs from "@/components/ui/userTabs"
 import AnalyticsView from "./@analyticsView/page"
 import ExpenditureView from "./@expenditureView/page"
-import { getUser } from "../api/fetch/route"
 import { UserSelect } from "@/components/ui/userSelect"
 import { months, monthsinNumber } from "../utils/lib/helpers"
 import { monthYear } from "../utils/lib/types"
 import { userCategoriesRecord } from "../utils/lib/types"
-import { getUserCategories } from "../api/fetch/route"
-import { getMonthlyIncome } from "../api/fetch/route"
-import { getMonthlyExpense } from "../api/fetch/route"
 import Spinner from "@/components/ui/spinner"
 import { Card, CardTitle } from "@/components/ui/card"
 import { NewUserSetupPopover } from "@/components/ui/newUserSetupPopover"
+import { useUser } from "../utils/lib/userContext"
 
 
 export default function HomePage() {
 
-    const [user, setUser] = useState<string>("");
+    const {userDetails, refreshUserDetails} = useUser()
+
+    // console.log(user)
+
+
     const [isNewUser, setIsNewUser] = useState<boolean>(true)
 
     const [tabs, setTabs] = useState<tab>({
@@ -40,75 +40,72 @@ export default function HomePage() {
     const [totalIncome, setTotalIncome] = useState<number>(0);
     const [totalExpenditure, setTotalExpenditure] = useState<number>(0);
     const [balance, setBalance] = useState<number>(0);
-
-
-    // to fetch user details
-        const fetchUser = async () => {
-        const res = await getUser();
-        const data = await res.json();
-        setUser(data.user.id);
-    };
-
-     // to fetch user categories
-      const fetchUserCategories = async () => {
-        const res = await getUserCategories();
+    
+    // to fetch user categories
+    const fetchUserCategories = async () => {
+        // const res = await getUserCategories();
+        const res = await fetch(`/api/categories/user-all`)
         const data = await res.json();
         setUserCategories(data);
-      };
+    };
 
     const fetchMonthlyIncome = async () => {
-    try {
-      const res = await getMonthlyIncome(parseInt(selectedMonthYear.year), monthsinNumber[selectedMonthYear.month]);
-      const data = await res.json();
-      setTotalIncome(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+        const res = await fetch(`/api/income/month-total?year=${parseInt(selectedMonthYear.year)}&month=${monthsinNumber[selectedMonthYear.month]}`)  
+        const data = await res.json();
+        setTotalIncome(data);
+    };
 
-  const fetchMonthlyExpenditure = async () => {
-    try {
-      const res = await getMonthlyExpense(parseInt(selectedMonthYear.year), monthsinNumber[selectedMonthYear.month]);
-      const data = await res.json();
-      setTotalExpenditure(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+
+    const fetchMonthlyExpenditure = async () => {
+        
+            const year = parseInt(selectedMonthYear.year)
+            const month = monthsinNumber[selectedMonthYear.month]
+        //   const res = await getMonthlyExpense(parseInt(selectedMonthYear.year), monthsinNumber[selectedMonthYear.month]);
+        const res = await fetch(`/api/expenditure/month-total?year=${year}&month=${month}`)
+        const data = await res.json();
+        setTotalExpenditure(data);
+    };
 
     const handleMonthYearChange = (value: string, name: string) => {
         setSelectedMonthYear((prev) => ({ ...prev, [name]: value }));
     };
     
-
-
-    
     const handleTabChange = (value:string) => {
         setActiveTab(value)
     }
 
+    useEffect(() => {
+        setHomeRefresh(prev => !prev)
+    },[])
 
 
     useEffect(() => {
-        fetchUser();
-    }, []);
+        if(userDetails.name){
+            setIsNewUser(false)
+        }else{
+            setIsNewUser(true)
+        }
+    }, [userDetails])
+    // useEffect(() => {
+    //     fetchUser();
+    // }, []);
 
     useEffect(() => {
-        if (user) {
+        if (userDetails.name) {
         fetchUserCategories();
         }
-    }, [user, selectedMonthYear, homeRefresh]);
+    }, [userDetails, selectedMonthYear, homeRefresh]);
 
     // console.log(selectedMonthYear)
 
     useEffect(() => {
         startFetchTransition(async () => {
-        if (user) {
+        if (userDetails && selectedMonthYear.year && selectedMonthYear.month) {
             fetchMonthlyIncome();
             fetchMonthlyExpenditure();
         }
         });
-    }, [user, selectedMonthYear, homeRefresh]);
+    }, [userDetails, selectedMonthYear, homeRefresh]);
 
     useEffect(() => {
         setBalance((prev) => {
@@ -119,16 +116,21 @@ export default function HomePage() {
         });
     }, [totalIncome, totalExpenditure]);
 
-    // if(isNewUser) {
-    //     return (
-    //         <div className="px-4 h-full">
-    //             <Card className="text-xl h-full flex items-center justify-center p-4">
-    //                 <CardTitle>Let's set up your profile</CardTitle>
-    //                 <NewUserSetupPopover />
-    //             </Card>
-    //         </div>
-    //     )
-    // }
+    if(userDetails.loading) {
+        return <div className="text-5xl">loading...</div>
+    }
+
+
+    if(isNewUser) {
+        return (
+            <div className="px-4 h-full">
+                <Card className="text-xl h-full flex items-center justify-center p-4">
+                    <CardTitle>Let's set up your profile</CardTitle>
+                    <NewUserSetupPopover setHomeRefresh = {setHomeRefresh} />
+                </Card>
+            </div>
+        )
+    }
 
     return (
         <div className="px-4 ">
@@ -152,7 +154,7 @@ export default function HomePage() {
                 {isFetchPending ? <Spinner /> : undefined}
             </div>
                 {activeTab === "analytics" && <AnalyticsView 
-                    user={user}
+                    user={userDetails.name}
                     userCategories={userCategories} 
                     year={parseInt(selectedMonthYear.year)} 
                     month={monthsinNumber[selectedMonthYear.month]} 
@@ -162,7 +164,8 @@ export default function HomePage() {
                     homeRefresh={homeRefresh}
                     setHomeRefresh={setHomeRefresh}
                     /> }
-                {activeTab === "expenditureView" && <ExpenditureView user={user} 
+                {activeTab === "expenditureView" && <ExpenditureView 
+                    user={userDetails.name} 
                     userCategories={userCategories} 
                     year={parseInt(selectedMonthYear.year)} 
                     month={monthsinNumber[selectedMonthYear.month]} 
