@@ -125,7 +125,7 @@ export default function HomePage() {
         return (
             <div className="px-4 h-full">
                 <Card className="text-xl h-full flex items-center justify-center p-4">
-                    <CardTitle>Let's set up your profile</CardTitle>
+                    <CardTitle>{"Let's set up your profile"}</CardTitle>
                     <NewUserSetupPopover setHomeRefresh = {setHomeRefresh} />
                 </Card>
             </div>
