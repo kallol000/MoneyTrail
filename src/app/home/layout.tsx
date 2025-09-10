@@ -8,6 +8,8 @@ import { useUser } from "../utils/lib/userContext";
 export default function Layout({children} : {children: ReactNode}) {
     const {userDetails} = useUser()
     
+    console.log(userDetails)
+
     return (
         <div className="flex flex-col gap-4 min-h-screen">
             <Navbar>

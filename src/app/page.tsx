@@ -11,13 +11,13 @@ export default function Home() {
         {/* <h1 className="text-5xl font-bold">Hey There!</h1> */}
         {/* <span> */}
           <div>
-            <h1 className="text-5xl font-semibold">Welcome to </h1>
-            <h1 className="text-9xl font-bold text-identity">MONEYTRAIL</h1>
+            <h1 className="text-base md:text-2xl lg:text-4xl font-semibold">Welcome to </h1>
+            <h1 className="text-5xl md:text-7xl lg:text-9xl font-bold text-identity">MONEYTRAIL</h1>
             <div className="flex justify-end">
               <Link className="items-end" href="login">
                 {/* <Button variant={"link"} > */}
                   <div className="flex items-center gap-1 hover:text-bold">
-                    <div className="text-xl ">
+                    <div className="text-xs md:text-xl">
                       <span className="font-bold text-action">Login or Sign Up</span>
                       <span> to start tracking your expenses today!</span>
                     </div>

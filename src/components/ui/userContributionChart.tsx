@@ -89,7 +89,7 @@ export  default function UserContributionChart({ data, month }: contributionChar
       </CardHeader>
       {/* <CardContent className={variant === "identity" ? "text-4xl font-bold": "text-xl font-semibold"}> */}
       <CardContent className="relative text-4xl font-semibold">
-          <div className="grid grid-cols-6 gap-x-2 p-0">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-x-2 p-0">
             {dailyBoxes}
           </div>
       </CardContent>

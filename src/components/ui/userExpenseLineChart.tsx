@@ -50,7 +50,6 @@ export function UserExpenseLineChart({ data, month, year, userCategories }: user
         }
     }
 
-    console.log(chartData)
 
     useEffect(() => {
         if(chartData.length > 0 && month && year) {

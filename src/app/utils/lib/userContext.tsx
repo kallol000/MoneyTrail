@@ -15,57 +15,49 @@ type UserContextType = {
 const UserContext = createContext<UserContextType>({
     userDetails: {name: "", loading: true},
     refreshUserDetails: async () => {}
-}
-)
-
-
+})
 
 export function UserProvider({children}:{children:ReactNode}) {
 
     const [userDetails, setUserDetails] = useState<UserDetails>({name: "", loading: true})
 
-    const fetchUserDetails = async () => {
-        const res = await axios(`/api/user/details`)
-        if(res.status === 200) {
-            setUserDetails(prev => res.data?.length > 0 ? ({...res.data[0], loading: false}) : ({...prev, loading: false}))
-        }else if (res.status === 400) {
-            console.log("There was an error")
+     const fetchUserDetails = async () => {
+        setUserDetails({ name: "", loading: true });  // Always reset before fetching
+        const res = await axios(`/api/user/details`);
+        if (res.status === 200) {
+            setUserDetails(
+                res.data?.length > 0
+                    ? { ...res.data[0], loading: false }
+                    : { name: "", loading: false }
+            );
+        } else {
+            console.log("Error fetching user details");
+            setUserDetails({ name: "", loading: false });
         }
-    }
+    };
+
 
     useEffect(() => {
-        
-        let mounted = true;
+        // Subscribe to auth state changes
+        const { data: authListener } = supabase.auth.onAuthStateChange(
+            (event, session) => {
+                if (event === "SIGNED_OUT") {
+                    // Reset userDetails on logout
+                    setUserDetails({ name: "", loading: false });
+                } else if (event === "SIGNED_IN") {
+                    fetchUserDetails();
+                }
+            }
+        );
 
-  const init = async () => {
-    // ✅ make sure we have the latest session first
-    const {
-        data: { session },
-        } = await supabase.auth.getSession();
-
-        if (!mounted) return;
-
-        if (session) {
-        await fetchUserDetails(); // now fetches for the correct logged-in user
-        } else {
-        setUserDetails({ name: "", loading: false });
-        }
-    };
-
-    init();
-
-    // ✅ subscribe to future auth changes
-    const {
-        data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, _session) => {
+        // Initial fetch (if user already signed in)
         fetchUserDetails();
-    });
 
-    return () => {
-        mounted = false;
-        subscription.unsubscribe();
-    };
-    }, [])
+        return () => {
+            authListener.subscription.unsubscribe();
+        };
+    }, []);
+
 
     
 
