@@ -48,7 +48,7 @@ export default function LoginPage() {
       </div>
     <div className='flex justify-center'>
 
-      <form className='w-1/3 flex flex-col gap-4 p-4 items-center '>
+      <form className='w-4/5 min-w-[350px] max-w-[500px] flex flex-col gap-4 p-4 items-center '>
           <Input placeholder='email' id="email" name="email" type="email" required />
           <Input placeholder='password' id="password" name="password" type="password" required />
         <div className = "flex gap-4 mt-8">

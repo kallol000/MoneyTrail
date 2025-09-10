@@ -31,7 +31,7 @@ export function HomeCarousel() {
     <CarouselItem key={index}>
       <Card className="">
         <CardContent className="flex flex-col aspect-video items-center justify-start p-6 ">
-          <div className="text-xl">{item.title}</div>
+          <div className="text-xs md:text-base lg:text-xl">{item.title}</div>
         </CardContent>
       </Card>
     </CarouselItem>
