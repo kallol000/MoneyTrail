@@ -6,16 +6,12 @@ import { HomeCarousel } from "@/components/ui/IntroCarousel";
 
 export default function Home() {
   return (
-    // <UserProvider>
-      <div className="font-sans flex flex-col gap-16 items-center justify-center max-h-screen mt-10 p-8 pb-20 sm:p-20">
-        {/* <h1 className="text-5xl font-bold">Hey There!</h1> */}
-        {/* <span> */}
+      <div className="font-sans grid gap-16 items-center max-h-screen mt-10 p-8 pb-20 sm:p-20">
           <div>
             <h1 className="text-base md:text-2xl lg:text-4xl font-semibold">Welcome to </h1>
             <h1 className="text-5xl md:text-7xl lg:text-9xl font-bold text-identity">MONEYTRAIL</h1>
             <div className="flex justify-end">
               <Link className="items-end" href="login">
-                {/* <Button variant={"link"} > */}
                   <div className="flex items-center gap-1 hover:text-bold">
                     <div className="text-xs md:text-xl">
                       <span className="font-bold text-action">Login or Sign Up</span>
@@ -23,11 +19,9 @@ export default function Home() {
                     </div>
                     <ArrowUpRightIcon className="size-5" />  
                   </div>
-                {/* </Button> */}
               </Link>
             </div>
           </div>
-        {/* </span> */}
         <HomeCarousel />
         
       </div>

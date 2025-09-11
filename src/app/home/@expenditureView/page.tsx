@@ -54,10 +54,13 @@ export default function ExpenditureView({user, userCategories, year, month, tota
 
 
   return (
-    <div className="mt-4 flex flex-col gap-4 h-full">
-      <div className="flex flex-row gap-4 items-top justify-between">
-        <div className="basis-2/6">
-          <Card className="bg-identity border-none text-secondary ">
+    <>
+      <div className="grid row-span-3 grid-cols-10">
+        <div className="bg-identity border-none rounded-lg flex flex-col items-start p-4 text-secondary col-span-3">
+          <div>Available Balance</div>
+          <span className="text-2xl font-bold">&#8377;{balance}</span>
+        </div>
+          {/* <Card className="bg-identity border-none text-secondary col-span-3">
             <CardHeader className=" items-end font-semibold">
               <div className="flex items-center gap-4">
                 <span className="text-md ">Available Balance</span>
@@ -76,23 +79,26 @@ export default function ExpenditureView({user, userCategories, year, month, tota
               </div>
               <span className="text-2xl font-bold">&#8377;{balance}</span>
             </CardHeader>
-          </Card>
-        </div>
-        {/* <div className="flex items-center gap-4">
-                    </div> */}
-        <div className="basis-2/3 flex gap-4 justify-end">
-          <UserIncomePopover
-            income={totalIncome}
-            month={month}
-            year={year}
-            setHomeRefresh={setHomeRefresh}
-          />
-          <UserCategoriesPopover setHomeRefresh={setHomeRefresh} />
-         
-          
+          </Card> */}
+        <div className="col-[span-8/span-10] justify-items-center">
+          <div className="flex items-center gap-2">
+            <UserIncomePopover
+              income={totalIncome}
+              month={month}
+              year={year}
+              setHomeRefresh={setHomeRefresh}
+            />
+            <UserCategoriesPopover setHomeRefresh={setHomeRefresh} />
+          </div>
         </div>
       </div>
-      <div className="flex-1 overflow-hidden">
+      <div className="row-span-18  h-full overflow-scroll
+      [&::-webkit-scrollbar]:w-2
+      [&::-webkit-scrollbar]:h-2
+      [&::-webkit-scrollbar-track]:bg-gray-100
+      [&::-webkit-scrollbar-thumb]:bg-gray-300
+      dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+      dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
         <UserTable
           data={expenseData}
           categoryNamesMap={categoryNamesMap}
@@ -102,6 +108,6 @@ export default function ExpenditureView({user, userCategories, year, month, tota
         />
       </div>
       <Toaster richColors />
-    </div>
+    </>  
   );
 }

@@ -77,14 +77,14 @@ export function UserRadarChart({data, month, year, userCategories}: radarChartPr
             Where am I spending the most?
             </CardDescription>
         </CardHeader>
-        <CardContent className="pb-0 ">
+        <CardContent className="pb-0 grid grid-cols-15 h-full">
             <ChartContainer
             config={chartConfig}
-            className="mx-auto aspect-square w-full h-[200px]"
+            className="col-span-11 col-start-3"
             >
             <RadarChart data={chartData}>
                 <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-                <PolarAngleAxis dataKey="name" />
+                <PolarAngleAxis dataKey="name"/>
                 <PolarGrid />
                 <Radar
                 dataKey="total_spent"

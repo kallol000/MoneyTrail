@@ -50,7 +50,7 @@ export default function LoginPage() {
 
       <form className='w-4/5 min-w-[350px] max-w-[500px] flex flex-col gap-4 p-4 items-center '>
           <Input placeholder='email' id="email" name="email" type="email" required />
-          <Input placeholder='password' id="password" name="password" type="password" required />
+          <Input placeholder='password' id="password" name="password" type="password" />
         <div className = "flex gap-4 mt-8">
             <Button className='min-w-30 rounded-[50px] cursor-pointer' formAction={ handleLogin }>{ isLoginPending ? <Spinner /> : `Log in` }</Button>
             <Button className='min-w-30 rounded-[50px] cursor-pointer' formAction={ handleSignup }>{ isSignupPending ? <Spinner /> : `Sign Up` }</Button>

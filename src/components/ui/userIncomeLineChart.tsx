@@ -55,17 +55,19 @@ export function UserIncomeLineChart({ data, month, year }: userLineChartProps) {
                 <CardTitle>Income - Over Time</CardTitle>
                 <CardDescription>{"Last 6 months' trend"}</CardDescription>
             </CardHeader>
-            <CardContent>
-                <ChartContainer config={chartConfig} className="w-full h-[200px]">
+            <CardContent className="grid grid-cols-15">
+                <ChartContainer config={chartConfig} className="col-span-11 col-start-3">
                 <LineChart
                     accessibilityLayer
                     data={chartData}
                     margin={{
                     left: 12,
                     right: 12,
-                    }}
+
+                    }
+                }
                 >
-                    <CartesianGrid vertical={false} />
+                    <CartesianGrid vertical={false}  />
                     <XAxis
                         dataKey="month"
                         tickLine={false}
