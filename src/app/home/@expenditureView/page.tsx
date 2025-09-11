@@ -56,7 +56,7 @@ export default function ExpenditureView({user, userCategories, year, month, tota
   return (
     <>
       <div className="grid row-span-3 grid-cols-10">
-        <div className="bg-identity border-none rounded-lg flex flex-col items-start p-4 text-secondary col-span-3">
+        <div className="bg-identity border-none rounded-lg flex flex-col items-start p-4 text-secondary col-span-8 sm:col-span-5 md:col-span-5 xl:col-span-3">
           <div>Available Balance</div>
           <span className="text-2xl font-bold">&#8377;{balance}</span>
         </div>
@@ -80,8 +80,9 @@ export default function ExpenditureView({user, userCategories, year, month, tota
               <span className="text-2xl font-bold">&#8377;{balance}</span>
             </CardHeader>
           </Card> */}
-        <div className="col-[span-8/span-10] justify-items-center">
-          <div className="flex items-center gap-2">
+        {/* <div className="col-[span-8/span-10] justify-items-center gap-y-2"> */}
+        <div className="col-[span-8/span-10]">
+          <div className="flex flex-col md:flex-row justify-items-end gap-2">
             <UserIncomePopover
               income={totalIncome}
               month={month}

@@ -63,12 +63,21 @@ export default function AnalyticsView({user, userCategories, year, month, totalI
   return (
     <>
       <div className="flex flex-col gap-4 md:grid md:row-span-3 md:grid-cols-3 xl:row-span-3">
-        <div className="bg-identity border-none rounded-lg flex flex-col items-start p-4 text-secondary col-span-1"></div>
-        <div className="bg-identity border-none rounded-lg flex flex-col items-start p-4 text-secondary col-span-1"></div>
-        <div className="bg-identity border-none rounded-lg flex flex-col items-start p-4 text-secondary col-span-1"></div>
+        <div className="bg-identity border-none rounded-lg flex md:flex-col items-start p-4 text-secondary col-span-1">
+          <div>Available Balance</div>
+          <div className="text-2xl font-bold">&#8377;{balance}</div>
+        </div>
+        <div className=" border-identity border-2 rounded-lg flex flex-col items-start p-4  col-span-1">
+          <div>Total Income</div>
+          <div className="text-2xl font-bold">&#8377;{totalIncome}</div>
+        </div>
+        <div className="border-identity border-2 rounded-lg flex flex-col items-start p-4 col-span-1">
+          <div>Total Expenditure</div>
+          <div className="text-2xl font-bold">&#8377;{totalExpenditure}</div>
+        </div>
       </div>
 
-      <div className="flex flex-col xl:grid row-span-10 xl:grid-cols-3 xl:max-h-full gap-4">
+      <div className="flex flex-col gap-4 md:grid md:grid-cols-2 xl:grid xl:row-span-17 xl:grid-cols-3 xl:max-h-full ">
         <div className="col-span-1 xl:max-h-full ">
           <UserRadarChart data = {categoryWiseExpenses} month={months[month] } year={year} userCategories={userCategories}/>
         </div>
@@ -78,13 +87,12 @@ export default function AnalyticsView({user, userCategories, year, month, totalI
         <div className="col-span-1">
           <UserIncomeLineChart data={lastSixMonthsIncomeData} month={months[month] } year={year} />
         </div>
-      </div>
-
-      <div className="flex flex-col xl:grid row-span-7 xl:grid-cols-3 h-full gap-4">
         <div className="col-span-2">
           <UserContributionChart data = {lastSixMonthsDailyExpenses} month = {months[month]}/>
         </div>
       </div>
+    
+
 
       {/* <div className="py-4 flex flex-col gap-4 md:grid md:grid-cols-2 md:row-span-21 xl:grid-cols-3 xl:row-span-21 md:gap-4 "> */}
         {/* <div className="col-span-1 row-span-3">
