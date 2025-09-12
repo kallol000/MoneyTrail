@@ -221,7 +221,7 @@ export function UserExpensePopover({
           {icon === "add" ? <PlusIcon /> : <InfoIcon />}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-120">
+      <PopoverContent className="w-80 sm:w-120">
         <Button
           onClick={handleClose}
           variant={"ghost"}
@@ -243,9 +243,8 @@ export function UserExpensePopover({
             dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
             {isDataFetchPending ? <Spinner /> : expenseElems}
           </div>
-          <div className="mt-8 grid grid-cols-10 justify-items-center items-center gap-4">
-            <div className="col-span-2"></div>
-            <Button className="col-span-3" onClick={addEmptyExpense}>
+          <div className="mt-8 grid grid-cols-6 sm:grid-cols-10 justify-items-center items-center gap-4">
+            <Button className="col-span-3 sm:col-start-3" onClick={addEmptyExpense}>
               Add an Expense
             </Button>
             <Button
@@ -256,7 +255,6 @@ export function UserExpensePopover({
             >
               Save Changes
             </Button>
-            <div className="col-span-2"></div>
           </div>
         </div>
       </PopoverContent>

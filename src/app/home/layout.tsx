@@ -32,9 +32,9 @@ export default function Layout({children} : {children: ReactNode}) {
                 <Navbar>
                     <h1 className="text-identity font-bold text-2xl col-span-2">MONEYTRAIL</h1>
                     <div className="flex items-center gap-4 col-[span-7/span-10]">
-                        <div className="font-semibold">{isFetchUserPending ? <Spinner /> : username ? `Hi ${username}` : null}</div>
+                        <div className="text-xs font-semibold">{isFetchUserPending ? <Spinner /> : username ? `Hi ${username}` : null}</div>
                         <form>
-                            <Button formAction={logOut}>Logout</Button>
+                            <Button size={"sm"} className="text-xs " formAction={logOut}>Logout</Button>
                         </form>
                     </div>
                 </Navbar>
