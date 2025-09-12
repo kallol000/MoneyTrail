@@ -62,32 +62,32 @@ export default function AnalyticsView({user, userCategories, year, month, totalI
 
   return (
     <>
-      <div className="flex flex-col gap-4 md:grid md:row-span-3 md:grid-cols-3 xl:row-span-3">
-        <div className="bg-identity border-none rounded-lg flex md:flex-col items-start p-4 text-secondary col-span-1">
-          <div>Available Balance</div>
+      <div className="flex flex-col gap-4 sm:grid sm:grid-cols-6 xl:grid xl:grid-cols-6 xl:max-h-full ">
+      {/* <div className="flex flex-col gap-4 md:grid md:row-span-3 md:grid-cols-3 xl:row-span-3"> */}
+        <div className="bg-identity border-none rounded-lg flex gap-2 items-end justify-between p-4 text-secondary col-span-1 sm:col-span-2 sm:flex-col sm:items-start xl:col-span-2">
+          <div className="">Available Balance</div>
           <div className="text-2xl font-bold">&#8377;{balance}</div>
         </div>
-        <div className=" border-identity border-2 rounded-lg flex flex-col items-start p-4  col-span-1">
+        <div className=" border-identity border-2 rounded-lg flex gap-2 items-end justify-between p-4 col-span-1 sm:col-span-2 sm:flex-col sm:items-start xl:col-span-2">
           <div>Total Income</div>
           <div className="text-2xl font-bold">&#8377;{totalIncome}</div>
         </div>
-        <div className="border-identity border-2 rounded-lg flex flex-col items-start p-4 col-span-1">
+        <div className="border-identity border-2 rounded-lg flex gap-2 items-end justify-between sm:col-span-2 p-4  col-span-1 sm:flex-col sm:items-start xl:col-span-2">
           <div>Total Expenditure</div>
           <div className="text-2xl font-bold">&#8377;{totalExpenditure}</div>
         </div>
-      </div>
+      {/* </div> */}
 
-      <div className="flex flex-col gap-4 md:grid md:grid-cols-2 xl:grid xl:row-span-17 xl:grid-cols-3 xl:max-h-full ">
-        <div className="col-span-1 xl:max-h-full ">
+        <div className="sm:col-span-3 xl:col-span-2 xl:max-h-full ">
           <UserRadarChart data = {categoryWiseExpenses} month={months[month] } year={year} userCategories={userCategories}/>
         </div>
-        <div className="col-span-1">
+        <div className="sm:col-span-3 xl:col-span-2">
           <UserExpenseLineChart data = {lastSixMonthsExpenses} month={months[month] } year={year} userCategories={userCategories} />
         </div>
-        <div className="col-span-1">
+        <div className="sm:col-span-3 xl:col-span-2">
           <UserIncomeLineChart data={lastSixMonthsIncomeData} month={months[month] } year={year} />
         </div>
-        <div className="col-span-2">
+        <div className="sm:col-span-6 xl:col-span-4">
           <UserContributionChart data = {lastSixMonthsDailyExpenses} month = {months[month]}/>
         </div>
       </div>
