@@ -198,7 +198,7 @@ export function UserIncomePopover({
           Income <PlusIcon />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-120">
+      <PopoverContent className="w-80 sm:w-120">
         <Button
           onClick={handleClose}
           variant={"ghost"}
@@ -212,9 +212,8 @@ export function UserIncomePopover({
             <p className="text-muted-foreground text-sm">Add Earning(s)</p>
           </div>
           <div className="grid gap-2">{incomeElems}</div>
-          <div className="mt-8 grid grid-cols-10 justify-items-center items-center gap-4">
-            <div className="col-span-2"></div>
-            <Button className="col-span-3" onClick={addEmptyIncome}>
+          <div className="mt-8 grid grid-cols-6 sm:grid-cols-10 justify-items-center items-center gap-4">
+            <Button className="col-span-3 sm:col-start-3" onClick={addEmptyIncome}>
               Add an Income
             </Button>
             <Button
@@ -225,7 +224,6 @@ export function UserIncomePopover({
             >
               Save Changes
             </Button>
-            <div className="col-span-2"></div>
           </div>
         </div>
       </PopoverContent>

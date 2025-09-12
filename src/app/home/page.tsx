@@ -90,7 +90,7 @@ export default function HomePage() {
 
     useEffect(() => {
         fetchUserDetails()
-    }, [])
+    }, [homeRefresh])
 
 
     useEffect(() => {
@@ -148,8 +148,8 @@ export default function HomePage() {
     return (
         
         <>
-            <div className="row-span-2 items-center grid grid-cols-20">
-                <div className="col-span-20 sm:col-span-9 md:col-span-8 lg:col-span-6">
+            <div className="row-span-2 items-center grid grid-cols-[repeat(auto-fit,minmax(0,90px))] gap-2">
+                <div className="col-span-20 sm:col-span-3 ">
                     <UserTabs  tabs = {tabs} activeTab = {activeTab} handleValueChange={handleTabChange}/>
                 </div>
                 <div className="col-span-20 sm:col-span-9 md:col-span-6">
