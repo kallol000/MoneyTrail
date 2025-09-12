@@ -153,7 +153,7 @@ export default function HomePage() {
                     <UserTabs  tabs = {tabs} activeTab = {activeTab} handleValueChange={handleTabChange}/>
                 </div>
                 <div className="col-span-20 sm:col-span-9 md:col-span-6">
-                    <div className="flex ">
+                    <div className="flex gap-2">
                         <UserSelect
                             name="month"
                             label="Month"
