@@ -55,7 +55,7 @@ export function UserIncomeLineChart({ data, month, year }: userLineChartProps) {
                 <CardTitle>Income - Over Time</CardTitle>
                 <CardDescription>{"Last 6 months' trend"}</CardDescription>
             </CardHeader>
-            <CardContent className="grid grid-cols-15">
+            <CardContent className="md:grid grid-cols-15">
                 <ChartContainer config={chartConfig} className="col-span-11 col-start-3">
                 <LineChart
                     accessibilityLayer

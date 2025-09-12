@@ -77,7 +77,7 @@ export function UserRadarChart({data, month, year, userCategories}: radarChartPr
             Where am I spending the most?
             </CardDescription>
         </CardHeader>
-        <CardContent className="pb-0 grid grid-cols-15 h-full">
+        <CardContent className="pb-0 md:grid grid-cols-15 h-full">
             <ChartContainer
             config={chartConfig}
             className="col-span-11 col-start-3"
