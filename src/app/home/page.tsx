@@ -193,6 +193,7 @@ export default function HomePage() {
                     homeRefresh={homeRefresh}
                     setHomeRefresh={setHomeRefresh}
                     /> }
+            <div></div>
                 {/* {activeTab === "timeseriesAnalytics" && timeseriesAnalytics } */}
             </>
     )
