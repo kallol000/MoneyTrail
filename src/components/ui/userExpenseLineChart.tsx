@@ -99,8 +99,8 @@ export function UserExpenseLineChart({ data, month, year, userCategories }: user
                 <CardTitle>Expenditures - Over Time</CardTitle>
                 <CardDescription>{"Last 6 months' trend"}</CardDescription>
             </CardHeader>
-            <CardContent>
-                <ChartContainer config={chartConfig} className="w-full h-[200px]">
+            <CardContent className="grid grid-cols-15">
+                <ChartContainer config={chartConfig} className="w-full col-span-11 col-start-3">
                 <LineChart
                     accessibilityLayer
                     data={chartData}

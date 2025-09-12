@@ -12,17 +12,16 @@ import Spinner from "@/components/ui/spinner"
 import { Card, CardTitle } from "@/components/ui/card"
 import { NewUserSetupPopover } from "@/components/ui/newUserSetupPopover"
 import { useUser } from "../utils/lib/userContext"
+import axios from "axios"
 
 
 export default function HomePage() {
 
-    const {userDetails, refreshUserDetails} = useUser()
-
-    // console.log(user)
-
-
-    const [isNewUser, setIsNewUser] = useState<boolean>(true)
-
+    
+    const [username, setUsername] = useState<string>("")
+    const [isFetchUserPending, startFetchUser] = useTransition()
+    const [isNewUser, setIsNewUser] = useState<boolean>(false)
+    
     const [tabs, setTabs] = useState<tab>({
         analytics: "Analytics View",
         expenditureView: "Expenditure Tracking",
@@ -36,10 +35,22 @@ export default function HomePage() {
 
     const [userCategories, setUserCategories] = useState<userCategoriesRecord[]>([]);
     const [homeRefresh, setHomeRefresh] = useState<boolean>(false);
-    const [isFetchPending, startFetchTransition] = useTransition();
     const [totalIncome, setTotalIncome] = useState<number>(0);
     const [totalExpenditure, setTotalExpenditure] = useState<number>(0);
     const [balance, setBalance] = useState<number>(0);
+
+
+    const fetchUserDetails = async () => {
+        startFetchUser(async () => {
+            const res = await axios.get(`/api/user/details`);
+            const data = res.data
+            if(data?.length > 0) {
+                setUsername(prev => data[0].name)
+            }
+        })
+    }
+
+    
     
     // to fetch user categories
     const fetchUserCategories = async () => {
@@ -58,9 +69,8 @@ export default function HomePage() {
 
     const fetchMonthlyExpenditure = async () => {
         
-            const year = parseInt(selectedMonthYear.year)
-            const month = monthsinNumber[selectedMonthYear.month]
-        //   const res = await getMonthlyExpense(parseInt(selectedMonthYear.year), monthsinNumber[selectedMonthYear.month]);
+        const year = parseInt(selectedMonthYear.year)
+        const month = monthsinNumber[selectedMonthYear.month]
         const res = await fetch(`/api/expenditure/month-total?year=${year}&month=${month}`)
         const data = await res.json();
         setTotalExpenditure(data);
@@ -78,34 +88,35 @@ export default function HomePage() {
         setHomeRefresh(prev => !prev)
     },[])
 
+    useEffect(() => {
+        fetchUserDetails()
+    }, [])
+
 
     useEffect(() => {
-        if(userDetails.name){
+
+        if(username){
             setIsNewUser(false)
         }else{
             setIsNewUser(true)
         }
-    }, [userDetails])
-    // useEffect(() => {
-    //     fetchUser();
-    // }, []);
+    }, [username])
 
     useEffect(() => {
-        if (userDetails.name) {
+        if (username) {
         fetchUserCategories();
         }
-    }, [userDetails, selectedMonthYear, homeRefresh]);
+    }, [username, selectedMonthYear, homeRefresh])
 
-    // console.log(selectedMonthYear)
 
     useEffect(() => {
-        startFetchTransition(async () => {
-        if (userDetails && selectedMonthYear.year && selectedMonthYear.month) {
+        // startFetchTransition(async () => {
+        if (username && selectedMonthYear.year && selectedMonthYear.month) {
             fetchMonthlyIncome();
             fetchMonthlyExpenditure();
         }
-        });
-    }, [userDetails, selectedMonthYear, homeRefresh]);
+        // });
+    }, [username, selectedMonthYear, homeRefresh]);
 
     useEffect(() => {
         setBalance((prev) => {
@@ -116,45 +127,52 @@ export default function HomePage() {
         });
     }, [totalIncome, totalExpenditure]);
 
-    if(userDetails.loading) {
-        return <div className="text-5xl">loading...</div>
-    }
 
-
-    if(isNewUser) {
+    if(isNewUser && !isFetchUserPending) {
         return (
-            <div className="px-4 h-full">
+            <div className="px-4 row-span-10 h-full">
                 <Card className="text-xl h-full flex items-center justify-center p-4">
-                    <CardTitle>{"Let's set up your profile"}</CardTitle>
+                    <CardTitle>{"Hey there! Looks like you are new. Let's set up your profile"}</CardTitle>
                     <NewUserSetupPopover setHomeRefresh = {setHomeRefresh} />
                 </Card>
             </div>
         )
     }
-
+    
+    if(isFetchUserPending) {
+        return <div>
+            <Spinner />
+        </div>
+    }
+    
     return (
-        <div className="px-4 ">
-            <div className="flex items-center gap-2">
-
-                <UserTabs tabs = {tabs} activeTab = {activeTab} handleValueChange={handleTabChange}/>
-                 <UserSelect
-                    name="month"
-                    label="Month"
-                    data={months.filter(m => m !== "")}
-                    value={selectedMonthYear.month}
-                    onChange={handleMonthYearChange}
-                    />
-                    <UserSelect
-                    name="year"
-                    label="Year"
-                    data={["2024", "2025", "2026"]}
-                    value={selectedMonthYear.year}
-                    onChange={handleMonthYearChange}
-                />
-                {isFetchPending ? <Spinner /> : undefined}
+        
+        <>
+            <div className="row-span-2 items-center grid grid-cols-10">
+                <div className="col-span-2">
+                    <UserTabs  tabs = {tabs} activeTab = {activeTab} handleValueChange={handleTabChange}/>
+                </div>
+                <div className="col-span-2">
+                    <div className="flex ">
+                        <UserSelect
+                            name="month"
+                            label="Month"
+                            data={months.filter(m => m !== "")}
+                            value={selectedMonthYear.month}
+                            onChange={handleMonthYearChange}
+                            />
+                            <UserSelect
+                            name="year"
+                            label="Year"
+                            data={["2024", "2025", "2026"]}
+                            value={selectedMonthYear.year}
+                            onChange={handleMonthYearChange}
+                        />
+                    </div>
+                </div>
             </div>
                 {activeTab === "analytics" && <AnalyticsView 
-                    user={userDetails.name}
+                    user={username}
                     userCategories={userCategories} 
                     year={parseInt(selectedMonthYear.year)} 
                     month={monthsinNumber[selectedMonthYear.month]} 
@@ -165,7 +183,7 @@ export default function HomePage() {
                     setHomeRefresh={setHomeRefresh}
                     /> }
                 {activeTab === "expenditureView" && <ExpenditureView 
-                    user={userDetails.name} 
+                    user={username} 
                     userCategories={userCategories} 
                     year={parseInt(selectedMonthYear.year)} 
                     month={monthsinNumber[selectedMonthYear.month]} 
@@ -176,6 +194,6 @@ export default function HomePage() {
                     setHomeRefresh={setHomeRefresh}
                     /> }
                 {/* {activeTab === "timeseriesAnalytics" && timeseriesAnalytics } */}
-            </div>
+            </>
     )
 }

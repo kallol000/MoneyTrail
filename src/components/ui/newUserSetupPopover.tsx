@@ -162,7 +162,7 @@ export function NewUserSetupPopover({setHomeRefresh}:{setHomeRefresh:Dispatch<Se
           Set Up 
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-120" onInteractOutside={handleClose}>
+      <PopoverContent sideOffset={-200} className="w-120" onInteractOutside={handleClose}>
         <Button
           onClick={handleClose}
           variant={"ghost"}

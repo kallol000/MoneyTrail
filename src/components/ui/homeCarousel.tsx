@@ -1,5 +1,6 @@
+'use client'
 import * as React from "react"
-
+import { useMediaQuery } from "@/app/utils/lib/hooks/useMediaQuery"
 import { Card, CardContent } from "@/components/ui/card"
 import {
   Carousel,
@@ -26,36 +27,32 @@ const carouselItemsContent = [{
 
 export function HomeCarousel() {
 
+  const isDesktop = useMediaQuery("(min-width:768px)");
+
 
   const carouselItems = carouselItemsContent.map((item, index) => (
-    <CarouselItem key={index}>
-      <Card className="">
-        <CardContent className="flex flex-col aspect-video items-center justify-start p-6 ">
-          <div className="text-xs md:text-base lg:text-xl">{item.title}</div>
+    <CarouselItem key={index} >
+      <Card className="bg-secondary">
+        <CardContent className="flex flex-col  items-center">
+          <div className="text-xs">{item.title}</div>
         </CardContent>
       </Card>
     </CarouselItem>
   ))
 
   return (
-    <Carousel className="w-full max-w-4xl">
-      <CarouselContent>
-        {/* {Array.from({ length: 5 }).map((_, index) => (
-          <CarouselItem key={index}>
-            <div className="p-1">
-              <Card>
-                <CardContent className="flex aspect-video items-center justify-center p-6">
-                  <span className="text-4xl font-semibold">{index + 1}</span>
-                </CardContent>
-              </Card>
-            </div>
-          </CarouselItem>
-        ))} */}
-
+    <Carousel className="col-span-10 row-span-5 row-start-5 max-w-4/5 md:max-w-3/5">
+      <CarouselContent className="row-start-5">
         {carouselItems}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      {isDesktop ? 
+        <>
+          <CarouselPrevious />
+          <CarouselNext /> 
+        </>
+        :
+        null
+      }
     </Carousel>
   )
 }

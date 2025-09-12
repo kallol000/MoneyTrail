@@ -2,34 +2,22 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowUpRightIcon } from "@heroicons/react/16/solid";
 import { UserProvider } from "./utils/lib/userContext";
-import { HomeCarousel } from "@/components/ui/IntroCarousel";
+import { HomeCarousel } from "@/components/ui/homeCarousel";
 
 export default function Home() {
   return (
-    // <UserProvider>
-      <div className="font-sans flex flex-col gap-16 items-center justify-center max-h-screen mt-10 p-8 pb-20 sm:p-20">
-        {/* <h1 className="text-5xl font-bold">Hey There!</h1> */}
-        {/* <span> */}
-          <div>
-            <h1 className="text-base md:text-2xl lg:text-4xl font-semibold">Welcome to </h1>
-            <h1 className="text-5xl md:text-7xl lg:text-9xl font-bold text-identity">MONEYTRAIL</h1>
-            <div className="flex justify-end">
-              <Link className="items-end" href="login">
-                {/* <Button variant={"link"} > */}
-                  <div className="flex items-center gap-1 hover:text-bold">
-                    <div className="text-xs md:text-xl">
-                      <span className="font-bold text-action">Login or Sign Up</span>
-                      <span> to start tracking your expenses today!</span>
-                    </div>
+      <div className="grid grid-rows-12 grid-cols-10 items-center justify-items-center max-h-screen py-16">
+          <div className="row-span-4 col-span-10 grid grid-cols-10 items-center">
+            <h1 className="px-1 md:px-2 row-span-1 col-span-10 text-base md:text-xl lg:text-3xl font-semibold">Welcome to </h1>
+            <h1 className="row-span-1 col-span-10 text-5xl md:text-7xl lg:text-9xl font-bold text-identity">MONEYTRAIL</h1>
+            <Button className="text-xs px-4 row-span-1 col-span-10 mt-4 justify-self-end rounded-[50]" variant={"action"}>
+              <Link className="flex items-center  " href="login">
+                      <span className="font-bold ">Login or Sign Up</span>
                     <ArrowUpRightIcon className="size-5" />  
-                  </div>
-                {/* </Button> */}
               </Link>
-            </div>
+            </Button>
           </div>
-        {/* </span> */}
-        <HomeCarousel />
-        
+          <HomeCarousel />
       </div>
   );
 }
