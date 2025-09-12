@@ -6,11 +6,15 @@ import { logOut } from "../login/actions";
 import { useUser } from "../utils/lib/userContext";
 import axios from "axios";
 import Spinner from "@/components/ui/spinner";
+import { useMediaQuery } from "../utils/lib/hooks/useMediaQuery";
+import { Power } from "@/components/ui/icons";
 
 export default function Layout({children} : {children: ReactNode}) {
     
     const [username, setUsername] = useState<string>("")
     const [isFetchUserPending, startFetchUser] = useTransition()
+
+    const isDesktop = useMediaQuery("(min-width:768px)");
 
 
     const fetchUserDetails = async () => {
@@ -28,13 +32,17 @@ export default function Layout({children} : {children: ReactNode}) {
     }, [])
 
     return (
-        <div className="grid grid-rows-25 gap-4 px-4  h-screen max-h-screen max-w-screen">
+        <div className="flex flex-col  sm:grid grid-rows-25 gap-4 px-4  h-screen max-h-screen max-w-screen">
                 <Navbar>
                     <h1 className="text-identity font-bold text-2xl col-span-2">MONEYTRAIL</h1>
                     <div className="flex items-center gap-4 col-[span-7/span-10]">
                         <div className="text-xs font-semibold">{isFetchUserPending ? <Spinner /> : username ? `Hi ${username}` : null}</div>
                         <form>
-                            <Button size={"sm"} className="text-xs " formAction={logOut}>Logout</Button>
+                            {!isDesktop ? 
+                                <Button variant={"ghost"} size={"sm"} className="text-xs " formAction={logOut}><Power /> </Button>
+                                :
+                                <Button size={"sm"} className="text-xs " formAction={logOut}>Logout</Button>
+                            }
                         </form>
                     </div>
                 </Navbar>
