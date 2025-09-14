@@ -60,27 +60,6 @@ export default function ExpenditureView({user, userCategories, year, month, tota
           <div>Available Balance</div>
           <span className="text-2xl font-bold">&#8377;{balance}</span>
         </div>
-          {/* <Card className="bg-identity border-none text-secondary col-span-3">
-            <CardHeader className=" items-end font-semibold">
-              <div className="flex items-center gap-4">
-                <span className="text-md ">Available Balance</span>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <InformationCircleIcon className="size-5 text-secondary/75 hover:text-secondary cursor-pointer " />
-                  </TooltipTrigger>
-                  <TooltipContent
-                    side="right"
-                    className="text-sm bg-secondary text-primary shadow-xl"
-                  >
-                    <p>Total Income: {totalIncome}</p>
-                    <p>Total Expenditure: {totalExpenditure}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </div>
-              <span className="text-2xl font-bold">&#8377;{balance}</span>
-            </CardHeader>
-          </Card> */}
-        {/* <div className="col-[span-8/span-10] justify-items-center gap-y-2"> */}
         <div className="col-[span-8/span-10]">
           <div className="flex flex-col md:flex-row justify-items-end gap-2">
             <UserIncomePopover
@@ -93,7 +72,7 @@ export default function ExpenditureView({user, userCategories, year, month, tota
           </div>
         </div>
       </div>
-      <div className="row-span-18  h-full overflow-scroll
+      <div className="row-span-18 h-full overflow-scroll
       [&::-webkit-scrollbar]:w-2
       [&::-webkit-scrollbar]:h-2
       [&::-webkit-scrollbar-track]:bg-gray-100

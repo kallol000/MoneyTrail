@@ -51,12 +51,12 @@ export function UserExpensePopover({
   const [trigger, setTrigger] = useState<boolean>(false)
 
   const fetchExpenditure = async (date: string, categoryId: number) => {
-    // const res = await getOneDayExpense(date, categoryId);
-    const res = await fetch(`/api/expenditure/day?date=${date}&categoryId=${categoryId}`)
-    const data = await res.json();
-    // console.log(data)
-    setFormdata((prev) => data);
-    setInitialFormdata((prev) => data);
+    startDataFetchTransition(async () => {
+      const res = await axios.get(`/api/expenditure/day?date=${date}&categoryId=${categoryId}`)
+      const data = res.data;
+      setFormdata((prev) => data);
+      setInitialFormdata((prev) => data);
+    })
   };
 
   const addEmptyExpense = () => {
@@ -135,15 +135,12 @@ export function UserExpensePopover({
   };
 
   const handlePopoverOpen = () => {
-    startDataFetchTransition(() => {
-      fetchExpenditure(date, categoryId);
-    })
+    fetchExpenditure(date, categoryId);
     if(!isDataFetchPending) {
-      setPopoverOpen(true);
+      setPopoverOpen(true)
     }
   };
   
-  console.log(isDataFetchPending)
 
   const handleClose = () => {
     setPopoverOpen(false);
@@ -234,14 +231,14 @@ export function UserExpensePopover({
             <h4 className="leading-none font-medium">{categoryName}</h4>
             <p className="text-muted-foreground text-sm">Add expense(s)</p>
           </div>
-          <div className="grid gap-2 px-2 max-h-100 overflow-y-auto
+          <div className="grid gap-2 px-2 max-h-100 overflow-y-auto overscroll-contain
           [&::-webkit-scrollbar]:w-2
             [&::-webkit-scrollbar]:h-2
             [&::-webkit-scrollbar-track]:bg-gray-100
             [&::-webkit-scrollbar-thumb]:bg-gray-300
             dark:[&::-webkit-scrollbar-track]:bg-neutral-700
             dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
-            {isDataFetchPending ? <Spinner /> : expenseElems}
+            {expenseElems} 
           </div>
           <div className="mt-8 grid grid-cols-6 sm:grid-cols-10 justify-items-center items-center gap-4">
             <Button className="col-span-3 sm:col-start-3" onClick={addEmptyExpense}>
