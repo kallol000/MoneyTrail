@@ -231,7 +231,7 @@ export function UserExpensePopover({
             <h4 className="leading-none font-medium">{categoryName}</h4>
             <p className="text-muted-foreground text-sm">Add expense(s)</p>
           </div>
-          <div className="grid gap-2 px-2 max-h-100 overflow-y-auto
+          <div className="grid gap-2 px-2 max-h-100 overflow-y-auto overscroll-contain
           [&::-webkit-scrollbar]:w-2
             [&::-webkit-scrollbar]:h-2
             [&::-webkit-scrollbar-track]:bg-gray-100
