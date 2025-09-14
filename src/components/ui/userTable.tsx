@@ -46,10 +46,10 @@ export default function UserTable({
     if (data.length > 0 && columns) {
       setTableBody((prev) =>
         data.map((day, index) => (
-          <tr key={index}>
+          <tr key={index} className="hover:bg-secondary/40">
             {columns.map((colName, idx) => (
-              <td className="min-w-32 max-w-32 border border-collapse" key={idx}>
-                <div className="min-w-32 max-w-32 flex items-center justify-between text-xs  p-2">
+              <td className="min-w-32 2xl:min-w-38 border-b-1 border-collapse" key={idx}>
+                <div className="min-w-32 2xl:min-w-38 flex items-center justify-between text-xs  p-2">
                   <div className="flex items-center justify-center w-full">
                     {day[colName] === 0 ? "-" : day[colName]}
                   </div>
@@ -76,22 +76,11 @@ export default function UserTable({
   }, [columns, categoryNamesMap]);
 
   return (
-    // <div
-    //   className="
-    //         max-w-screen  overflow-scroll 
-    //         [&::-webkit-scrollbar]:w-2
-    //         [&::-webkit-scrollbar]:h-2
-    //         [&::-webkit-scrollbar-track]:bg-gray-100
-    //         [&::-webkit-scrollbar-thumb]:bg-gray-300
-    //         dark:[&::-webkit-scrollbar-track]:bg-neutral-700
-    //         dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
-    // >
-      <table className="max-w-full">
-        <thead>
-          <tr className="bg-secondary ">{tableHeaders}</tr>
-        </thead>
-        <tbody>{tableBody}</tbody>
-      </table>
-    // </div>
+    <table className="max-w-full">
+      <thead>
+        <tr className="bg-secondary ">{tableHeaders}</tr>
+      </thead>
+      <tbody>{tableBody}</tbody>
+    </table>
   );
 }

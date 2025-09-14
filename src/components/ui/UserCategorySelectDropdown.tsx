@@ -16,6 +16,7 @@ import { Label } from "./label"
 import {XMarkIcon} from "@heroicons/react/16/solid"
 import { CheckIcon } from "lucide-react"
 import { InfoCircleIcon } from "./icons"
+import { useMediaQuery } from "@/app/utils/lib/hooks/useMediaQuery"
 
 type userCategorySelectDropdownProps = {selectedCategories: string[], handleSelectedCategoryChange:(checked: boolean, name: string) => void,  userCategories?: userCategoriesRecord[]};
 
@@ -24,6 +25,7 @@ export function UserCategorySelectDropdown( {selectedCategories, handleSelectedC
     const [categoryElems, setCategoryElems] = useState<JSX.Element[]>([]);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
+    const isDesktop = useMediaQuery("(min-width:768px)")
 
     const handleDropdownOpen = () => {
         setDropdownOpen(true)
@@ -50,7 +52,7 @@ export function UserCategorySelectDropdown( {selectedCategories, handleSelectedC
     return (
         <DropdownMenu open={dropdownOpen} onOpenChange={handleDropdownOpen}>
             <DropdownMenuTrigger asChild>
-                <Button variant="outline">Categories <ChevronDownIcon /></Button>
+                <Button variant="outline">{isDesktop ? "Categories" : null }<ChevronDownIcon /></Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-70 " align="start">
                 <div>
