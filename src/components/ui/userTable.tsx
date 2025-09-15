@@ -78,7 +78,7 @@ export default function UserTable({
   return (
     <table className="max-w-full">
       <thead>
-        <tr className="bg-secondary ">{tableHeaders}</tr>
+        <tr className="bg-secondary sticky top-0">{tableHeaders}</tr>
       </thead>
       <tbody>{tableBody}</tbody>
     </table>

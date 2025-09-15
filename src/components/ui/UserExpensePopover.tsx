@@ -111,8 +111,11 @@ export function UserExpensePopover({
 
     // handleClose()
     setHomeRefresh((prev) => !prev);
+    setUnsavedExpenseIds(prev => new Set())
     setExpenseListRefresh((prev) => !prev);
   };
+
+  
 
   const handleDelete = async (id: string) => {
     if (unsavedExpenseIds.has(id)) {
@@ -126,7 +129,7 @@ export function UserExpensePopover({
         if (res.status === 200) {
           toast("the expense was deleted");
           setExpenseListRefresh((prev) => !prev);
-          setHomeRefresh((prev) => !prev);
+          setHomeRefresh(prev => !prev);
         }
       } catch (err) {
         toast.error("there was an error");
@@ -134,11 +137,13 @@ export function UserExpensePopover({
     }
   };
 
+
   const handlePopoverOpen = () => {
-    fetchExpenditure(date, categoryId);
     if(!isDataFetchPending) {
       setPopoverOpen(true)
+      
     }
+    
   };
   
 
@@ -155,13 +160,11 @@ export function UserExpensePopover({
     }
   }, [formdata]);
 
-  // useEffect(() => {
-  //   if (popoverOpen) {
-  //     startDataFetchTransition(async () => {
-  //       fetchExpenditure(date, categoryId);
-  //     });
-  //   }
-  // }, [popoverOpen, expenseListRefresh]);
+  useEffect(() => {
+    if (popoverOpen) {
+      fetchExpenditure(date, categoryId);
+    }
+  }, [popoverOpen, expenseListRefresh]);
 
   useEffect(() => {
     if (popoverOpen) {
