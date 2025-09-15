@@ -31,9 +31,7 @@ export function UserCategoryDeletePopover({id, setHomeRefresh, setCategoryListRe
 
     const handleDelete = async () => {
 
-        // const res = await deleteCategory(id)
         const res = await axios.delete(`/api/categories/user-all?id=${id}`)
-        // const data = await res.json()
 
         if(res.status === 200) {
             toast("Category deleted")
@@ -46,9 +44,6 @@ export function UserCategoryDeletePopover({id, setHomeRefresh, setCategoryListRe
         handleClose()
     }
     
-
-
-
 
     return (
         <Popover open={popoverOpen} onOpenChange={handlePopoverOpen} modal={true}>
