@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowUpRightIcon } from "@heroicons/react/16/solid";
-import { UserProvider } from "./utils/lib/userContext";
 import { HomeCarousel } from "@/components/ui/homeCarousel";
 
 export default function Home() {

@@ -52,7 +52,6 @@ export  default function UserContributionChart({ data, month }: contributionChar
         {
           const opacity = (day["total"] - range.lowerLim) <= 0 ? 0.001 : (range.higherLim - day["total"]) === 0 ? 1 : (day["total"] - range.lowerLim)/(range.higherLim - day["total"])
           return  <Tooltip key={index}>
-          {/* // <div key={index}> */}
               <TooltipTrigger>
                 <div className = "min-w-4 max-w-6 min-h-4 max-h-6 aspect-square relative bg-black/10 rounded-md overflow-hidden cursor-pointer">
                   <div  style = {{opacity}} className="absolute inset-0 bg-identity cursor-pointer"></div>
@@ -72,7 +71,6 @@ export  default function UserContributionChart({ data, month }: contributionChar
                   </div>
                 </TooltipContent>
               </Tooltip>
-            {/* </div> */}
           }
         )}
       </div>)

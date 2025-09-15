@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect, useTransition } from "react"
-import {tab, UserDetails} from "../utils/lib/types"
+import {tab} from "../utils/lib/types"
 import UserTabs from "@/components/ui/userTabs"
 import AnalyticsView from "./@analyticsView/page"
 import ExpenditureView from "./@expenditureView/page"
@@ -11,7 +11,6 @@ import { userCategoriesRecord } from "../utils/lib/types"
 import Spinner from "@/components/ui/spinner"
 import { Card, CardTitle } from "@/components/ui/card"
 import { NewUserSetupPopover } from "@/components/ui/newUserSetupPopover"
-import { useUser } from "../utils/lib/userContext"
 import axios from "axios"
 
 
@@ -21,11 +20,9 @@ export default function HomePage() {
     const [username, setUsername] = useState<string>("")
     const [isFetchUserPending, startFetchUser] = useTransition()
     const [isNewUser, setIsNewUser] = useState<boolean>(false)
-    
     const [tabs, setTabs] = useState<tab>({
         analytics: "Analytics View",
         expenditureView: "Expenditure Tracking",
-        // timeseriesAnalytics: "Time Series View",
     })
     const [activeTab, setActiveTab] = useState<string>("analytics");
     const [selectedMonthYear, setSelectedMonthYear] = useState<monthYear>({
@@ -39,7 +36,7 @@ export default function HomePage() {
     const [totalExpenditure, setTotalExpenditure] = useState<number>(0);
     const [balance, setBalance] = useState<number>(0);
 
-
+    //   get the details of the user
     const fetchUserDetails = async () => {
         startFetchUser(async () => {
             const res = await axios.get(`/api/user/details`);
@@ -49,26 +46,25 @@ export default function HomePage() {
             }
         })
     }
-
     
-    
-    // to fetch user categories
+    // fetch an user's categories
     const fetchUserCategories = async () => {
-        // const res = await getUserCategories();
-        const res = await fetch(`/api/categories/user-all`)
-        const data = await res.json();
+        const res = await axios.get(`/api/categories/user-all`)
+        const data = res.data;
         setUserCategories(data);
     };
 
+    // fetch an user's total monthly income
     const fetchMonthlyIncome = async () => {
-        const res = await fetch(`/api/income/month-total?year=${parseInt(selectedMonthYear.year)}&month=${monthsinNumber[selectedMonthYear.month]}`)  
-        const data = await res.json();
+        
+        const res = await axios.get(`/api/income/month-total?year=${parseInt(selectedMonthYear.year)}&month=${monthsinNumber[selectedMonthYear.month]}`)  
+        const data = res.data;
         setTotalIncome(data);
     };
-
-
+    
+    
+    // fetch an user's total monthly expenditure
     const fetchMonthlyExpenditure = async () => {
-        
         const year = parseInt(selectedMonthYear.year)
         const month = monthsinNumber[selectedMonthYear.month]
         const res = await fetch(`/api/expenditure/month-total?year=${year}&month=${month}`)
@@ -92,15 +88,15 @@ export default function HomePage() {
         fetchUserDetails()
     }, [])
 
-
+    // decide whether it's a new user who logged just logged in 
     useEffect(() => {
-
         if(username){
             setIsNewUser(false)
         }else{
             setIsNewUser(true)
         }
     }, [username])
+
 
     useEffect(() => {
         if (username) {
@@ -110,22 +106,18 @@ export default function HomePage() {
 
 
     useEffect(() => {
-        // startFetchTransition(async () => {
         if (username && selectedMonthYear.year && selectedMonthYear.month) {
             fetchMonthlyIncome();
             fetchMonthlyExpenditure();
         }
-        // });
     }, [username, selectedMonthYear, homeRefresh]);
 
     useEffect(() => {
         setBalance((prev) => {
-            if (totalIncome && totalExpenditure) {
             prev = totalIncome - totalExpenditure;
-            }
             return prev;
         });
-    }, [totalIncome, totalExpenditure]);
+    }, [totalIncome, totalExpenditure, selectedMonthYear]);
 
 
     if(isNewUser && !isFetchUserPending) {
@@ -194,7 +186,6 @@ export default function HomePage() {
                     setHomeRefresh={setHomeRefresh}
                     /> }
             <div></div>
-                {/* {activeTab === "timeseriesAnalytics" && timeseriesAnalytics } */}
             </>
     )
 }
