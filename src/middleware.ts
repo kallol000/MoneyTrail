@@ -35,19 +35,41 @@ export async function updateSession(request: NextRequest) {
 
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } = await supabase.auth.getUser() //get user details
 
-  if (
-    !user &&
-    !request.nextUrl.pathname.startsWith('/login') &&
-    !request.nextUrl.pathname.startsWith('/auth')
+  const {
+    data: { session },
+  } = await supabase.auth.getSession(); //get current session data
 
-  ) {
-    // no user, potentially respond by redirecting the user to the login page
+  const {pathname} = request.nextUrl //get current path
+
+  if(session && pathname === '/') {
+    //redirect user to homepage if already logged in
+    const url = request.nextUrl.clone();
+    url.pathname = '/home';
+    return NextResponse.redirect(url); 
+  }
+
+  // if (
+  //   !user &&
+  //   !request.nextUrl.pathname.startsWith('/login') &&
+  //   !request.nextUrl.pathname.startsWith('/auth')
+
+  // ) {
+  //   // no user, potentially respond by redirecting the user to the login page
+  //   // const url = request.nextUrl.clone()
+  //   // url.pathname = '/login'
+  //   // return NextResponse.redirect(url)
+  // }
+
+
+  if ( !user && pathname.startsWith('/home') ) {
+    // redirect user to root page if they are trying to access a page that only authenticated users can access
     const url = request.nextUrl.clone()
-    url.pathname = '/login'
+    url.pathname = '/'
     return NextResponse.redirect(url)
   }
+
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.
   // If you're creating a new response object with NextResponse.next() make sure to:

@@ -1,41 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger,} from "@/components/ui/popover";
 
 import { expenseFormdataRecord } from "@/app/utils/lib/types";
-import {
-  useState,
-  useEffect,
-  ReactNode,
-  ChangeEvent,
-  useTransition,
-  Dispatch,
-  SetStateAction,
-} from "react";
+import { useState, useEffect, ReactNode, ChangeEvent, useTransition, Dispatch, SetStateAction } from "react";
 import { XMarkIcon, TrashIcon } from "@heroicons/react/16/solid";
 import { v4 as uuidv4 } from "uuid";
-import Spinner from "@/components/ui/spinner";
 import { toast } from "sonner";
 import { InfoIcon, PlusIcon } from "./icons";
 
 export function UserExpensePopover({
-  icon,
-  date,
-  categoryName,
-  categoryId,
-  setHomeRefresh,
-}: {
-  icon: string;
-  date: string;
-  categoryName: string;
-  categoryId: number;
-  setHomeRefresh: Dispatch<SetStateAction<boolean>>;
-}) {
+  icon, date,categoryName, categoryId, setHomeRefresh,}: {
+  icon: string; date: string; categoryName: string; categoryId: number; setHomeRefresh: Dispatch<SetStateAction<boolean>>;}) {
   const [formdata, setFormdata] = useState<expenseFormdataRecord[]>([]);
   const [initialFormdata, setInitialFormdata] = useState<
     expenseFormdataRecord[]
@@ -48,7 +25,7 @@ export function UserExpensePopover({
   );
   const [isDataFetchPending, startDataFetchTransition] = useTransition();
   const [expenseListRefresh, setExpenseListRefresh] = useState<boolean>(false);
-  const [trigger, setTrigger] = useState<boolean>(false)
+
 
   const fetchExpenditure = async (date: string, categoryId: number) => {
     startDataFetchTransition(async () => {
@@ -79,11 +56,14 @@ export function UserExpensePopover({
     const index = parseInt(id);
 
     if (type === "number") {
+      
       const updatedValue = parseInt(value);
+
+      console.log(updatedValue ? true : false)
 
       setFormdata((prev) => {
         const updatedData = [...prev];
-        updatedData[index] = { ...updatedData[index], amount: updatedValue };
+        updatedData[index] = { ...updatedData[index], amount: updatedValue ? updatedValue : 0 };
         return updatedData;
       });
     } else if (type === "text") {
@@ -111,8 +91,11 @@ export function UserExpensePopover({
 
     // handleClose()
     setHomeRefresh((prev) => !prev);
+    setUnsavedExpenseIds(prev => new Set())
     setExpenseListRefresh((prev) => !prev);
   };
+
+  
 
   const handleDelete = async (id: string) => {
     if (unsavedExpenseIds.has(id)) {
@@ -126,7 +109,7 @@ export function UserExpensePopover({
         if (res.status === 200) {
           toast("the expense was deleted");
           setExpenseListRefresh((prev) => !prev);
-          setHomeRefresh((prev) => !prev);
+          setHomeRefresh(prev => !prev);
         }
       } catch (err) {
         toast.error("there was an error");
@@ -134,10 +117,10 @@ export function UserExpensePopover({
     }
   };
 
+
   const handlePopoverOpen = () => {
-    fetchExpenditure(date, categoryId);
     if(!isDataFetchPending) {
-      setPopoverOpen(true)
+      setPopoverOpen(true) 
     }
   };
   
@@ -155,13 +138,11 @@ export function UserExpensePopover({
     }
   }, [formdata]);
 
-  // useEffect(() => {
-  //   if (popoverOpen) {
-  //     startDataFetchTransition(async () => {
-  //       fetchExpenditure(date, categoryId);
-  //     });
-  //   }
-  // }, [popoverOpen, expenseListRefresh]);
+  useEffect(() => {
+    if (popoverOpen) {
+      fetchExpenditure(date, categoryId);
+    }
+  }, [popoverOpen, expenseListRefresh]);
 
   useEffect(() => {
     if (popoverOpen) {
@@ -169,7 +150,6 @@ export function UserExpensePopover({
         setExpenseElems((prev) => {
           return formdata?.map((exp, index) => (
             <div key={index} className="grid grid-cols-10 items-center gap-4">
-              {/* <Label htmlFor="width" className="col-span-3">{`Expense ${index + 1}`}</Label> */}
               <Input
                 type="text"
                 id={index.toString()}
@@ -178,6 +158,7 @@ export function UserExpensePopover({
                 onChange={handleChange}
                 placeholder="expense description"
                 className="col-span-4 h-8"
+                
               />
               <div className="flex items-center relative col-span-5">
                 <label className="absolute left-2 text-primary/50">
@@ -191,6 +172,7 @@ export function UserExpensePopover({
                   value={exp.amount}
                   onChange={handleChange}
                   className=" h-8 text-right"
+                  autoFocus
                 />
               </div>
               <Button

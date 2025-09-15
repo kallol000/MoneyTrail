@@ -6,31 +6,22 @@ import UserTable from "@/components/ui/userTable";
 import { Toaster } from "@/components/ui/sonner";
 import { UserIncomePopover } from "@/components/ui/UserIncomePopover";
 import { UserCategoriesPopover } from "@/components/ui/UserCategoriesPopover";
-import { Card, CardHeader } from "@/components/ui/card";
-import { InformationCircleIcon } from "@heroicons/react/16/solid";
-import { Tooltip, TooltipTrigger, TooltipContent} from "@/components/ui/tooltip";
-
+import axios from "axios";
 
 type expenditurePageProps = {user:string, userCategories:userCategoriesRecord[], year:number, month:number, totalIncome:number, totalExpenditure:number, balance:number, homeRefresh: boolean, setHomeRefresh: Dispatch<SetStateAction<boolean>>};
 
-
 export default function ExpenditureView({user, userCategories, year, month, totalIncome, totalExpenditure, balance, homeRefresh, setHomeRefresh}: expenditurePageProps) {
   
-//   const [user, setUser] = useState<string>("");
   const [expenseData, setExpenseData] = useState<expenseRecord[]>([]);
-  
   const [categoryNamesMap, setCategoryNamesMap] = useState<Map<string, number>>(new Map());
   const [categoryNumbersMap, setCategoryNumbersMap] = useState<Map<number, string>>(new Map());
   const [isFetchPending, startFetchTransition] = useTransition();
   
-  
-  // console.log("user",user)
 
-  // to fetch monthly expenses
+  //fetch an user's date wise expenditures
   const fetchDateWiseExpenses = async () => {
-    // const res = await getDateWiseExpenses(year,month);
-    const res = await fetch(`/api/expenditure/month-datewise?year=${year}&month=${month}`)
-    const data = await res.json();
+    const res = await axios.get(`/api/expenditure/month-datewise?year=${year}&month=${month}`)
+    const data = res.data;
     setExpenseData(data);
   };
 

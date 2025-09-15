@@ -3,7 +3,6 @@ import Navbar from "@/components/ui/navbar";
 import { ReactNode, useEffect, useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { logOut } from "../login/actions";
-import { useUser } from "../utils/lib/userContext";
 import axios from "axios";
 import Spinner from "@/components/ui/spinner";
 import { useMediaQuery } from "../utils/lib/hooks/useMediaQuery";
@@ -13,9 +12,7 @@ export default function Layout({children} : {children: ReactNode}) {
     
     const [username, setUsername] = useState<string>("")
     const [isFetchUserPending, startFetchUser] = useTransition()
-
-    const isDesktop = useMediaQuery("(min-width:768px)");
-
+    const isDesktop = useMediaQuery("(min-width:768px)"); //to dynamically render components based on screen size
 
     const fetchUserDetails = async () => {
         startFetchUser(async () => {
