@@ -9,6 +9,8 @@ import { XMarkIcon, TrashIcon } from "@heroicons/react/16/solid";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "sonner";
 import { InfoIcon, PlusIcon } from "./icons";
+import Spinner from "@/components/ui/spinner";
+
 
 export function UserExpensePopover({
   icon, date,categoryName, categoryId, setHomeRefresh,}: {
@@ -24,6 +26,7 @@ export function UserExpensePopover({
     new Set()
   );
   const [isDataFetchPending, startDataFetchTransition] = useTransition();
+  const [isExpenseElemRenderPending, startExpenseElemRender] = useTransition();
   const [expenseListRefresh, setExpenseListRefresh] = useState<boolean>(false);
 
 
@@ -52,7 +55,7 @@ export function UserExpensePopover({
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { id, type, name, value } = e.target;
+    const { id, type, value } = e.target;
     const index = parseInt(id);
 
     if (type === "number") {
@@ -117,13 +120,9 @@ export function UserExpensePopover({
     }
   };
 
-
   const handlePopoverOpen = () => {
-    if(!isDataFetchPending) {
       setPopoverOpen(true) 
-    }
   };
-  
 
   const handleClose = () => {
     setPopoverOpen(false);
@@ -145,48 +144,50 @@ export function UserExpensePopover({
   }, [popoverOpen, expenseListRefresh]);
 
   useEffect(() => {
-    if (popoverOpen) {
-      if (formdata) {
-        setExpenseElems((prev) => {
-          return formdata?.map((exp, index) => (
-            <div key={index} className="grid grid-cols-10 items-center gap-4">
-              <Input
-                type="text"
-                id={index.toString()}
-                name={"fetched"}
-                value={exp.description ? exp.description : ""}
-                onChange={handleChange}
-                placeholder="expense description"
-                className="col-span-4 h-8"
-                
-              />
-              <div className="flex items-center relative col-span-5">
-                <label className="absolute left-2 text-primary/50">
-                  &#8377;
-                </label>
+    startExpenseElemRender(() => {
+
+      if (popoverOpen) {
+        if (formdata) {
+          setExpenseElems((prev) => {
+            return formdata?.map((exp, index) => (
+              <div key={index} className="grid grid-cols-10 items-center gap-4">
                 <Input
-                  type="number"
-                  min={0}
+                  type="text"
                   id={index.toString()}
                   name={"fetched"}
-                  value={exp.amount}
+                  value={exp.description ? exp.description : ""}
                   onChange={handleChange}
-                  className=" h-8 text-right"
-                  autoFocus
+                  placeholder="expense description"
+                  className="col-span-4 h-8"
                 />
+                <div className="flex items-center relative col-span-5">
+                  <label className="absolute left-2 text-primary/50">
+                    &#8377;
+                  </label>
+                  <Input
+                    type="number"
+                    min={0}
+                    id={index.toString()}
+                    name={"fetched"}
+                    value={exp.amount}
+                    onChange={handleChange}
+                    className=" h-8 text-right"
+                    autoFocus
+                  />
+                </div>
+                <Button
+                  className="col-span-1"
+                  variant={"ghost"}
+                  onClick={() => handleDelete(exp.id)}
+                >
+                  <TrashIcon />
+                </Button>
               </div>
-              <Button
-                className="col-span-1"
-                variant={"ghost"}
-                onClick={() => handleDelete(exp.id)}
-              >
-                <TrashIcon />
-              </Button>
-            </div>
-          ));
-        });
+            ));
+          });
+        }
       }
-    }
+    })
   }, [popoverOpen, formdata]);
 
   return (
@@ -220,7 +221,7 @@ export function UserExpensePopover({
             [&::-webkit-scrollbar-thumb]:bg-gray-300
             dark:[&::-webkit-scrollbar-track]:bg-neutral-700
             dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
-            {expenseElems} 
+            {isExpenseElemRenderPending ? <Spinner /> : expenseElems} 
           </div>
           <div className="mt-8 grid grid-cols-6 sm:grid-cols-10 justify-items-center items-center gap-4">
             <Button className="col-span-3 sm:col-start-3" onClick={addEmptyExpense}>
