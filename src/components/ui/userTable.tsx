@@ -30,7 +30,7 @@ export default function UserTable({
   }, [data, userCategories]);
 
   useEffect(() => {
-    if (data.length > 0) {
+    if (data?.length > 0) {
       setTableHeaders(
         columns.map((column, index) => (
           <th className="text-xs p-2" key={index}>
@@ -43,7 +43,7 @@ export default function UserTable({
   }, [columns]);
 
   useEffect(() => {
-    if (data.length > 0 && columns) {
+    if (data?.length > 0 && columns) {
       setTableBody((prev) =>
         data.map((day, index) => (
           <tr key={index} className="hover:bg-secondary/40">

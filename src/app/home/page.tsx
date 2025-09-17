@@ -18,6 +18,7 @@ export default function HomePage() {
 
     
     const [username, setUsername] = useState<string>("")
+    const [userRefresh, setUserRefresh] = useState<boolean>(false)
     const [isFetchUserPending, startFetchUser] = useTransition()
     const [isNewUser, setIsNewUser] = useState<boolean>(false)
     const [tabs, setTabs] = useState<tab>({
@@ -81,12 +82,8 @@ export default function HomePage() {
     }
 
     useEffect(() => {
-        setHomeRefresh(prev => !prev)
-    },[])
-
-    useEffect(() => {
         fetchUserDetails()
-    }, [])
+    }, [userRefresh])
 
     // decide whether it's a new user who logged just logged in 
     useEffect(() => {
@@ -125,7 +122,7 @@ export default function HomePage() {
             <div className="px-4 row-span-10 h-full">
                 <Card className="text-xl h-full flex items-center justify-center p-4">
                     <CardTitle>{"Hey there! Looks like you are new. Let's set up your profile"}</CardTitle>
-                    <NewUserSetupPopover setHomeRefresh = {setHomeRefresh} />
+                    <NewUserSetupPopover setUserRefresh = {setUserRefresh} />
                 </Card>
             </div>
         )

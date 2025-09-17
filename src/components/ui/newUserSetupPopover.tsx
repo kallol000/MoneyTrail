@@ -17,7 +17,7 @@ import axios from "axios";
 import { Toaster } from "./sonner";
 
 
-export function NewUserSetupPopover({setHomeRefresh}:{setHomeRefresh:Dispatch<SetStateAction<boolean>>}) {
+export function NewUserSetupPopover({setUserRefresh}:{setUserRefresh:Dispatch<SetStateAction<boolean>>}) {
 
   const [recommendedCategories, setRecommendedCategories] = useState<globalCategoriesRecord[]>([])
   const [recommendedCategoryElems, setRecommendedCategoryElems] = useState<JSX.Element[]>([])
@@ -149,7 +149,7 @@ export function NewUserSetupPopover({setHomeRefresh}:{setHomeRefresh:Dispatch<Se
       setUsername("")
       setFormdata([])
       handleClose()
-      setHomeRefresh(prev => !prev)
+      setUserRefresh(prev => !prev)
     }else{
       toast.error("There was an error")
     }

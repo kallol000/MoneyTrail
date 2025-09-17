@@ -11,7 +11,7 @@ export default function UserTabs({tabs, activeTab, handleValueChange}:{tabs:tab,
     
     useEffect(() => {
         if(tabs){
-            setTabElems(prev => Object.keys(tabs).map(tab => <TabsTrigger key = {tab} value={tab}>{tabs[tab]}</TabsTrigger>))
+            setTabElems(prev => Object.keys(tabs).map(tab => <TabsTrigger  key = {tab} value={tab}>{tabs[tab]}</TabsTrigger>))
         }
     }, [tabs])
 

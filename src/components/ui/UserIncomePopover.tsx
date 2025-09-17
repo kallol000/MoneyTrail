@@ -192,9 +192,9 @@ export function UserIncomePopover({
   }, [popoverOpen, formdata]);
 
   return (
-    <Popover open={popoverOpen} onOpenChange={handlePopoverOpen} modal={true}>
-      <PopoverTrigger asChild>
-        <Button variant="outline" className="text-sm flex items-center">
+    <Popover  open={popoverOpen} onOpenChange={handlePopoverOpen} modal={true}>
+      <PopoverTrigger  asChild>
+        <Button  className="text-sm flex items-center">
           Income <PlusIcon />
         </Button>
       </PopoverTrigger>
