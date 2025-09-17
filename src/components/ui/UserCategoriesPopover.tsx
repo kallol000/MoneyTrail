@@ -114,7 +114,7 @@ export function UserCategoriesPopover({
   return (
     <Popover open={popoverOpen} onOpenChange={handlePopoverOpen} modal={true}>
       <PopoverTrigger asChild>
-        <Button variant="outline">
+        <Button >
           Categories <PlusIcon />
         </Button>
       </PopoverTrigger>
