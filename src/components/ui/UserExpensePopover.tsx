@@ -34,7 +34,11 @@ export function UserExpensePopover({
     startDataFetchTransition(async () => {
       const res = await axios.get(`/api/expenditure/day?date=${date}&categoryId=${categoryId}`)
       const data = res.data;
-      setFormdata((prev) => data);
+      if(data.length === 0) {
+        setFormdata(prev => [{id: uuidv4(), amount: 0, description: "", category_id: categoryId, date: date,}])
+      }else {
+        setFormdata((prev) => data);
+      }
       setInitialFormdata((prev) => data);
     })
   };
@@ -61,8 +65,6 @@ export function UserExpensePopover({
     if (type === "number") {
       
       const updatedValue = parseInt(value);
-
-      console.log(updatedValue ? true : false)
 
       setFormdata((prev) => {
         const updatedData = [...prev];
@@ -97,9 +99,7 @@ export function UserExpensePopover({
     setUnsavedExpenseIds(prev => new Set())
     setExpenseListRefresh((prev) => !prev);
   };
-
   
-
   const handleDelete = async (id: string) => {
     if (unsavedExpenseIds.has(id)) {
       unsavedExpenseIds.delete(id);
@@ -121,7 +121,11 @@ export function UserExpensePopover({
   };
 
   const handlePopoverOpen = () => {
+    if(!isDataFetchPending) {
       setPopoverOpen(true) 
+    }
+
+    console.log(formdata)
   };
 
   const handleClose = () => {
@@ -142,6 +146,8 @@ export function UserExpensePopover({
       fetchExpenditure(date, categoryId);
     }
   }, [popoverOpen, expenseListRefresh]);
+
+  
 
   useEffect(() => {
     startExpenseElemRender(() => {
@@ -221,7 +227,8 @@ export function UserExpensePopover({
             [&::-webkit-scrollbar-thumb]:bg-gray-300
             dark:[&::-webkit-scrollbar-track]:bg-neutral-700
             dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
-            {isExpenseElemRenderPending ? <Spinner /> : expenseElems} 
+              {/* {expenseElems} */}
+            {isDataFetchPending ? <Spinner /> : expenseElems} 
           </div>
           <div className="mt-8 grid grid-cols-6 sm:grid-cols-10 justify-items-center items-center gap-4">
             <Button className="col-span-3 sm:col-start-3" onClick={addEmptyExpense}>
