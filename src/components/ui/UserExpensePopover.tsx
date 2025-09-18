@@ -64,7 +64,7 @@ export function UserExpensePopover({
 
     if (type === "number") {
       
-      const updatedValue = parseInt(value);
+      const updatedValue = parseFloat(parseFloat(value).toFixed(2));
 
       setFormdata((prev) => {
         const updatedData = [...prev];
@@ -173,6 +173,7 @@ export function UserExpensePopover({
                   </label>
                   <Input
                     type="number"
+                    step={"0.01"}
                     min={0}
                     id={index.toString()}
                     name={"fetched"}
