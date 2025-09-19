@@ -36,9 +36,9 @@ export default function Layout({children} : {children: ReactNode}) {
                         <div className="text-xs font-semibold">{isFetchUserPending ? <Spinner /> : username ? `Hi ${username}` : null}</div>
                         <form>
                             {!isDesktop ? 
-                                <Button variant={"ghost"} size={"sm"} className="text-xs " formAction={logOut}><Power /> </Button>
+                                <Button key={"1"} variant={"ghost"} size={"sm"} className="text-xs " formAction={logOut}><Power /> </Button>
                                 :
-                                <Button size={"sm"} className="text-xs " formAction={logOut}>Logout</Button>
+                                <Button key={"2"} size={"sm"} className="text-xs " formAction={logOut}>Logout</Button>
                             }
                         </form>
                     </div>

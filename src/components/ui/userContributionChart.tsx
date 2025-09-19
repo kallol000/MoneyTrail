@@ -15,17 +15,28 @@ export  default function UserContributionChart({ data, month }: contributionChar
   const [range, setRange] = useState<range>({lowerLim:0, higherLim:0})
   const [chartData, setChartData] = useState<expenseRecord[][]>([])
 
+
+  console.log(months)
   useEffect(() => {
     if(data){
       let tempMonths = [...months]
       const ind = tempMonths.findIndex(key => key === month)
-      tempMonths = tempMonths.slice(ind+1-6, ind+1)
+      if(ind < 6) {
+        tempMonths = [...months.slice(12- ind + 1, 12 + 1) , ...tempMonths.slice(1, ind+1)]
+      }else {
+        tempMonths = tempMonths.slice(ind+1-6, ind+1)
+      }
+      console.log(tempMonths)
+
+
       setChartData(tempMonths.map(month => {
         const monthDetails = data.filter(row => months[new Date(row.date).getMonth()+1] === month )
         return [...monthDetails]
       }))
     }
   }, [data])
+
+  console.log(chartData)
 
 
   useEffect(() => {
