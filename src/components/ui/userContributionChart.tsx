@@ -18,7 +18,7 @@ export  default function UserContributionChart({ data, month }: contributionChar
 
   useEffect(() => {
     if(data){
-      let tempMonths:String[] = []
+      let tempMonths:string[] = []
       const ind = months.findIndex(key => key === month)
       if(ind < 6) {
         tempMonths = [...months.slice(12- (6 - ind - 1), 12 + 1) , ...months.slice(1, ind+1)]
