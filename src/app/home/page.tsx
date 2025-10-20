@@ -111,7 +111,7 @@ export default function HomePage() {
 
     useEffect(() => {
         setBalance((prev) => {
-            prev = totalIncome - totalExpenditure;
+            prev = parseFloat((totalIncome - totalExpenditure).toFixed(2));
             return prev;
         });
     }, [totalIncome, totalExpenditure, selectedMonthYear]);
