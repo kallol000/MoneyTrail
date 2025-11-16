@@ -25,7 +25,7 @@ export  default function UserContributionChart({ data, month }: contributionChar
       }else {
         tempMonths = months.slice(ind+1-6, ind+1)
       }
-      console.log(tempMonths)
+      // console.log(tempMonths)
 
 
       setChartData(tempMonths.map(month => {
@@ -35,7 +35,7 @@ export  default function UserContributionChart({ data, month }: contributionChar
     }
   }, [data])
 
-  console.log(chartData)
+  // console.log(chartData)
 
 
   useEffect(() => {

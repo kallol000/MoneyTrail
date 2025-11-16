@@ -3,15 +3,21 @@ import { useState, useEffect, ReactNode } from "react";
 import { UserExpensePopover } from "./UserExpensePopover";
 import { comparator } from "@/app/utils/lib/helpers";
 import { Dispatch, SetStateAction } from "react";
+import { Button } from "./button";
+import { Copy } from "./icons";
+import { UserCopyExpenditurePopover } from "./userCopyExpenditurePopover";
+import { months } from "@/app/utils/lib/helpers";
 
 export default function UserTable({
   data,
+  month,
   categoryNamesMap,
   categoryNumbersMap,
   userCategories,
   setHomeRefresh,
 }: {
   data: expenseRecord[];
+  month: number;
   categoryNamesMap: Map<string, number>;
   categoryNumbersMap: Map<number, string>;
   userCategories: userCategoriesRecord[];
@@ -29,13 +35,26 @@ export default function UserTable({
     });
   }, [data, userCategories]);
 
+
   useEffect(() => {
     if (data?.length > 0) {
       setTableHeaders(
         columns.map((column, index) => (
           <th className="text-xs p-2" key={index}>
-            {column.substring(0, 1).toUpperCase() +
-              column.substring(1, column.length)}
+            <div className="flex gap-2 items-center justify-start">
+              
+              {column.substring(0, 1).toUpperCase() +
+                column.substring(1, column.length)}
+              
+              <Button variant={"ghost"}>
+                <UserCopyExpenditurePopover 
+                  month={month}
+                  categoryName={column}
+                  categoryId={categoryNamesMap.get(column)!}
+                  setHomeRefresh={setHomeRefresh}
+                />
+              </Button>
+            </div>
           </th>
         ))
       );
