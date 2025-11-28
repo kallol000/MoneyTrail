@@ -11,6 +11,7 @@ import { months } from "@/app/utils/lib/helpers";
 export default function UserTable({
   data,
   month,
+  year,  
   categoryNamesMap,
   categoryNumbersMap,
   userCategories,
@@ -18,6 +19,7 @@ export default function UserTable({
 }: {
   data: expenseRecord[];
   month: number;
+  year: number;
   categoryNamesMap: Map<string, number>;
   categoryNumbersMap: Map<number, string>;
   userCategories: userCategoriesRecord[];
@@ -41,19 +43,20 @@ export default function UserTable({
       setTableHeaders(
         columns.map((column, index) => (
           <th className="text-xs p-2" key={index}>
-            <div className="flex gap-2 items-center justify-start">
+            <div className="flex gap-2 items-center justify-center">
               
               {column.substring(0, 1).toUpperCase() +
                 column.substring(1, column.length)}
               
-              <Button variant={"ghost"}>
+              {/* <Button variant={"ghost"}> */}
                 <UserCopyExpenditurePopover 
                   month={month}
+                  year={year}
                   categoryName={column}
                   categoryId={categoryNamesMap.get(column)!}
                   setHomeRefresh={setHomeRefresh}
                 />
-              </Button>
+              {/* </Button> */}
             </div>
           </th>
         ))

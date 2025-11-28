@@ -73,6 +73,7 @@ export default function ExpenditureView({user, userCategories, year, month, tota
         <UserTable
           data={expenseData}
           month = {month}
+          year = {year}
           categoryNamesMap={categoryNamesMap}
           categoryNumbersMap={categoryNumbersMap}
           setHomeRefresh={setHomeRefresh}

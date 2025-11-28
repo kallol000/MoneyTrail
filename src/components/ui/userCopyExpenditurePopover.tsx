@@ -1,37 +1,50 @@
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+import axios from "axios"
+import { Popover, PopoverContent, PopoverTrigger,} from "@/components/ui/popover"
 import { Copy } from "./icons"
 import { Dispatch, SetStateAction } from "react"
-
+import { useState } from "react"
+import { toast } from "sonner"
 type userCopyExpenditurePopoverProps = {
     month: number;
+    year: number;
     categoryName: string;
     categoryId: number;
     setHomeRefresh: Dispatch<SetStateAction<boolean>>;
 }
 
-export function UserCopyExpenditurePopover({month, categoryName, categoryId, setHomeRefresh}: userCopyExpenditurePopoverProps) {
+export function UserCopyExpenditurePopover({month, year, categoryName, categoryId, setHomeRefresh}: userCopyExpenditurePopoverProps) {
 
+    const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
+    
+    const handlePopoverOpen = () => {
+        setPopoverOpen(true) 
+    };
 
     const handleClose = () => {
-        // close popover
+        setPopoverOpen(false)
     }
 
-    const handleCopy = async () => {
-        console.log("Category Name:", categoryName, categoryId, month);
 
+
+    const handleCopy = async () => {
+        
+        const res = await axios.post(`/api/expenditure/copy-last-month?year=${year}&month=${month}&categoryId=${categoryId}`)
+        
+        if (res.status === 400) {
+            toast.error("There was an error");
+        } else if (res.status === 200) {
+            toast.success("Successfully copied");
+        }
+
+        handleClose()
+        setHomeRefresh((prev) => !prev);
     }      
 
 
 
     return (
-        <Popover>
+        <Popover open={popoverOpen} onOpenChange={handlePopoverOpen}>
         <PopoverTrigger asChild>
             <Button className="p-0 h-6 w-6" variant="ghost"><Copy /></Button>
         </PopoverTrigger>
@@ -40,7 +53,7 @@ export function UserCopyExpenditurePopover({month, categoryName, categoryId, set
             <div className="space-y-2">
                 <h4 className="leading-none font-medium">Are you sure?</h4>
                 <p className="text-muted-foreground text-sm">
-                You are about to copy last month's expenditure data to this month. Any existing records will remain unchanged.
+                {`You are about to copy last month's ${categoryName} expenses to this month. Any existing records will remain unchanged.`}
                 </p>
             </div>
             <div className="grid gap-2">

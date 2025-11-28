@@ -85,8 +85,6 @@ export function UserExpensePopover({
   };
 
   const handleSubmit = async () => {
-    // const res = await upsertExpense(formdata);
-    console.log(formdata)
     const res = await axios.post(`/api/expenditure/day`, formdata);
 
     if (res.status === 400) {
@@ -126,7 +124,6 @@ export function UserExpensePopover({
       setPopoverOpen(true) 
     }
 
-    console.log(formdata)
   };
 
   const handleClose = () => {
