@@ -11,7 +11,7 @@ export default function Home() {
             <h1 className="row-span-1 col-span-10 text-5xl md:text-7xl lg:text-9xl font-bold text-identity">MONEYTRAIL</h1>
             <Button className="text-xs px-4 row-span-1 col-span-10 mt-4 justify-self-end rounded-[50]" variant={"action"}>
               <Link className="flex items-center  " href="login">
-                      <span className="font-bold ">Login or Sign Up</span>
+                      <span className="font-bold ">Login or Sign Up to Moneytrail</span>
                     <ArrowUpRightIcon className="size-5" />  
               </Link>
             </Button>
