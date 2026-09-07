@@ -50,7 +50,7 @@ export function UserCategoryDeletePopover({id, setHomeRefresh, setCategoryListRe
         <PopoverTrigger asChild>
             <Button variant={"ghost"} className=" text-xs"><TrashIcon/></Button>
         </PopoverTrigger>
-        <PopoverContent className="w-80">
+        <PopoverContent className="w-[calc(100vw-2rem)] sm:w-80">
             <Button onClick={handleClose} variant={"ghost"} className="absolute right-3 top-3"><XMarkIcon className="" /></Button>
             <div className="grid gap-4">
             <div className="space-y-2">

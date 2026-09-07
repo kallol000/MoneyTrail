@@ -25,7 +25,9 @@ export default function SortableItem({id, children, setHomeRefresh, setCategoryL
       {children}
       <div className='flex items-center'>
         <UserCategoryDeletePopover id = {id} setHomeRefresh={setHomeRefresh} setCategoryListRefresh={setCategoryListRefresh} />
-        <EllipsisVerticalIcon className="h-4 w-4 text-muted-foreground cursor-grab active:cursor-grabbing" {...listeners}/>
+        <div className="p-2 -m-0 touch-none cursor-grab active:cursor-grabbing" {...listeners}>
+          <EllipsisVerticalIcon className="h-4 w-4 text-muted-foreground" />
+        </div>
       </div>
 
     </div>

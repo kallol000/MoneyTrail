@@ -34,7 +34,9 @@ export function UserCategoriesPopover({
   const [categoryListRefresh, setCategoryListRefresh] = useState<boolean>(false);
 
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 4 },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
@@ -118,7 +120,7 @@ export function UserCategoriesPopover({
           Categories <PlusIcon />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80" onInteractOutside={handleClose}>
+      <PopoverContent className="w-[calc(100vw-2rem)] sm:w-80" onInteractOutside={handleClose}>
         <Button
           onClick={handleClose}
           variant={"ghost"}

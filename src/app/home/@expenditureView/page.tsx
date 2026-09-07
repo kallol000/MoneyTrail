@@ -46,13 +46,13 @@ export default function ExpenditureView({user, userCategories, year, month, tota
 
   return (
     <>
-      <div className="grid row-span-3 grid-cols-10">
-        <div className="bg-identity border-none rounded-lg flex flex-col items-start p-4 text-secondary col-span-8 sm:col-span-5 md:col-span-5 xl:col-span-3">
+      <div className="grid grid-cols-10 gap-2">
+        <div className="bg-identity border-none rounded-lg flex flex-col items-start p-4 text-secondary col-span-10 sm:col-span-5 md:col-span-5 xl:col-span-3">
           <div>Available Balance</div>
           <span className="text-2xl font-bold">&#8377;{balance}</span>
         </div>
-        <div className="col-[span-8/span-10]">
-          <div className="flex flex-col md:flex-row justify-items-end gap-2">
+        <div className="col-span-10 sm:col-span-5 md:col-span-5 xl:col-span-7">
+          <div className="flex flex-col md:flex-row md:justify-end gap-2">
             <UserIncomePopover
               income={totalIncome}
               month={month}
@@ -63,13 +63,7 @@ export default function ExpenditureView({user, userCategories, year, month, tota
           </div>
         </div>
       </div>
-      <div className="row-span-18 h-full overflow-scroll
-      [&::-webkit-scrollbar]:w-2
-      [&::-webkit-scrollbar]:h-2
-      [&::-webkit-scrollbar-track]:bg-gray-100
-      [&::-webkit-scrollbar-thumb]:bg-gray-300
-      dark:[&::-webkit-scrollbar-track]:bg-neutral-700
-      dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
+      <div className="overflow-x-auto">
         <UserTable
           data={expenseData}
           month = {month}
@@ -81,6 +75,6 @@ export default function ExpenditureView({user, userCategories, year, month, tota
         />
       </div>
       <Toaster richColors />
-    </>  
+    </>
   );
 }

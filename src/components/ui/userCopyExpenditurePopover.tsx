@@ -46,9 +46,9 @@ export function UserCopyExpenditurePopover({month, year, categoryName, categoryI
     return (
         <Popover open={popoverOpen} onOpenChange={handlePopoverOpen}>
         <PopoverTrigger asChild>
-            <Button className="p-0 h-6 w-6" variant="ghost"><Copy /></Button>
+            <Button size="icon" variant="ghost"><Copy /></Button>
         </PopoverTrigger>
-        <PopoverContent className="w-80">
+        <PopoverContent className="w-[calc(100vw-2rem)] sm:w-80">
             <div className="grid gap-4">
             <div className="space-y-2">
                 <h4 className="leading-none font-medium">Are you sure?</h4>

@@ -198,7 +198,7 @@ export function UserIncomePopover({
           Income <PlusIcon />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 sm:w-120">
+      <PopoverContent className="w-[calc(100vw-2rem)] sm:w-120">
         <Button
           onClick={handleClose}
           variant={"ghost"}

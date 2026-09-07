@@ -41,7 +41,7 @@ export function HomeCarousel() {
   ))
 
   return (
-    <Carousel className="col-span-10 row-span-5 row-start-5 max-w-4/5 md:max-w-3/5">
+    <Carousel className="w-full max-w-4/5 md:max-w-3/5">
       <CarouselContent className="row-start-5">
         {carouselItems}
       </CarouselContent>

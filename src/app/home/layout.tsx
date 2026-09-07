@@ -29,13 +29,13 @@ export default function Layout({children} : {children: ReactNode}) {
     }, [])
 
     return (
-        <div className="flex flex-col  sm:grid grid-rows-25 gap-4 px-4  h-screen max-h-screen max-w-screen">
+        <div className="flex flex-col gap-4 px-4 h-dvh max-h-dvh max-w-screen">
                 <Navbar>
-                    <h1 className="text-identity font-bold text-2xl col-span-2">MONEYTRAIL</h1>
-                    <div className="flex items-center gap-4 col-[span-7/span-10]">
+                    <h1 className="text-identity font-bold text-2xl">MONEYTRAIL</h1>
+                    <div className="flex items-center gap-4">
                         <div className="text-xs font-semibold">{isFetchUserPending ? <Spinner /> : username ? `Hi ${username}` : null}</div>
                         <form>
-                            {!isDesktop ? 
+                            {!isDesktop ?
                                 <Button key={"1"} variant={"ghost"} size={"sm"} className="text-xs " formAction={logOut}><Power /> </Button>
                                 :
                                 <Button key={"2"} size={"sm"} className="text-xs " formAction={logOut}>Logout</Button>
@@ -43,8 +43,15 @@ export default function Layout({children} : {children: ReactNode}) {
                         </form>
                     </div>
                 </Navbar>
-                {children}
-                
+                <div className="flex-1 min-h-0 overflow-y-auto flex flex-col gap-4
+                [&::-webkit-scrollbar]:w-2
+                [&::-webkit-scrollbar]:h-2
+                [&::-webkit-scrollbar-track]:bg-gray-100
+                [&::-webkit-scrollbar-thumb]:bg-gray-300
+                dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+                dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
+                    {children}
+                </div>
         </div>
     )
 }

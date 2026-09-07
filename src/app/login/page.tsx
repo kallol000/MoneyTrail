@@ -41,14 +41,14 @@ export default function LoginPage() {
   }
 
   return (
-    <div className='p-16 '>
+    <div className='px-4 py-12 sm:p-16 '>
       <div className='flex flex-col items-center mb-16'>
-        <div className='text-5xl text-identity font-bold'>MONEYTRAIL</div>
-        <div className='text-xl '>Your own expense tracker</div>
+        <div className='text-4xl sm:text-5xl text-identity font-bold text-center'>MONEYTRAIL</div>
+        <div className='text-lg sm:text-xl text-center'>Your own expense tracker</div>
       </div>
     <div className='flex justify-center'>
 
-      <form className='w-4/5 min-w-[350px] max-w-[500px] flex flex-col gap-4 p-4 items-center '>
+      <form className='w-full max-w-[500px] flex flex-col gap-4 p-4 items-center '>
           <Input placeholder='email' id="email" name="email" type="email" required />
           <Input placeholder='password' id="password" name="password" type="password" />
         <div className = "flex gap-4 mt-8">

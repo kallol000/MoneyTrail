@@ -96,7 +96,7 @@ export function AddUserCategoryPopover({
       <PopoverTrigger asChild>
         <Button className="col-span-4 w-full text-xs">Add a Category</Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80">
+      <PopoverContent className="w-[calc(100vw-2rem)] sm:w-80">
         <Button
           onClick={handleClose}
           variant={"ghost"}

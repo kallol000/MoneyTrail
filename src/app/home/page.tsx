@@ -119,8 +119,8 @@ export default function HomePage() {
 
     if(isNewUser && !isFetchUserPending) {
         return (
-            <div className="px-4 row-span-10 h-full">
-                <Card className="text-xl h-full flex items-center justify-center p-4">
+            <div className="px-4 h-full">
+                <Card className="text-xl h-full flex items-center justify-center p-4 text-center">
                     <CardTitle>{"Hey there! Looks like you are new. Let's set up your profile"}</CardTitle>
                     <NewUserSetupPopover setUserRefresh = {setUserRefresh} />
                 </Card>
@@ -135,29 +135,27 @@ export default function HomePage() {
     }
     
     return (
-        
+
         <>
-            <div className="row-span-2 items-center grid grid-cols-[repeat(auto-fit,minmax(0,90px))] gap-2">
-                <div className="col-span-20 sm:col-span-3 ">
+            <div className="shrink-0 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <div className="overflow-x-auto">
                     <UserTabs  tabs = {tabs} activeTab = {activeTab} handleValueChange={handleTabChange}/>
                 </div>
-                <div className="col-span-20 sm:col-span-9 md:col-span-6">
-                    <div className="flex gap-2">
-                        <UserSelect
-                            name="month"
-                            label="Month"
-                            data={months.filter(m => m !== "")}
-                            value={selectedMonthYear.month}
-                            onChange={handleMonthYearChange}
-                            />
-                            <UserSelect
-                            name="year"
-                            label="Year"
-                            data={["2024", "2025", "2026"]}
-                            value={selectedMonthYear.year}
-                            onChange={handleMonthYearChange}
+                <div className="flex gap-2">
+                    <UserSelect
+                        name="month"
+                        label="Month"
+                        data={months.filter(m => m !== "")}
+                        value={selectedMonthYear.month}
+                        onChange={handleMonthYearChange}
                         />
-                    </div>
+                        <UserSelect
+                        name="year"
+                        label="Year"
+                        data={["2024", "2025", "2026"]}
+                        value={selectedMonthYear.year}
+                        onChange={handleMonthYearChange}
+                    />
                 </div>
             </div>
                 {activeTab === "analytics" && <AnalyticsView 

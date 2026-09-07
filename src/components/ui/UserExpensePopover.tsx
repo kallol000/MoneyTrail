@@ -200,13 +200,13 @@ export function UserExpensePopover({
       <PopoverTrigger asChild>
         <Button
           onClick={handlePopoverOpen}
-          className="p-0 h-6 w-6"
+          size="icon"
           variant="outline"
         >
           {icon === "add" ? <PlusIcon /> : <InfoIcon />}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 sm:w-120">
+      <PopoverContent className="w-[calc(100vw-2rem)] sm:w-120">
         <Button
           onClick={handleClose}
           variant={"ghost"}
