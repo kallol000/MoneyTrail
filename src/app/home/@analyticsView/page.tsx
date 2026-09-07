@@ -8,13 +8,15 @@ import { months } from "@/app/utils/lib/helpers";
 import { UserExpenseLineChart } from "@/components/ui/userExpenseLineChart";
 import { UserIncomeLineChart } from "@/components/ui/userIncomeLineChart";
 import UserContributionChart from "@/components/ui/userContributionChart";
+import { Button } from "@/components/ui/button";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/16/solid";
 import axios from "axios";
 
-type analyticsPageProps = {user:string, userCategories:userCategoriesRecord[], year:number, month:number, totalIncome:number, totalExpenditure:number, balance:number, homeRefresh: boolean, setHomeRefresh: Dispatch<SetStateAction<boolean>>};
+type analyticsPageProps = {user:string, userCategories:userCategoriesRecord[], year:number, month:number, totalIncome:number, totalExpenditure:number, balance:number, balanceHidden:boolean, setBalanceHidden: Dispatch<SetStateAction<boolean>>, homeRefresh: boolean, setHomeRefresh: Dispatch<SetStateAction<boolean>>};
 
 
-export default function AnalyticsView({user, userCategories, year, month, totalIncome, totalExpenditure, balance, homeRefresh, setHomeRefresh}: analyticsPageProps) {
-  
+export default function AnalyticsView({user, userCategories, year, month, totalIncome, totalExpenditure, balance, balanceHidden, setBalanceHidden, homeRefresh, setHomeRefresh}: analyticsPageProps) {
+
 
   const [categoryWiseExpenses, setCategoryWiseExpenses] = useState<expenseRow[]>([]);
   const [lastSixMonthsExpenses, setLastSixMonthsExpenses] = useState<timeSeriesExpenseRow[]>([]);
@@ -60,7 +62,18 @@ export default function AnalyticsView({user, userCategories, year, month, totalI
       <div className="flex flex-col gap-4 sm:grid sm:grid-cols-6 xl:grid xl:grid-cols-6 xl:max-h-full ">
         <div className="bg-identity border-none rounded-lg flex gap-2 items-end justify-between p-4 text-secondary col-span-1 sm:col-span-2 sm:flex-col sm:items-start xl:col-span-2">
           <div className="">Available Balance</div>
-          <div className="text-2xl font-bold">&#8377;{balance}</div>
+          <div className="flex items-center gap-1">
+            <div className="text-2xl font-bold">&#8377;{balanceHidden ? "••••" : balance}</div>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="text-secondary hover:bg-white/20 hover:text-secondary"
+              onClick={() => setBalanceHidden((prev) => !prev)}
+            >
+              {balanceHidden ? <EyeSlashIcon className="size-4" /> : <EyeIcon className="size-4" />}
+            </Button>
+          </div>
         </div>
         <div className=" border-identity border-2 rounded-lg flex gap-2 items-end justify-between p-4 col-span-1 sm:col-span-2 sm:flex-col sm:items-start xl:col-span-2">
           <div>Total Income</div>

@@ -8,6 +8,7 @@ import { Copy } from "./icons";
 import { UserCopyExpenditurePopover } from "./userCopyExpenditurePopover";
 import { months } from "@/app/utils/lib/helpers";
 import { useMediaQuery } from "@/app/utils/lib/hooks/useMediaQuery";
+import { UserExpenseCalendar } from "./userExpenseCalendar";
 
 export default function UserTable({
   data,
@@ -101,35 +102,14 @@ export default function UserTable({
 
   if (!isDesktop) {
     return (
-      <div className="flex flex-col gap-3">
-        {data?.map((day, index) => (
-          <div key={index} className="rounded-lg border bg-card p-3">
-            <div className="text-sm font-semibold mb-1">{day.date}</div>
-            <div className="flex flex-col divide-y divide-border">
-              {columns
-                .filter((colName) => colName !== "date")
-                .map((colName, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-center justify-between gap-2 py-2 text-sm"
-                  >
-                    <span className="text-muted-foreground">{colName}</span>
-                    <div className="flex items-center gap-2">
-                      <span>{day[colName] === 0 ? "-" : day[colName]}</span>
-                      <UserExpensePopover
-                        icon={day[colName] === 0 ? "add" : "view"}
-                        date={day.date}
-                        categoryName={colName}
-                        categoryId={categoryNamesMap.get(colName)!}
-                        setHomeRefresh={setHomeRefresh}
-                      />
-                    </div>
-                  </div>
-                ))}
-            </div>
-          </div>
-        ))}
-      </div>
+      <UserExpenseCalendar
+        data={data}
+        month={month}
+        year={year}
+        columns={columns}
+        categoryNamesMap={categoryNamesMap}
+        setHomeRefresh={setHomeRefresh}
+      />
     );
   }
 

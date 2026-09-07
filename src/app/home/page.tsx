@@ -36,6 +36,7 @@ export default function HomePage() {
     const [totalIncome, setTotalIncome] = useState<number>(0);
     const [totalExpenditure, setTotalExpenditure] = useState<number>(0);
     const [balance, setBalance] = useState<number>(0);
+    const [balanceHidden, setBalanceHidden] = useState<boolean>(true);
 
     //   get the details of the user
     const fetchUserDetails = async () => {
@@ -158,25 +159,29 @@ export default function HomePage() {
                     />
                 </div>
             </div>
-                {activeTab === "analytics" && <AnalyticsView 
+                {activeTab === "analytics" && <AnalyticsView
                     user={username}
-                    userCategories={userCategories} 
-                    year={parseInt(selectedMonthYear.year)} 
-                    month={monthsinNumber[selectedMonthYear.month]} 
-                    totalIncome={totalIncome} 
-                    totalExpenditure={totalExpenditure} 
-                    balance={balance} 
+                    userCategories={userCategories}
+                    year={parseInt(selectedMonthYear.year)}
+                    month={monthsinNumber[selectedMonthYear.month]}
+                    totalIncome={totalIncome}
+                    totalExpenditure={totalExpenditure}
+                    balance={balance}
+                    balanceHidden={balanceHidden}
+                    setBalanceHidden={setBalanceHidden}
                     homeRefresh={homeRefresh}
                     setHomeRefresh={setHomeRefresh}
                     /> }
-                {activeTab === "expenditureView" && <ExpenditureView 
-                    user={username} 
-                    userCategories={userCategories} 
-                    year={parseInt(selectedMonthYear.year)} 
-                    month={monthsinNumber[selectedMonthYear.month]} 
-                    totalIncome={totalIncome} 
-                    totalExpenditure={totalExpenditure} 
-                    balance={balance} 
+                {activeTab === "expenditureView" && <ExpenditureView
+                    user={username}
+                    userCategories={userCategories}
+                    year={parseInt(selectedMonthYear.year)}
+                    month={monthsinNumber[selectedMonthYear.month]}
+                    totalIncome={totalIncome}
+                    totalExpenditure={totalExpenditure}
+                    balance={balance}
+                    balanceHidden={balanceHidden}
+                    setBalanceHidden={setBalanceHidden}
                     homeRefresh={homeRefresh}
                     setHomeRefresh={setHomeRefresh}
                     /> }
