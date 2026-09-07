@@ -6,8 +6,10 @@ import UserTable from "@/components/ui/userTable";
 import { Toaster } from "@/components/ui/sonner";
 import { UserIncomePopover } from "@/components/ui/UserIncomePopover";
 import { UserCategoriesPopover } from "@/components/ui/UserCategoriesPopover";
+import { UserCopyLastMonthDialog } from "@/components/ui/userCopyLastMonthDialog";
 import { Button } from "@/components/ui/button";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/16/solid";
+import { useMediaQuery } from "@/app/utils/lib/hooks/useMediaQuery";
 import axios from "axios";
 
 type expenditurePageProps = {user:string, userCategories:userCategoriesRecord[], year:number, month:number, totalIncome:number, totalExpenditure:number, balance:number, balanceHidden:boolean, setBalanceHidden: Dispatch<SetStateAction<boolean>>, homeRefresh: boolean, setHomeRefresh: Dispatch<SetStateAction<boolean>>};
@@ -18,7 +20,8 @@ export default function ExpenditureView({user, userCategories, year, month, tota
   const [categoryNamesMap, setCategoryNamesMap] = useState<Map<string, number>>(new Map());
   const [categoryNumbersMap, setCategoryNumbersMap] = useState<Map<number, string>>(new Map());
   const [isFetchPending, startFetchTransition] = useTransition();
-  
+  const isDesktop = useMediaQuery("(min-width:768px)");
+
 
   //fetch an user's date wise expenditures
   const fetchDateWiseExpenses = async () => {
@@ -73,6 +76,14 @@ export default function ExpenditureView({user, userCategories, year, month, tota
               setHomeRefresh={setHomeRefresh}
             />
             <UserCategoriesPopover setHomeRefresh={setHomeRefresh} />
+            {!isDesktop && (
+              <UserCopyLastMonthDialog
+                userCategories={userCategories}
+                month={month}
+                year={year}
+                setHomeRefresh={setHomeRefresh}
+              />
+            )}
           </div>
         </div>
       </div>
